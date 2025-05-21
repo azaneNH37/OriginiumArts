@@ -1,0 +1,30 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"slash.normal": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.3333,
+			"bones": {
+				"slash": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, -240, 0]
+						},
+						"0.2083": {
+							"vector": [0, 30, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [0.7, 0.7, 0.7]
+						},
+						"0.0833": {
+							"vector": [1, 1, 1]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
