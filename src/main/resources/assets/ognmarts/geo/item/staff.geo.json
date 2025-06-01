@@ -1,0 +1,36 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.sword",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 4,
+				"visible_bounds_offset": [0, 1, 0]
+			},
+			"bones": [
+				{
+					"name": "staff",
+					"pivot": [-0.5, 0, 0],
+					"rotation": [25, 0, 0],
+					"cubes": [
+						{"origin": [-1, -10, 0], "size": [1, 29, 1], "uv": [0, 0]},
+						{"origin": [-1, 25, -2], "size": [1, 1, 6], "uv": [4, 0]},
+						{"origin": [-1, 19, 0], "size": [1, 1, 4], "uv": [4, 13]},
+						{"origin": [-1, 20, 3], "size": [1, 5, 1], "uv": [14, 13]}
+					]
+				},
+				{
+					"name": "ball",
+					"parent": "staff",
+					"pivot": [-0.5, 22.5, -0.5],
+					"cubes": [
+						{"origin": [-2, 21, -2], "size": [3, 3, 3], "uv": [4, 7]}
+					]
+				}
+			]
+		}
+	]
+}

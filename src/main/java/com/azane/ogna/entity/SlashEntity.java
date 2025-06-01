@@ -106,7 +106,6 @@ public class SlashEntity extends Entity implements GeoEntity, IColorable
         //OriginiumArts.LOGGER.warn("{}", attackArea);
     }
     private void applyDamageToTargets() {
-        // 获取所有与碰撞箱相交的活体实体（排除自己和攻击发起者）
         List<LivingEntity> targets = level().getEntitiesOfClass(
             LivingEntity.class,
             attackArea,

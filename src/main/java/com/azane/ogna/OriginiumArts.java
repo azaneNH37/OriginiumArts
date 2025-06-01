@@ -1,5 +1,6 @@
 package com.azane.ogna;
 
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.entity.SlashEntity;
 import com.azane.ogna.lib.EdataSerializer;
 import com.azane.ogna.registry.EntityRegistry;
@@ -24,6 +25,7 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -32,7 +34,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib.core.molang.LazyVariable;
 import software.bernie.geckolib.core.molang.MolangParser;
 
@@ -43,7 +46,7 @@ public class OriginiumArts
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "ognmarts";
     // Directly reference a slf4j logger
-    public static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     /*
     // Create a Deferred Register to hold Blocks which will all be registered under the "ogna" namespace
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
@@ -72,6 +75,8 @@ public class OriginiumArts
 
     public OriginiumArts(FMLJavaModLoadingContext context)
     {
+        DebugLogger.init();
+
         IEventBus modEventBus = context.getModEventBus();
 
         // Register the commonSetup method for modloading
@@ -89,6 +94,8 @@ public class OriginiumArts
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+
 
         // Register the item to a creative tab
         //modEventBus.addListener(this::addCreative);

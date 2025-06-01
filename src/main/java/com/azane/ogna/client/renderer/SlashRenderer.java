@@ -27,6 +27,7 @@ public class SlashRenderer extends GeoEntityRenderer<SlashEntity>
     @Override
     public void render(SlashEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight)
     {
+        /*
         AABB box = entity.getAttackArea();
         if(box != null)
         {
@@ -38,6 +39,7 @@ public class SlashRenderer extends GeoEntityRenderer<SlashEntity>
                 0.0F, 1.0F, 0.0F, 1.0F
             );
         }
+         */
         poseStack.pushPose();
         //TODO: perhaps we need to standardlize the geo model
         poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot()+135f));

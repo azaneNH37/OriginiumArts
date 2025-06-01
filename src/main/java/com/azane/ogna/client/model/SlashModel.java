@@ -29,4 +29,10 @@ public class SlashModel extends DefaultedEntityGeoModel<SlashEntity>
         //OriginiumArts.LOGGER.warn("val:{}",parser.getVariable(GeoExtendUtil.ML_ENTITY_Y_ROT).get());
         parser.setValue(GeoExtendUtil.ML_ENTITY_Y_ROT, animatable::getYRot);
     }
+
+    @Override
+    public ResourceLocation getModelResource(SlashEntity animatable)
+    {
+        return super.getModelResource(animatable);
+    }
 }
