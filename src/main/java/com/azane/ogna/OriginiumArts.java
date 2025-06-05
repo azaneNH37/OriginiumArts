@@ -3,8 +3,10 @@ package com.azane.ogna;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.entity.SlashEntity;
 import com.azane.ogna.lib.EdataSerializer;
+import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.registry.EntityRegistry;
 import com.azane.ogna.registry.ItemRegistry;
+import com.azane.ogna.resource.service.JsonTypeManagers;
 import com.azane.ogna.util.GeoExtendUtil;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -107,6 +109,10 @@ public class OriginiumArts
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         event.enqueueWork(()->{
+            JsonTypeManagers.loadJsonTypeManagers();
+            OgnmChannel.DEFAULT.initialize();
+
+            /*
             // Some common setup code
             LOGGER.info("HELLO FROM COMMON SETUP");
 
@@ -116,6 +122,7 @@ public class OriginiumArts
             LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
 
             Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+             */
             registerMolangParser();
             EdataSerializer.registerES();
             }
@@ -151,9 +158,11 @@ public class OriginiumArts
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
+            /*
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+             */
         }
     }
 }
