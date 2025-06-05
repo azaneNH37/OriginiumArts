@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.VisibleForDebug;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
@@ -97,7 +98,7 @@ public class SlashEntity extends Entity implements GeoEntity, IColorable
         double length = 3;
         double halfWidth = 1.8;
         Vec3 direction = Vec3.directionFromRotation(getXRot(), getYRot());
-        OriginiumArts.LOGGER.warn(direction.toString());
+        //OriginiumArts.LOGGER.warn(direction.toString());
         Vec3 start = position();
         Vec3 end = start.add(direction.scale(length));
         boolean face = Math.abs(direction.x)>Math.abs(direction.z);

@@ -1,0 +1,19 @@
+{
+  "life": 60,
+  "hitframe": [5],
+  "color": 0,
+  "transform": {
+    "distance": 1,
+    "length": 0.2,
+    "width": 1,
+    "height": 0.1,
+    "xRot": 0,
+    "yRot": 0,
+    "naturalScale": 1.0,
+    "crossScale": 2.0,
+    "heightScale": 1.0
+  },
+  "gecko_asset": {
+    "all": "ognmarts:blade-default"
+  }
+}

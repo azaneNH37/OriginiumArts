@@ -84,7 +84,6 @@ public class StaffRenderer extends GeoItemRenderer<StaffItem>
             poses.addFirst(poseStack.last());
             poseStack.popPose();
         }
-        //DebugLogger.log("poseStack layers: " + poses.size());
         for(int i = 0; i < maintain-1 && !poses.isEmpty(); i++)
         {
             poseStack.pushPose();

@@ -1,10 +1,13 @@
 package com.azane.ogna.item;
 
+import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.renderer.Datums;
 import com.azane.ogna.client.renderer.StaffRenderer;
 import com.azane.ogna.entity.SlashEntity;
+import com.azane.ogna.entity.genable.BladeEffect;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
@@ -71,8 +74,9 @@ public class StaffItem extends Item implements GeoItem
         {
             RandomSource rand = serverLevel.getRandom();
             triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getItemInHand(pUsedHand), serverLevel), "default","attack_swing1");
-            pLevel.addFreshEntity(SlashEntity.createSlash(serverLevel,pPlayer,12,
-                FastColor.ARGB32.color(255,rand.nextInt(0,255),rand.nextInt(0,255),rand.nextInt(0,255))));
+            //pLevel.addFreshEntity(SlashEntity.createSlash(serverLevel,pPlayer,12,
+            //    FastColor.ARGB32.color(255,rand.nextInt(150,255),rand.nextInt(150,255),rand.nextInt(150,255))));
+            pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer, ResourceLocation.tryBuild(OriginiumArts.MOD_ID,"blade-alpha")));
         }
 
         return super.use(pLevel, pPlayer, pUsedHand);

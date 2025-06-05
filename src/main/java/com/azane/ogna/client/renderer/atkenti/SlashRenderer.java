@@ -1,20 +1,16 @@
-package com.azane.ogna.client.renderer;
+package com.azane.ogna.client.renderer.atkenti;
 
-import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.model.SlashModel;
 import com.azane.ogna.client.renderer.layer.ColorLayer;
 import com.azane.ogna.entity.SlashEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.world.phys.AABB;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class SlashRenderer extends GeoEntityRenderer<SlashEntity>
 {
