@@ -1,6 +1,7 @@
 package com.azane.ogna.resource.service;
 
 import com.azane.ogna.genable.entity.IBladeEffect;
+import com.azane.ogna.genable.item.IStaffDataBase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -20,4 +21,8 @@ public interface IResourceProvider
     Set<Map.Entry<ResourceLocation, IBladeEffect>> getAllBladeEffects();
 
     @Nullable IBladeEffect getBladeEffect(ResourceLocation id);
+
+    Set<Map.Entry<ResourceLocation, IStaffDataBase>> getAllStaffs();
+
+    @Nullable IStaffDataBase getStaff(ResourceLocation id);
 }

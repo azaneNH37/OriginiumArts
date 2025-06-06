@@ -1,13 +1,10 @@
-package com.azane.ogna.client.model;
+package com.azane.ogna.client.model.atkentity;
 
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.entity.SlashEntity;
 import com.azane.ogna.entity.genable.BladeEffect;
 import com.azane.ogna.genable.data.GeckoAssetData;
-import com.azane.ogna.util.GeoExtendUtil;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.core.molang.MolangParser;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 import java.util.Optional;

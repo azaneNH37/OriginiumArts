@@ -1,41 +1,33 @@
-package com.azane.ogna.client.renderer;
+package com.azane.ogna.client.lib;
 
-import com.azane.ogna.client.lib.Datums;
-import com.azane.ogna.client.model.StaffModel;
-import com.azane.ogna.item.StaffItem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class StaffRenderer extends GeoItemRenderer<StaffItem>
+public final class OffHandItemTransform
 {
-    public StaffRenderer()
-    {
-        super(new StaffModel());
-    }
-
-    public static Consumer<PoseStack> datumBasisTransform = poseStack -> {
+    public static final Consumer<PoseStack> RAW_BASIS = poseStack -> {
         poseStack.mulPose(Axis.ZP.rotationDegrees(-180F));
     };
+    public static final Consumer<PoseStack> YSM_BASIS = poseStack -> {
+        poseStack.translate(0F,1.75F,0F);
+    };
 
-    private boolean needFreeTransform(ItemDisplayContext transformType)
+    public static Consumer<PoseStack> datumBasisTransform = RAW_BASIS;
+
+    public static boolean needFreeTransform(ItemDisplayContext transformType)
     {
         return transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND
             || transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
@@ -43,11 +35,12 @@ public class StaffRenderer extends GeoItemRenderer<StaffItem>
             || transformType == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
     }
 
-    private void applyFreeItemTransform(ItemStack stack,ItemDisplayContext transformType,PoseStack poseStack)
+    public static void applyFreeItemTransform(PoseStack poseStack,ItemDisplayContext transformType,Datums curDatums)
     {
+        if(!needFreeTransform(transformType))
+            return;
         //discard all the hand-based transformation
         //maybe encounter issues if someone adds a custom transformation
-        //DebugLogger.log("poseStack layers: \n"+ poseStack.last().pose() + poseStack.last().normal());
         if(transformType.firstPerson())
         {
             popDownPoseStack(poseStack,1);
@@ -56,15 +49,9 @@ public class StaffRenderer extends GeoItemRenderer<StaffItem>
             popDownPoseStack(poseStack,3);
             //default third person transformation in order to move the model to right-hand side
             //poseStack.mulPose(Axis.ZP.rotationDegrees(-180F));
-
             //for YSM we should disable the mulPose above, then apply somekinds of translate
             datumBasisTransform.accept(poseStack);
-
-            //same reason, this.animatable is set in super.renderByItem
-            this.animatable = (StaffItem) stack.getItem();
-            int curAniHash = getCurrentAnimationHash(this.animatable, stack, "default").orElse(0);
-            Datums datums = this.animatable.gainAnimeDatums(curAniHash);
-            poseStack.translate(datums.dx,datums.dy,datums.dz);
+            poseStack.translate(curDatums.dx,curDatums.dy,curDatums.dz);
         }
     }
 
@@ -89,7 +76,7 @@ public class StaffRenderer extends GeoItemRenderer<StaffItem>
             poseStack.pushPose();
     }
 
-    public static <T extends Item & GeoAnimatable> Optional<Integer> getCurrentAnimationHash(T animatable,ItemStack stack, String controllerName)
+    public static <T extends Item & GeoAnimatable> Optional<Integer> getCurrentAnimationHash(T animatable, ItemStack stack, String controllerName)
     {
         //before super.renderByItem, currentItemStack isn't set yet,so we can't use this.getInstanceId here
         long uniqueId = GeoItem.getId(stack);
@@ -98,23 +85,10 @@ public class StaffRenderer extends GeoItemRenderer<StaffItem>
         return Optional.ofNullable(animatableManager.getAnimationControllers().get(controllerName)).map(AnimationController::getCurrentRawAnimation).map(RawAnimation::hashCode);
     }
 
-    @Override
-    public void renderByItem(ItemStack stack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
+    public static <T extends Item & GeoAnimatable & IOffHandItem> Datums getCurrentDatums(T animatable, ItemStack stack,ItemDisplayContext context)
     {
-        //applyFreeItemTransform(stack, transformType, poseStack);
-        super.renderByItem(stack, transformType, poseStack, bufferSource, packedLight, packedOverlay);
+        return getCurrentAnimationHash(animatable, stack, animatable.getControllerName(stack))
+            .map((hash) -> animatable.getCurrentAnimeDatums(stack, context,hash))
+            .orElse(Datums.NONE);
     }
-
-    @Override
-    public void actuallyRender(PoseStack poseStack, StaffItem animatable, BakedGeoModel model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-    {
-        if(!isReRender && needFreeTransform(renderPerspective))
-        {
-            applyFreeItemTransform(currentItemStack, renderPerspective, poseStack);
-            preRender(poseStack, animatable, model, bufferSource, buffer, false, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
-        }
-        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
-    }
-
-
 }

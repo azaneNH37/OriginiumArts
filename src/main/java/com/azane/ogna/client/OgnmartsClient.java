@@ -1,8 +1,8 @@
 package com.azane.ogna.client;
 
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.client.renderer.atkenti.BladeEffectRenderer;
-import com.azane.ogna.client.renderer.atkenti.SlashRenderer;
+import com.azane.ogna.client.renderer.atkentity.BladeEffectRenderer;
+import com.azane.ogna.client.renderer.atkentity.SlashRenderer;
 import com.azane.ogna.client.renderer.StaffRenderer;
 import com.azane.ogna.registry.EntityRegistry;
 import net.minecraftforge.api.distmarker.Dist;

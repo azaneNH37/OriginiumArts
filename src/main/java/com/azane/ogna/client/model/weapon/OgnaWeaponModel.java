@@ -1,0 +1,43 @@
+package com.azane.ogna.client.model.weapon;
+
+import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.item.genable.OgnaWeapon;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.model.DefaultedItemGeoModel;
+import software.bernie.geckolib.renderer.GeoRenderer;
+
+public class OgnaWeaponModel<T extends OgnaWeapon> extends DefaultedItemGeoModel<T>
+{
+    @Nullable
+    protected ItemStack currentItemStack;
+
+    public OgnaWeaponModel()
+    {
+        super(ResourceLocation.tryBuild(OriginiumArts.MOD_ID,"staff"));
+    }
+
+    public void updateCurrentItemStack(@Nullable ItemStack itemStack)
+    {
+        this.currentItemStack = itemStack;
+    }
+
+    @Override
+    public ResourceLocation getAnimationResource(T animatable)
+    {
+        return buildFormattedAnimationPath(animatable.getAnimation(currentItemStack));
+    }
+
+    @Override
+    public ResourceLocation getModelResource(T animatable)
+    {
+        return buildFormattedModelPath(animatable.getModel(currentItemStack));
+    }
+
+    @Override
+    public ResourceLocation getTextureResource(T animatable)
+    {
+        return buildFormattedTexturePath(animatable.getTexture(currentItemStack));
+    }
+}

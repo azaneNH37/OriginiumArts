@@ -1,4 +1,4 @@
-package com.azane.ogna.client.renderer;
+package com.azane.ogna.client.lib;
 
 /**
  * 用于在非绑定手部的{@link net.minecraft.world.item.Item}绘制中将绘制基准点变换到合理位置<br>
@@ -10,13 +10,14 @@ public enum Datums
 {
     NONE(0,0,0),
     FIRST_PLAYER_HAND(0D,-1D,-1D),
+    FIRST_PLAYER_CENTRAL(-0.5D,-1D,-1D),
     THIRD_PLAYER_RIGHT_HAND(0D,-1D,-1D),
     THIRD_PLAYER_CENTRAL(-0.5D,-1D,-0.5D),
     THIRD_PLAYER_FRONT(-0.5D,-1D,-1.5D);
 
-    final double dx;
-    final double dy;
-    final double dz;
+    public final double dx;
+    public final double dy;
+    public final double dz;
 
     Datums(double dx,double dy,double dz)
     {

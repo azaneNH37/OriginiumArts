@@ -6,6 +6,7 @@ import com.azane.ogna.lib.EdataSerializer;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.registry.EntityRegistry;
 import com.azane.ogna.registry.ItemRegistry;
+import com.azane.ogna.registry.ModCreativeTabRegistry;
 import com.azane.ogna.resource.service.JsonTypeManagers;
 import com.azane.ogna.util.GeoExtendUtil;
 import com.mojang.logging.LogUtils;
@@ -93,6 +94,7 @@ public class OriginiumArts
 
         EntityRegistry.ENTITIES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
+        ModCreativeTabRegistry.TABS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

@@ -3,6 +3,7 @@ package com.azane.ogna.registry;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.debug.GenSlashItem;
 import com.azane.ogna.item.StaffItem;
+import com.azane.ogna.item.genable.OgnaStaff;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -17,6 +18,8 @@ public class ItemRegistry
 
     public static final RegistryObject<Item> D_GENSLASH = register("d_slash", GenSlashItem::new);
     public static final RegistryObject<Item> STAFF = register("staff", StaffItem::new);
+
+    public static final RegistryObject<Item> OGNA_STAFF = register("ogna_staff", OgnaStaff::new);
 
     public static RegistryObject<Item> register(String name, Supplier<? extends Item> supplier)
     {

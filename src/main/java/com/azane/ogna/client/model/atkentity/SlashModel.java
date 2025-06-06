@@ -1,4 +1,4 @@
-package com.azane.ogna.client.model;
+package com.azane.ogna.client.model.atkentity;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.entity.SlashEntity;

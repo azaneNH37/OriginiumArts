@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public interface IresourceLocation
 {
+    String TAG_RL = "id";
     /**
      * 获取特效的ID
      * @return ID
