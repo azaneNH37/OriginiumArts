@@ -40,13 +40,11 @@ public class OgnaStaff extends OgnaWeapon implements IPolyItemDataBase<IStaffDat
     public static final String DEFAULT_CONTROLLER = "default";
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("staff.idle");
-    private static final RawAnimation ATTACK_SWING1 = RawAnimation.begin().thenPlay("staff.attack.swing1");
-    private static final RawAnimation ATTACK_SWING2 = RawAnimation.begin().thenPlay("staff.attack.swing2");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("staff.attack");
 
     private final Map<Integer, String> animeHashMap = new ImmutableMap.Builder<Integer,String>()
         .put(IDLE.hashCode(),"staff.idle")
-        .put(ATTACK_SWING1.hashCode(),"staff.attack.swing1")
-        .put(ATTACK_SWING2.hashCode(),"staff.attack.swing2")
+        .put(ATTACK.hashCode(),"staff.attack")
         .build();
 
     @Getter
@@ -71,7 +69,7 @@ public class OgnaStaff extends OgnaWeapon implements IPolyItemDataBase<IStaffDat
         controllers.add(
             new AnimationController<>(this, DEFAULT_CONTROLLER,0, event->{
                 return event.setAndContinue(IDLE);
-            }).triggerableAnim("attack_swing2",ATTACK_SWING2)
+            }).triggerableAnim("attack",ATTACK)
         );
     }
 
@@ -82,10 +80,10 @@ public class OgnaStaff extends OgnaWeapon implements IPolyItemDataBase<IStaffDat
         if (pLevel instanceof ServerLevel serverLevel)
         {
             RandomSource rand = serverLevel.getRandom();
-            triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getItemInHand(pUsedHand), serverLevel), "default","attack_swing2");
+            triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getItemInHand(pUsedHand), serverLevel), "default","attack");
             //pLevel.addFreshEntity(SlashEntity.createSlash(serverLevel,pPlayer,12,
             //    FastColor.ARGB32.color(255,rand.nextInt(150,255),rand.nextInt(150,255),rand.nextInt(150,255))));
-            //pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer, ResourceLocation.tryBuild(OriginiumArts.MOD_ID,"blade-alpha")));
+            pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer, getDataBaseForStack(pPlayer.getItemInHand(pUsedHand)).getAtkEntities().getNormal()));
         }
 
         return super.use(pLevel, pPlayer, pUsedHand);
@@ -111,6 +109,14 @@ public class OgnaStaff extends OgnaWeapon implements IPolyItemDataBase<IStaffDat
     {
         IStaffDataBase dataBase = getDataBaseForStack(stack);
         return Optional.ofNullable(dataBase.getGeckoAsset()).map(GeckoAssetData::getAnimation).orElse(dataBase.getId());
+    }
+
+    @Override
+    public ResourceLocation getGuiModel(ItemStack stack)
+    {
+        IStaffDataBase dataBase = getDataBaseForStack(stack);
+        ResourceLocation id = dataBase.getId();
+        return ResourceLocation.tryBuild(id.getNamespace(),"item_gui/"+id.getPath()+".gui");
     }
 
     @Override

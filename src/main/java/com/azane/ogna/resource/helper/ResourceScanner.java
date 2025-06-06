@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public final class ResourceScanner
 {
@@ -34,12 +35,13 @@ public final class ResourceScanner
         return scanDirectory(pResourceManager, FileToIdConverter.json(pName), pGson);
     }
 
-    public static Map<ResourceLocation, JsonElement> scanDirectory(ResourceManager pResourceManager, FileToIdConverter filetoidconverter, Gson pGson) {
+    public static Map<ResourceLocation, JsonElement> scanDirectory(ResourceManager pResourceManager, FileToIdConverter filetoidconverter, Gson pGson, Predicate<ResourceLocation> filter) {
         Map<ResourceLocation, JsonElement> output = Maps.newHashMap();
         for(Map.Entry<ResourceLocation, Resource> entry : filetoidconverter.listMatchingResources(pResourceManager).entrySet()) {
             ResourceLocation resourcelocation = entry.getKey();
             ResourceLocation resourcelocation1 = filetoidconverter.fileToId(resourcelocation);
-
+            if(!filter.test(resourcelocation1))
+                continue; // 如果不符合过滤条件，则跳过
             try (Reader reader = entry.getValue().openAsReader()) {
                 JsonElement jsonelement = GsonHelper.fromJson(pGson, reader, JsonElement.class, true);
                 JsonElement jsonelement1 = output.put(resourcelocation1, jsonelement);
@@ -51,6 +53,10 @@ public final class ResourceScanner
             }
         }
         return output;
+    }
+
+    public static Map<ResourceLocation, JsonElement> scanDirectory(ResourceManager pResourceManager, FileToIdConverter filetoidconverter, Gson pGson) {
+        return scanDirectory(pResourceManager, filetoidconverter, pGson, rl -> true);
     }
 
     /**

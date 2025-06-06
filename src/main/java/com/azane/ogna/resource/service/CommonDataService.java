@@ -65,8 +65,8 @@ public abstract class CommonDataService implements IResourceProvider
     protected void reloadAndBind()
     {
        //实例化全局数据
-        bladeEffects = new DynamicDataManager<>(IBladeEffect.class,GSON,"acjson/blade","BladeEffects",JsonTypeManagers.modTypeManager);
-        staffs = new DyItemDataManager<>(IStaffDataBase.class,GSON,"acjson/staff","Staffs",JsonTypeManagers.modTypeManager);
+        bladeEffects = new DynamicDataManager<>(IBladeEffect.class,GSON,"ogna/blade","BladeEffects",JsonTypeManagers.modTypeManager);
+        staffs = new DyItemDataManager<>(IStaffDataBase.class,GSON,"ogna/staff","Staffs",JsonTypeManagers.modTypeManager);
 
 
         ImmutableMap.Builder<ResourceLocation, INetworkCacheReloadListener> builder = ImmutableMap.builder();

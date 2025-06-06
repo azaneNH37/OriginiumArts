@@ -44,15 +44,15 @@ public final class OffHandItemTransform
         if(transformType.firstPerson())
         {
             popDownPoseStack(poseStack,1);
-            poseStack.translate(0F,-1F,-1F);//in hand
+            //poseStack.translate(0F,-1F,-1F);//in hand
         } else{
             popDownPoseStack(poseStack,3);
             //default third person transformation in order to move the model to right-hand side
             //poseStack.mulPose(Axis.ZP.rotationDegrees(-180F));
             //for YSM we should disable the mulPose above, then apply somekinds of translate
             datumBasisTransform.accept(poseStack);
-            poseStack.translate(curDatums.dx,curDatums.dy,curDatums.dz);
         }
+        poseStack.translate(curDatums.dx,curDatums.dy,curDatums.dz);
     }
 
     public static void popDownPoseStack(PoseStack poseStack,int maintain)

@@ -14,12 +14,14 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class BladeEffectRenderer extends GeoEntityRenderer<BladeEffect>
 {
     public BladeEffectRenderer(EntityRendererProvider.Context renderManager)
     {
         super(renderManager, new BladeEffectModel());
+        //addRenderLayer(new AutoGlowingGeoLayer<>(this));
         //addRenderLayer(new ColorLayer<>(this));
     }
 

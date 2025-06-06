@@ -3,14 +3,12 @@
     "all": "ognmarts:staff"
   },
   "anime_datum_first": {
-    "staff.idle": "FIRST_PLAYER_CENTRAL",
-    "staff.attack.swing1": "FIRST_PLAYER_HAND",
-    "staff.attack.swing2": "FIRST_PLAYER_HAND"
+    "staff.idle": "FIRST_PLAYER_HAND",
+    "staff.attack": "FIRST_PLAYER_HAND"
   },
   "anime_datum_third": {
     "staff.idle": "THIRD_PLAYER_RIGHT_HAND",
-    "staff.attack.swing1": "THIRD_PLAYER_FRONT",
-    "staff.attack.swing2": "THIRD_PLAYER_FRONT"
+    "staff.attack": "THIRD_PLAYER_FRONT"
   },
   "attack_entities": {
     "normal": "ognmarts:blade-alpha",

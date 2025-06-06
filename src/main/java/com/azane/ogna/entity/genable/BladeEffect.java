@@ -26,6 +26,7 @@ import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -37,7 +38,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     //geckolib
     @Getter
     private final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
-    private static final RawAnimation ANIM_BLADE = RawAnimation.begin().thenPlay("blade.normal");
+    private static final RawAnimation ANIM_BLADE = RawAnimation.begin().thenPlay("blade.active");
 
     //self-build data
     private IBladeEffect sharedDataBase = null;
@@ -205,6 +206,6 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers)
     {
-        //controllers.add(new AnimationController<>(this,"controller",0,state -> state.setAndContinue(ANIM_BLADE)));
+        controllers.add(new AnimationController<>(this,"controller",0, state -> state.setAndContinue(ANIM_BLADE)));
     }
 }

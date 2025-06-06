@@ -1,0 +1,61 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 4,
+				"visible_bounds_offset": [0, 1, 0]
+			},
+			"bones": [
+				{
+					"name": "staff",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "staff1",
+					"parent": "staff",
+					"pivot": [-9.5, 0, 0],
+					"rotation": [25, 0, 0],
+					"cubes": [
+						{"origin": [-10, -10, 0], "size": [1, 29, 1], "uv": [0, 0]},
+						{"origin": [-10, 25, -2], "size": [1, 1, 6], "uv": [8, 0]},
+						{"origin": [-10, 19, 0], "size": [1, 1, 4], "uv": [20, 14]},
+						{"origin": [-10, 20, 3], "size": [1, 5, 1], "uv": [22, 0]}
+					]
+				},
+				{
+					"name": "ball",
+					"parent": "staff1",
+					"pivot": [-9.5, 22.5, -0.5],
+					"cubes": [
+						{"origin": [-11, 21, -2], "size": [3, 3, 3], "uv": [8, 14]}
+					]
+				},
+				{
+					"name": "staff2",
+					"parent": "staff",
+					"pivot": [9.5, 0, 0],
+					"rotation": [60, 0, 0],
+					"cubes": [
+						{"origin": [9, -10, 0], "size": [1, 29, 1], "uv": [4, 0]},
+						{"origin": [9, 25, -2], "size": [1, 1, 6], "uv": [8, 7]},
+						{"origin": [9, 19, 0], "size": [1, 1, 4], "uv": [20, 19]},
+						{"origin": [9, 20, 3], "size": [1, 5, 1], "uv": [22, 6]}
+					]
+				},
+				{
+					"name": "ball2",
+					"parent": "staff2",
+					"pivot": [9.5, 22.5, -0.5],
+					"cubes": [
+						{"origin": [8, 21, -2], "size": [3, 3, 3], "uv": [8, 20]}
+					]
+				}
+			]
+		}
+	]
+}
