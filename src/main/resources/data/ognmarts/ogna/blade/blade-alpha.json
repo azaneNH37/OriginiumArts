@@ -1,6 +1,6 @@
 {
   "life": 20,
-  "hitframe": [5],
+  "hitframe": [0],
   "color": 0,
   "transform": {
     "distance": 3,

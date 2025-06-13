@@ -86,11 +86,15 @@ minecraft {
         client {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', mod_id
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         server {
             property 'forge.enabledGameTestNamespaces', mod_id
             args '--nogui'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         // This run config launches GameTestServer and runs all registered gametests, then exits.
@@ -132,6 +136,12 @@ repositories {
             includeGroup("com.eliotlash.mclib")
         }
     }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -149,6 +159,10 @@ dependencies {
 
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     implementation("com.eliotlash.mclib:mclib:20")
+
+    runtimeOnly fg.deobf("curse.maven:${ldlib_id}:${ldlib_version}")
+    implementation fg.deobf("curse.maven:${photon_id}:${photon_version}")
+
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

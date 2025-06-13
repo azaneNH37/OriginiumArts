@@ -1,11 +1,15 @@
 package com.azane.ogna.entity.genable;
 
 import com.azane.ogna.Config;
+import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.manager.BladeEffectAABBManager;
 import com.azane.ogna.lib.EdataSerializer;
 import com.azane.ogna.registry.EntityRegistry;
 import com.azane.ogna.resource.service.CommonDataService;
+import com.lowdragmc.photon.client.fx.EntityEffect;
+import com.lowdragmc.photon.client.fx.FX;
+import com.lowdragmc.photon.client.fx.FXHelper;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,6 +34,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
@@ -103,8 +108,16 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     {
         super.tick();
         if(this.level().isClientSide())
+        {
+            if(age == 0)
+            {
+                FX fx = FXHelper.getFX(Objects.requireNonNull(ResourceLocation.tryBuild(OriginiumArts.MOD_ID, "roman")));
+                var effect = new EntityEffect(fx, this.level(), this, EntityEffect.AutoRotate.FORWARD);
+                effect.start();
+            }
+            age++;
             return;
-        age++;
+        }
         if(this.getDataBase().getHitFrame().contains(age))
         {
             this.dealDamageToTargets();
@@ -113,6 +126,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         {
             this.discard();
         }
+        age++;
     }
 
     public void dealDamageToTargets()
