@@ -2,6 +2,8 @@ package com.azane.ogna.network;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.network.to_client.SyncGlobalDatapackPacket;
+import com.azane.ogna.network.to_server.InputAttackPacket;
+import com.azane.ogna.network.to_server.InputReloadPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.simple.SimpleChannel;
 
@@ -21,5 +23,8 @@ public class OgnmChannel extends BasePacketHandler
     public void initialize()
     {
         registerServerToClient(SyncGlobalDatapackPacket.class,SyncGlobalDatapackPacket::new);
+
+        registerClientToServer(InputAttackPacket.class,InputAttackPacket::new);
+        registerClientToServer(InputReloadPacket.class,InputReloadPacket::new);
     }
 }

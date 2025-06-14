@@ -1,12 +1,15 @@
 package com.azane.ogna.client;
 
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.client.gameplay.AttackInputHandler;
 import com.azane.ogna.client.renderer.atkentity.BladeEffectRenderer;
 import com.azane.ogna.client.renderer.atkentity.SlashRenderer;
 import com.azane.ogna.client.renderer.StaffRenderer;
 import com.azane.ogna.registry.EntityRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -25,6 +28,12 @@ public class OgnmartsClient
                     poseStack.translate(0F,1.75F,0F);
                 });
         //OriginiumMod.LOGGER.warn("clientSetup");
+    }
+
+    @SubscribeEvent
+    public static void onClientSetup(RegisterKeyMappingsEvent event) {
+        // 注册键位
+        event.register(AttackInputHandler.RELOAD_KEY);
     }
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event)

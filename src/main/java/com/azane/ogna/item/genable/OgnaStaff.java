@@ -3,6 +3,7 @@ package com.azane.ogna.item.genable;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.lib.Datums;
 import com.azane.ogna.client.renderer.weapon.OgnaWeaponRenderer;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.entity.genable.BladeEffect;
 import com.azane.ogna.genable.data.GeckoAssetData;
 import com.azane.ogna.genable.item.IStaffDataBase;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -162,5 +164,17 @@ public class OgnaStaff extends OgnaWeapon implements IPolyItemDataBase<IStaffDat
             stacks.add(entry.getValue().buildItemStack(1));
         });
         return stacks;
+    }
+
+    @Override
+    public void onServerAttack(ItemStack stack, ServerPlayer player, AttackType attackType, long chargeTime)
+    {
+        DebugLogger.log("Server attack");
+    }
+
+    @Override
+    public void onServerReload(ItemStack stack, ServerPlayer player)
+    {
+        DebugLogger.log("Server reload");
     }
 }

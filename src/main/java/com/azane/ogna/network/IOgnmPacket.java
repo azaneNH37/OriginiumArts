@@ -7,9 +7,9 @@ import java.util.function.Supplier;
 
 public interface IOgnmPacket {
 
-    void handle(NetworkEvent.Context context);
-
     void encode(FriendlyByteBuf buffer);
+
+    void handle(NetworkEvent.Context context);
 
     static <PACKET extends IOgnmPacket> void handle(PACKET message, Supplier<NetworkEvent.Context> ctx) {
         if (message != null) {
