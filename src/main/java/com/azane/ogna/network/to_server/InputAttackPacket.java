@@ -56,7 +56,7 @@ public class InputAttackPacket implements IOgnmPacket
         {
             if(weapon.isStackMatching(mainHand, uuid))
             {
-                if (weapon.canAttack(mainHand, player, attackType))
+                if (weapon.getWeaponCap(mainHand).canAttack(mainHand, player, attackType))
                 {
                     weapon.onServerAttack(mainHand, player, attackType, chargeTime);
                 }

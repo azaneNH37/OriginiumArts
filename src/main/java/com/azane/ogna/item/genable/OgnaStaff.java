@@ -1,12 +1,10 @@
 package com.azane.ogna.item.genable;
 
-import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.client.lib.Datums;
 import com.azane.ogna.client.renderer.weapon.OgnaWeaponRenderer;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.entity.genable.BladeEffect;
-import com.azane.ogna.genable.data.GeckoAssetData;
-import com.azane.ogna.genable.item.IStaffDataBase;
+import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
+import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.resource.service.ServerDataService;
 import com.google.common.collect.ImmutableMap;
@@ -20,37 +18,31 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-public class OgnaStaff extends OgnaWeapon implements IPolyItemDataBase<IStaffDataBase>
+public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBase<IStaffDataBase>
 {
-    public static final String DEFAULT_CONTROLLER = "default";
-
+    /**
+     * gecko动画
+     */
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("staff.idle");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("staff.attack");
 
+    @Getter
     private final Map<Integer, String> animeHashMap = new ImmutableMap.Builder<Integer,String>()
         .put(IDLE.hashCode(),"staff.idle")
         .put(ATTACK.hashCode(),"staff.attack")
         .build();
-
-    @Getter
-    private final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
 
     @Getter
     private final Class<IStaffDataBase> dataBaseType = IStaffDataBase.class;
@@ -58,11 +50,19 @@ public class OgnaStaff extends OgnaWeapon implements IPolyItemDataBase<IStaffDat
     @Getter
     private final Map<ResourceLocation, IStaffDataBase> databaseCache = new ConcurrentHashMap<>();
 
-
-    public OgnaStaff()
+    @Override
+    public IDefaultOgnaWeaponDataBase getDefaultDatabase(ItemStack stack)
     {
-        super(new Properties().stacksTo(1));
-        SingletonGeoAnimatable.registerSyncedAnimatable(this);
+        return getDataBaseForStack(stack);
+    }
+
+    @Override
+    public OgnaStaff getItem(){return this;}
+
+    @Override
+    public boolean isDataBaseForStack(ItemStack itemStack)
+    {
+        return isThisGenItem(itemStack);
     }
 
     @Override
@@ -74,61 +74,6 @@ public class OgnaStaff extends OgnaWeapon implements IPolyItemDataBase<IStaffDat
             }).triggerableAnim("attack",ATTACK)
         );
     }
-
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
-    {
-        if (pLevel instanceof ServerLevel serverLevel)
-        {
-            RandomSource rand = serverLevel.getRandom();
-            triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getItemInHand(pUsedHand), serverLevel), "default","attack");
-            //pLevel.addFreshEntity(SlashEntity.createSlash(serverLevel,pPlayer,12,
-            //    FastColor.ARGB32.color(255,rand.nextInt(150,255),rand.nextInt(150,255),rand.nextInt(150,255))));
-            pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer, getDataBaseForStack(pPlayer.getItemInHand(pUsedHand)).getAtkEntities().getNormal()));
-        }
-
-        return super.use(pLevel, pPlayer, pUsedHand);
-    }
-
-
-    @Override
-    public ResourceLocation getModel(ItemStack stack)
-    {
-        IStaffDataBase dataBase = getDataBaseForStack(stack);
-        return Optional.ofNullable(dataBase.getGeckoAsset()).map(GeckoAssetData::getModel).orElse(dataBase.getId());
-    }
-
-    @Override
-    public ResourceLocation getTexture(ItemStack stack)
-    {
-        IStaffDataBase dataBase = getDataBaseForStack(stack);
-        return Optional.ofNullable(dataBase.getGeckoAsset()).map(GeckoAssetData::getTexture).orElse(dataBase.getId());
-    }
-
-    @Override
-    public ResourceLocation getAnimation(ItemStack stack)
-    {
-        IStaffDataBase dataBase = getDataBaseForStack(stack);
-        return Optional.ofNullable(dataBase.getGeckoAsset()).map(GeckoAssetData::getAnimation).orElse(dataBase.getId());
-    }
-
-    @Override
-    public ResourceLocation getGuiModel(ItemStack stack)
-    {
-        IStaffDataBase dataBase = getDataBaseForStack(stack);
-        ResourceLocation id = dataBase.getId();
-        return ResourceLocation.tryBuild(id.getNamespace(),"item_gui/"+id.getPath()+".gui");
-    }
-
-    @Override
-    public Datums getCurrentAnimeDatums(ItemStack stack, ItemDisplayContext context,int animeHash)
-    {
-        return getDataBaseForStack(stack).getAnimeDatum(context,animeHashMap.getOrDefault(animeHash,"unknown"));
-    }
-
-    @Override
-    public String getControllerName(ItemStack stack){ return DEFAULT_CONTROLLER; }
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer)
@@ -148,16 +93,7 @@ public class OgnaStaff extends OgnaWeapon implements IPolyItemDataBase<IStaffDat
         });
     }
 
-    @Override
-    public OgnaStaff getItem(){return this;}
-
-
-    @Override
-    public boolean isDataBaseForStack(ItemStack itemStack)
-    {
-        return isThisGenItem(itemStack);
-    }
-
+    //TODO:这里可以发现创造模式下通过tab获取的所有数据库来源相同的itemStack共享一个uuid
     public static NonNullList<ItemStack> fillCreativeTab() {
         NonNullList<ItemStack> stacks = NonNullList.create();
         ServerDataService.get().getAllStaffs().stream().sorted((r, i)->r.getKey().getPath().hashCode()).forEach(entry->{
@@ -166,15 +102,37 @@ public class OgnaStaff extends OgnaWeapon implements IPolyItemDataBase<IStaffDat
         return stacks;
     }
 
+
+    public OgnaStaff() { super(); }
+
+
     @Override
-    public void onServerAttack(ItemStack stack, ServerPlayer player, AttackType attackType, long chargeTime)
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
     {
-        DebugLogger.log("Server attack");
+        if (pLevel instanceof ServerLevel serverLevel)
+        {
+            RandomSource rand = serverLevel.getRandom();
+            triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getItemInHand(pUsedHand), serverLevel), "default","attack");
+            //pLevel.addFreshEntity(SlashEntity.createSlash(serverLevel,pPlayer,12,
+            //    FastColor.ARGB32.color(255,rand.nextInt(150,255),rand.nextInt(150,255),rand.nextInt(150,255))));
+            pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer, getDataBaseForStack(pPlayer.getItemInHand(pUsedHand)).getAtkEntities().getNormal()));
+        }
+
+        return super.use(pLevel, pPlayer, pUsedHand);
     }
 
     @Override
-    public void onServerReload(ItemStack stack, ServerPlayer player)
+    public void onServerAttack(ItemStack stack, ServerPlayer pPlayer, AttackType attackType, long chargeTime)
     {
-        DebugLogger.log("Server reload");
+        super.onServerAttack(stack, pPlayer, attackType, chargeTime);
+        Level pLevel = pPlayer.level();
+        if (pLevel instanceof ServerLevel serverLevel)
+        {
+            RandomSource rand = serverLevel.getRandom();
+            triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack");
+            //pLevel.addFreshEntity(SlashEntity.createSlash(serverLevel,pPlayer,12,
+            //    FastColor.ARGB32.color(255,rand.nextInt(150,255),rand.nextInt(150,255),rand.nextInt(150,255))));
+            pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer, getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getNormal()));
+        }
     }
 }

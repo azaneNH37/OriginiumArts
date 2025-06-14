@@ -3,11 +3,9 @@ package com.azane.ogna.resource.service;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.genable.entity.IBladeEffect;
-import com.azane.ogna.genable.item.IStaffDataBase;
-import com.azane.ogna.resource.manager.CommonDataManager;
+import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.resource.manager.DynamicDataManager;
 import com.azane.ogna.resource.manager.INetworkCacheReloadListener;
-import com.azane.ogna.resource.manager.JsonDataTypeManager;
 import com.azane.ogna.resource.manager.specific.DyItemDataManager;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;

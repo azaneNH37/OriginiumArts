@@ -2,13 +2,11 @@ package com.azane.ogna.genable.item.base;
 
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.debug.log.LogLv;
-import com.azane.ogna.genable.item.IStaffDataBase;
 import com.azane.ogna.resource.helper.IresourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Objects;

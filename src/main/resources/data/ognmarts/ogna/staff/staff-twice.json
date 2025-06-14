@@ -13,5 +13,12 @@
   "attack_entities": {
     "normal": "ognmarts:blade-alpha",
     "skill": []
+  },
+  "weapon_data": {
+    "cooldown": 3000,
+    "max_charge_time": 3000,
+    "reload_time": 5000,
+    "energy_max": 100,
+    "energy_consume": 10
   }
 }

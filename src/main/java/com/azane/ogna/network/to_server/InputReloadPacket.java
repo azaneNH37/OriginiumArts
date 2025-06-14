@@ -57,7 +57,7 @@ public class InputReloadPacket implements IOgnmPacket
         {
             if(weapon.isStackMatching(mainHand, uuid))
             {
-                if (weapon.canReload(mainHand,player))
+                if (weapon.getWeaponCap(mainHand).canReload(mainHand,player))
                 {
                     weapon.onServerReload(mainHand,player);
                 }

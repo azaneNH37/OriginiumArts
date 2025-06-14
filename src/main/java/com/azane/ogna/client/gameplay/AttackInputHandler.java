@@ -110,7 +110,7 @@ public class AttackInputHandler
 
         IOgnaWeapon weapon = (IOgnaWeapon) mainHand.getItem();
 
-        DebugLogger.log("try enter charging");
+        //DebugLogger.log("try enter charging");
 
         // 检查是否能攻击
         if (!stateManager.canPerformAction(playerId, AttackStateManager.ActionType.ATTACK)) {
@@ -145,7 +145,7 @@ public class AttackInputHandler
 
         // 判断攻击类型
         AttackType attackType;
-        long maxChargeTime = weapon.getMaxChargeTime(mainHand);
+        long maxChargeTime = weapon.getWeaponCap(mainHand).getMaxChargeTime(mainHand);
 
         if (holdTime < 200) {
             attackType = AttackType.SIMPLE;
@@ -190,7 +190,7 @@ public class AttackInputHandler
 
         IOgnaWeapon weapon = (IOgnaWeapon) mainHand.getItem();
 
-        DebugLogger.log("try reload");
+        //DebugLogger.log("try reload");
 
         // 检查是否能重装
         if (!stateManager.canPerformAction(playerId, AttackStateManager.ActionType.RELOAD)) {
@@ -210,7 +210,7 @@ public class AttackInputHandler
         UUID playerId = player.getUUID();
 
         // 设置客户端冷却
-        long cooldown = weaponImpl.getCooldownTime(weapon);
+        long cooldown = weaponImpl.getWeaponCap(weapon).getCooldownTime(weapon);
         stateManager.setAttackCooldown(playerId, cooldown);
 
         // 发送攻击包到服务端
@@ -224,7 +224,7 @@ public class AttackInputHandler
         UUID playerId = player.getUUID();
 
         // 获取重装时间和武器UUID
-        long reloadTime = weaponImpl.getReloadTime(weapon);
+        long reloadTime = weaponImpl.getWeaponCap(weapon).getReloadTime(weapon);
         String weaponUUID = weaponImpl.getOrCreateStackUUID(weapon);
 
         // 设置重装状态
@@ -233,7 +233,7 @@ public class AttackInputHandler
         // 发送重装包到服务端
         sendReloadPacket(player, weaponUUID);
         // 异步处理客户端重装特效
-        Minecraft.getInstance().submitAsync(()->weaponImpl.onClientReloadEffects(weapon, player));
+        //Minecraft.getInstance().submitAsync(()->weaponImpl.onClientReloadEffects(weapon, player));
 
         // 设置重装完成的回调
         scheduleReloadCompletion(player, reloadTime, weaponUUID,weaponImpl);
@@ -255,6 +255,7 @@ public class AttackInputHandler
     }
 
     private static void sendAttackPacket(Player player, AttackType attackType, long chargeTime,String weaponUUID) {
+        //DebugLogger.error("send");
         OgnmChannel.DEFAULT.sendToServer(new InputAttackPacket(attackType,chargeTime,weaponUUID));
     }
 

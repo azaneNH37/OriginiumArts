@@ -1,7 +1,7 @@
 package com.azane.ogna.resource.service;
 
 import com.azane.ogna.genable.entity.IBladeEffect;
-import com.azane.ogna.genable.item.IStaffDataBase;
+import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.resources.ResourceLocation;
