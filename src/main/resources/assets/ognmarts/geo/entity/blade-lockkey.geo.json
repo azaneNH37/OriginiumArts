@@ -1,0 +1,41 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.blade-lockkey",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 5,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "blade",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "anim",
+					"parent": "blade",
+					"pivot": [0, 0.5, 20],
+					"rotation": [-7.5, 0, 0],
+					"cubes": [
+						{
+							"origin": [-32, 0, -2],
+							"size": [64, 0.5, 32],
+							"uv": {
+								"north": {"uv": [0, 62], "uv_size": [64, 2]},
+								"east": {"uv": [0, 62], "uv_size": [64, 2]},
+								"south": {"uv": [0, 64], "uv_size": [64, -4]},
+								"west": {"uv": [0, 62], "uv_size": [64, 2]},
+								"up": {"uv": [61.25, 36], "uv_size": [-57.875, -36]},
+								"down": {"uv": [2.875, 39.625], "uv_size": [58.875, 24.375]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

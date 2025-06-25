@@ -2,11 +2,13 @@ package com.azane.ogna.client.renderer.atkentity;
 
 import com.azane.ogna.Config;
 import com.azane.ogna.client.model.atkentity.BladeEffectModel;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.entity.genable.BladeEffect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -60,9 +62,10 @@ public class BladeEffectRenderer extends GeoEntityRenderer<BladeEffect>
         {
             int lifetime = entity.getDataBase().getLife();
             double deathTime = lifetime;
-            baseAlpha = (Math.min(deathTime, Math.max(0, (lifetime - (entity.tickCount) - partialTick))) / deathTime);
+            baseAlpha = (Math.min(deathTime, Math.max(0, (lifetime - (entity.tickCount) - partialTick + entity.getEntityData().get(BladeEffect.DELAY)))) / deathTime);
             baseAlpha = -Math.pow(baseAlpha - 1, 4.0)+1.0;
+            //DebugLogger.log("RENDER:tick:{},delay:{},alpha:{}", entity.tickCount, entity.getEntityData().get(BladeEffect.DELAY), baseAlpha);
         }
-        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, (float) baseAlpha);
+        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, LightTexture.FULL_BRIGHT, packedOverlay, red, green, blue, (float) baseAlpha);
     }
 }

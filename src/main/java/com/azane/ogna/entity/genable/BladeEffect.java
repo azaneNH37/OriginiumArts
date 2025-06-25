@@ -2,6 +2,7 @@ package com.azane.ogna.entity.genable;
 
 import com.azane.ogna.Config;
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.manager.BladeEffectAABBManager;
 import com.azane.ogna.lib.EdataSerializer;
@@ -18,9 +19,12 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.VisibleForDebug;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TraceableEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -32,8 +36,10 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -62,6 +68,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     //S->C data
     private static final EntityDataAccessor<String> DATABASE_ID = SynchedEntityData.defineId(BladeEffect.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Vector3f> SCALE = SynchedEntityData.defineId(BladeEffect.class, EntityDataSerializers.VECTOR3);
+    public static final EntityDataAccessor<Integer> DELAY = SynchedEntityData.defineId(BladeEffect.class, EntityDataSerializers.INT);
     @VisibleForDebug
     public static final EntityDataAccessor<AABB> ATTACK_AREA = SynchedEntityData.defineId(BladeEffect.class, EdataSerializer.AA_BB);
 
@@ -75,16 +82,21 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
 
     public static BladeEffect createBlade(Level pLevel, @NotNull Entity owner, ResourceLocation rl)
     {
+        return createBlade(pLevel, owner, rl, 0);
+    }
+    public static BladeEffect createBlade(Level pLevel, @NotNull Entity owner, ResourceLocation rl,int delay)
+    {
         BladeEffect blade = new BladeEffect(EntityRegistry.BLADE_EFFECT.get(), pLevel);
         blade.setOwner(owner);
         blade.setDataBase(rl);
         updateTransform(blade);
+        blade.getEntityData().set(DELAY,delay);
+        blade.setInvisible(true);
         return blade;
     }
     public static void createTransform(BladeEffect blade)
     {
-        if(blade.transform == null)
-            blade.transform = blade.getDataBase().generateTransform(blade.getOwner());
+        blade.transform = blade.getDataBase().generateTransform(blade.getOwner());
     }
     public BladeEffectAABBManager.BladeTransform getOrCreateTransform()
     {
@@ -109,22 +121,30 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         super.tick();
         if(this.level().isClientSide())
         {
-            if(age == 0)
+            if(age == getEntityData().get(DELAY))
             {
                 FX fx = FXHelper.getFX(Objects.requireNonNull(ResourceLocation.tryBuild(OriginiumArts.MOD_ID, "roman")));
                 var effect = new EntityEffect(fx, this.level(), this, EntityEffect.AutoRotate.FORWARD);
                 effect.start();
             }
-            age++;
-            return;
         }
-        if(this.getDataBase().getHitFrame().contains(age))
+        else
         {
-            this.dealDamageToTargets();
-        }
-        if(age > this.getDataBase().getLife())
-        {
-            this.discard();
+            //DebugLogger.log("entitytick:{},delay:{},curtick:{}",this.tickCount,getEntityData().get(DELAY),age);
+            if(age == getEntityData().get(DELAY))
+            {
+                setInvisible(false);
+                updateTransform(this);
+                triggerAnim("default","attack");
+            }
+            if(this.getDataBase().getHitFrame().contains(age-getEntityData().get(DELAY)))
+            {
+                this.dealDamageToTargets();
+            }
+            if(age > this.getDataBase().getLife()+getEntityData().get(DELAY))
+            {
+                this.discard();
+            }
         }
         age++;
     }
@@ -133,6 +153,17 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     {
         if(this.level().isClientSide())
             return;
+        List<LivingEntity> targets = level().getEntitiesOfClass(
+            LivingEntity.class,
+            getOrCreateTransform().aabb(),
+            entity -> entity != getOwner()
+        );
+        DamageSource damageSource = getOwner() != null ?
+            damageSources().playerAttack((Player) getOwner()) :
+            damageSources().magic();
+        for (LivingEntity target : targets) {
+            target.hurt(damageSource, 10.0F);
+        }
     }
 
     public void setDataBase(@Nullable ResourceLocation rl)
@@ -183,6 +214,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     {
         this.getEntityData().define(DATABASE_ID, FAILSAFE_ID);
         this.getEntityData().define(SCALE, new Vector3f(1, 1, 1));
+        this.getEntityData().define(DELAY,0);
         if(Config.isDebughitbox())
             this.getEntityData().define(ATTACK_AREA, AABB.ofSize(Vec3.ZERO, 0, 0,0));
     }
@@ -220,6 +252,8 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers)
     {
-        controllers.add(new AnimationController<>(this,"controller",0, state -> state.setAndContinue(ANIM_BLADE)));
+        controllers.add(new AnimationController<>(this,"default",0,
+            state -> PlayState.STOP
+        ).triggerableAnim("attack",ANIM_BLADE));
     }
 }

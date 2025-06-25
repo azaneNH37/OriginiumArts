@@ -3,12 +3,12 @@
 	"animations": {
 		"blade.active": {
 			"loop": "hold_on_last_frame",
-			"animation_length": 0.5,
+			"animation_length": 1,
 			"bones": {
 				"anim": {
 					"scale": {
 						"0.0": [0.01, 0.01, 0.01],
-						"0.2083": [5, 5, 5]
+						"0.2083": ["5+query.anim_time-0.21", "5+query.anim_time-0.21", "5+query.anim_time-0.21"]
 					}
 				}
 			}

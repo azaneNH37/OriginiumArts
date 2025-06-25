@@ -43,7 +43,7 @@ public final class OffHandItemTransform
         //maybe encounter issues if someone adds a custom transformation
         if(transformType.firstPerson())
         {
-            popDownPoseStack(poseStack,1);
+            popDownPoseStack(poseStack,2);
             //poseStack.translate(0F,-1F,-1F);//in hand
         } else{
             popDownPoseStack(poseStack,3);

@@ -1,6 +1,7 @@
 {
   "item_models": [
     "ognmarts:staff-alpha.gui",
-    "ognmarts:staff-twice.gui"
+    "ognmarts:staff-twice.gui",
+    "ognmarts:staff-lockkey.gui"
   ]
 }

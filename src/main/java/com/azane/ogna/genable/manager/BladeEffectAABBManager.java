@@ -87,7 +87,7 @@ public class BladeEffectAABBManager
      * 根据玩家状态和配置创建刀光变换
      */
     public static BladeTransform createBladeTransform(Entity entity, BladeConfig config) {
-        Vec3 entityPos = entity.position().add(0, entity.getEyeHeight() * 0.8, 0);
+        Vec3 entityPos = entity.position().add(0, entity.getEyeHeight() * 0.6, 0);
 
         // 获取实体的旋转角度（度数）
         float entityYRot = entity.getYRot(); // 水平旋转（偏航角）

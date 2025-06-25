@@ -32,6 +32,10 @@ public class DefaultWeaponDataBase
     @SerializedName("anime_datum_third")
     private Map<String,Datums> animeDatumMapThird;
 
+    @SerializedName("atk_delay")
+    @Getter
+    private int atkDelay = 0;
+
     @SerializedName("attack_entities")
     @Getter
     private WeaponAtkEntityData atkEntities;

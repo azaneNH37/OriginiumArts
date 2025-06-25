@@ -2,6 +2,7 @@ package com.azane.ogna.client;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gameplay.AttackInputHandler;
+import com.azane.ogna.client.lib.OffHandItemTransform;
 import com.azane.ogna.client.renderer.atkentity.BladeEffectRenderer;
 import com.azane.ogna.client.renderer.atkentity.SlashRenderer;
 import com.azane.ogna.client.renderer.StaffRenderer;
@@ -24,9 +25,7 @@ public class OgnmartsClient
         ModList.get().getMods().stream()
                 .filter(modInfo -> modInfo.getModId().equals("yes_steve_model"))
                 .findFirst()
-                .ifPresent(iModInfo -> StaffRenderer.datumBasisTransform = poseStack -> {
-                    poseStack.translate(0F,1.75F,0F);
-                });
+                .ifPresent(iModInfo -> OffHandItemTransform.datumBasisTransform = OffHandItemTransform.YSM_BASIS);
         //OriginiumMod.LOGGER.warn("clientSetup");
     }
 

@@ -1,0 +1,20 @@
+{
+  "life": 20,
+  "hitframe": [3],
+  "color": 0,
+  "transform": {
+    "distance": 4.8,
+    "length": 2.2,
+    "width": 8,
+    "height": 0.5,
+    "xRot": 0,
+    "yRot": 0,
+    "naturalScale": 1.0,
+    "crossScale": 1.0,
+    "heightScale": 1.0
+  },
+  "gecko_asset": {
+    "all": "ognmarts:blade-lockkey",
+    "animation": "ognmarts:blade-default"
+  }
+}

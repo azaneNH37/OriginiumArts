@@ -132,7 +132,9 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
             triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack");
             //pLevel.addFreshEntity(SlashEntity.createSlash(serverLevel,pPlayer,12,
             //    FastColor.ARGB32.color(255,rand.nextInt(150,255),rand.nextInt(150,255),rand.nextInt(150,255))));
-            pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer, getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getNormal()));
+            pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer,
+                getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getNormal(),
+                getDataBaseForStack(pPlayer.getMainHandItem()).getAtkDelay()));
         }
     }
 }
