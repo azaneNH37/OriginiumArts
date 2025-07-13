@@ -11,6 +11,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class NamelyDataManager<T> extends CommonDataManager<T>
@@ -18,16 +19,16 @@ public class NamelyDataManager<T> extends CommonDataManager<T>
     private final Predicate<ResourceLocation> fileNameFilter;
     private final boolean forceApply;
 
-    public NamelyDataManager(Class<T> dataClass, Gson pGson, String directory, String marker, Predicate<ResourceLocation> fileNameFilter,boolean forceApply)
+    public NamelyDataManager(Class<T> dataClass, Gson pGson, String directory, String marker, Predicate<ResourceLocation> fileNameFilter, boolean forceApply, Consumer<JsonDataManager<T>> onDataMapInit)
     {
-        super(dataClass, pGson, directory, marker);
+        super(dataClass, pGson, directory, marker, onDataMapInit);
         this.fileNameFilter = fileNameFilter;
         this.forceApply = forceApply;
     }
 
-    public NamelyDataManager(Class<T> dataClass, Gson pGson, FileToIdConverter fileToIdConverter, String marker, Predicate<ResourceLocation> fileNameFilter,boolean forceApply)
+    public NamelyDataManager(Class<T> dataClass, Gson pGson, FileToIdConverter fileToIdConverter, String marker, Predicate<ResourceLocation> fileNameFilter,boolean forceApply,Consumer<JsonDataManager<T>> onDataMapInit)
     {
-        super(dataClass, pGson, fileToIdConverter, marker);
+        super(dataClass, pGson, fileToIdConverter, marker, onDataMapInit);
         this.fileNameFilter = fileNameFilter;
         this.forceApply = forceApply;
     }

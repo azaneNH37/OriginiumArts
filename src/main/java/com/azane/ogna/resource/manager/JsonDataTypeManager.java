@@ -78,7 +78,7 @@ public class JsonDataTypeManager
                                 }
                             }
                             else
-                                DebugLogger.log(LogLv.ERROR,"[Conflict FullName] Class %s from JarUrl %s already exists, skipping both".formatted(className, url));
+                                DebugLogger.log(LogLv.ERROR,"[Conflict FullName] Class %s from JarUrl %s already exists, skipping all".formatted(className, url));
                         });
                     });
                 }

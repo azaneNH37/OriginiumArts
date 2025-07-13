@@ -2,10 +2,10 @@ package com.azane.ogna.resource.manager;
 
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.debug.log.LogLv;
-import com.azane.ogna.resource.helper.ResourceScanner;
 import com.azane.ogna.resource.helper.ExtractHelper;
 import com.azane.ogna.resource.helper.IresourceLocation;
 import com.azane.ogna.resource.helper.ParserHelper;
+import com.azane.ogna.resource.helper.ResourceScanner;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * 通用数据管理器<br>
@@ -40,16 +41,19 @@ public class JsonDataManager<T> extends SimplePreparableReloadListener<Map<Resou
     private final Marker marker;
     @Getter
     private final FileToIdConverter fileToIdConverter;
+    @Getter
+    private final Consumer<JsonDataManager<T>> onDataMapInit;
 
-    public JsonDataManager(Class<T> dataClass, Gson pGson, String directory, String marker) {
-        this(dataClass, pGson, FileToIdConverter.json(directory), marker);
+    public JsonDataManager(Class<T> dataClass, Gson pGson, String directory, String marker, Consumer<JsonDataManager<T>> onDataMapInit)
+    {
+        this(dataClass, pGson, FileToIdConverter.json(directory), marker, onDataMapInit);
     }
-
-    public JsonDataManager(Class<T> dataClass, Gson pGson, FileToIdConverter fileToIdConverter, String marker) {
+    public JsonDataManager(Class<T> dataClass, Gson pGson, FileToIdConverter fileToIdConverter, String marker, Consumer<JsonDataManager<T>> onDataMapInit) {
         this.gson = pGson;
         this.dataClass = dataClass;
         this.marker = MarkerManager.getMarker(marker);
         this.fileToIdConverter = fileToIdConverter;
+        this.onDataMapInit = onDataMapInit;
     }
 
     @NotNull
@@ -68,16 +72,23 @@ public class JsonDataManager<T> extends SimplePreparableReloadListener<Map<Resou
             JsonElement element = entry.getValue();
             try {
                 T data = parseJson(id,element);
-                if (data != null) {
-                    if(data instanceof IresourceLocation rlData)
-                        rlData.setId(ExtractHelper.extractPureId(id));
-                    dataMap.put(id, data);
-                }
+                generateUnitData(id,data);
             } catch (JsonParseException | IllegalArgumentException e) {
                 DebugLogger.log(LogLv.ERROR, marker, "Failed to parse data file %s".formatted(id));
             }
         }
-        debugLogAllData();
+        if(onDataMapInit != null)
+            onDataMapInit.accept(this);
+        //debugLogAllData();
+    }
+
+    protected void generateUnitData(ResourceLocation id, T data)
+    {
+        if (data != null) {
+            if(data instanceof IresourceLocation rlData)
+                rlData.setId(ExtractHelper.extractPureId(id));
+            dataMap.put(id, data);
+        }
     }
 
     protected T parseJson(ResourceLocation rl, JsonElement element){ return ParserHelper.parseJsonStatic(gson,element,dataClass);}
@@ -96,9 +107,9 @@ public class JsonDataManager<T> extends SimplePreparableReloadListener<Map<Resou
         this.dataMap.clear();
     }
 
-    protected void debugLogAllData()
+    public void debugLogAllData()
     {
         DebugLogger.log(LogLv.INFO, marker, "Loaded %d data entries with class type %s".formatted(dataMap.size(), dataClass.getName()));
-        dataMap.forEach((id, data) -> DebugLogger.log(LogLv.NULL, "Data ID: {}, Data: {}",id,data));
+        dataMap.forEach((id, data) -> DebugLogger.log(LogLv.NULL, "Data ID: {}, Data: {}",id,data.toString()));
     }
 }

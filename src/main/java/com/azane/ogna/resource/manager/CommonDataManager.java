@@ -15,6 +15,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * 服务端侧数据管理器<br>
@@ -26,12 +27,12 @@ public class CommonDataManager<T> extends JsonDataManager<T> implements INetwork
     @Getter
     protected Map<ResourceLocation, String> networkCache;
 
-    public CommonDataManager(Class<T> dataClass, Gson pGson, String directory, String marker) {
-        super(dataClass, pGson, directory, marker);
+    public CommonDataManager(Class<T> dataClass, Gson pGson, String directory, String marker, Consumer<JsonDataManager<T>> onDataMapInit) {
+        super(dataClass, pGson, directory, marker,onDataMapInit);
     }
 
-    public CommonDataManager(Class<T> dataClass, Gson pGson, FileToIdConverter fileToIdConverter, String marker) {
-        super(dataClass, pGson, fileToIdConverter, marker);
+    public CommonDataManager(Class<T> dataClass, Gson pGson, FileToIdConverter directory, String marker, Consumer<JsonDataManager<T>> onDataMapInit) {
+        super(dataClass, pGson, directory, marker,onDataMapInit);
     }
 
     @Override
@@ -57,14 +58,13 @@ public class CommonDataManager<T> extends JsonDataManager<T> implements INetwork
             String element = entry.getValue();
             try {
                 T data = parseJson(id,element);
-                if (data != null) {
-                    dataMap.put(id, data);
-                }
+                generateUnitData(id,data);
             } catch (JsonParseException | IllegalArgumentException e) {
                 DebugLogger.error(getMarker(), "Failed to load data file {} {}", id, e);
             }
         }
         DebugLogger.log(LogLv.INFO, getMarker(), "Accepting Data Cache from Network: %s".formatted(cache.size()));
-        debugLogAllData();
+        getOnDataMapInit().accept(this);
+        //debugLogAllData();
     }
 }
