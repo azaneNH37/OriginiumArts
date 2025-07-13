@@ -2,6 +2,7 @@ package com.azane.ogna.genable.item.base;
 
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.debug.log.LogLv;
+import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.resource.helper.IresourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +39,7 @@ public interface IPolyItemDataBase<T extends IresourceLocation>
                 throw new IllegalArgumentException("ItemStack is not a valid GenItem: " + itemStack);
             }
             // 从NBT获取Database ID
-            ResourceLocation dbId = ResourceLocation.parse(Objects.requireNonNull(itemStack.getTagElement(IGenItem.GEN_TAG)).getString(IresourceLocation.TAG_RL));
+            ResourceLocation dbId = RlHelper.parse(Objects.requireNonNull(itemStack.getTagElement(IGenItem.GEN_TAG)).getString(IresourceLocation.TAG_RL));
             T database = getDatabaseCache().get(dbId);
 
             if (database != null)

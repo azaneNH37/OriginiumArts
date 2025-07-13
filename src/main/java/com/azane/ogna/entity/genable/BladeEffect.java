@@ -6,6 +6,7 @@ import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.manager.BladeEffectAABBManager;
 import com.azane.ogna.lib.EdataSerializer;
+import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.EntityRegistry;
 import com.azane.ogna.resource.service.CommonDataService;
 import com.lowdragmc.photon.client.fx.EntityEffect;
@@ -123,7 +124,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         {
             if(age == getEntityData().get(DELAY))
             {
-                FX fx = FXHelper.getFX(Objects.requireNonNull(ResourceLocation.tryBuild(OriginiumArts.MOD_ID, "roman")));
+                FX fx = FXHelper.getFX(Objects.requireNonNull(RlHelper.build(OriginiumArts.MOD_ID, "roman")));
                 var effect = new EntityEffect(fx, this.level(), this, EntityEffect.AutoRotate.FORWARD);
                 effect.start();
             }
@@ -172,7 +173,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         {
             if(sharedDataBase != null)
                 return;
-            rl = ResourceLocation.parse(getEntityData().get(DATABASE_ID));
+            rl = RlHelper.parse(getEntityData().get(DATABASE_ID));
         }
         else
             this.getEntityData().set(DATABASE_ID, rl.toString());
@@ -180,7 +181,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         if(sharedDataBase == null)
         {
             this.getEntityData().set(DATABASE_ID, FAILSAFE_ID);
-            sharedDataBase = CommonDataService.get().getBladeEffect(ResourceLocation.parse(FAILSAFE_ID));
+            sharedDataBase = CommonDataService.get().getBladeEffect(RlHelper.parse(FAILSAFE_ID));
         }
     }
     public IBladeEffect getDataBase()
@@ -236,7 +237,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         } else {
             this.getEntityData().set(DATABASE_ID, FAILSAFE_ID);
         }
-        setDataBase(ResourceLocation.parse(this.getEntityData().get(DATABASE_ID)));
+        setDataBase(RlHelper.parse(this.getEntityData().get(DATABASE_ID)));
     }
 
     @Override

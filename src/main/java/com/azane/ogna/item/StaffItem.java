@@ -4,6 +4,7 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.lib.Datums;
 import com.azane.ogna.client.renderer.StaffRenderer;
 import com.azane.ogna.entity.genable.BladeEffect;
+import com.azane.ogna.lib.RlHelper;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -72,7 +73,7 @@ public class StaffItem extends Item implements GeoItem
             triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getItemInHand(pUsedHand), serverLevel), "default","attack_swing1");
             //pLevel.addFreshEntity(SlashEntity.createSlash(serverLevel,pPlayer,12,
             //    FastColor.ARGB32.color(255,rand.nextInt(150,255),rand.nextInt(150,255),rand.nextInt(150,255))));
-            pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer, ResourceLocation.tryBuild(OriginiumArts.MOD_ID,"blade-alpha")));
+            pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer, RlHelper.build(OriginiumArts.MOD_ID,"blade-alpha")));
         }
 
         return super.use(pLevel, pPlayer, pUsedHand);

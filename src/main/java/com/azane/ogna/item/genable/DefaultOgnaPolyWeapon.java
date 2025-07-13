@@ -7,6 +7,7 @@ import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.GeckoAssetData;
 import com.azane.ogna.genable.data.OgnaWeaponData;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
+import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.CapabilityRegistry;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
@@ -68,7 +69,7 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
     {
         IDefaultOgnaWeaponDataBase dataBase = getDefaultDatabase(stack);
         ResourceLocation id = dataBase.getId();
-        return ResourceLocation.tryBuild(id.getNamespace(),"item_gui/"+id.getPath()+".gui");
+        return RlHelper.build(id.getNamespace(),"item_gui/"+id.getPath()+".gui");
     }
 
     @Override

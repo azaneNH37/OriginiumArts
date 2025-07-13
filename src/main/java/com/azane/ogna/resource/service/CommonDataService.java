@@ -4,6 +4,7 @@ package com.azane.ogna.resource.service;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
+import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.resource.manager.DynamicDataManager;
 import com.azane.ogna.resource.manager.INetworkCacheReloadListener;
 import com.azane.ogna.resource.manager.specific.DyItemDataManager;
@@ -76,7 +77,7 @@ public abstract class CommonDataService implements IResourceProvider
 
     private <T extends INetworkCacheReloadListener> void register(T listener,String rl, ImmutableMap.Builder<ResourceLocation, INetworkCacheReloadListener> builder)
     {
-        builder.put(Objects.requireNonNull(ResourceLocation.tryBuild(OriginiumArts.MOD_ID, rl)),listener);
+        builder.put(Objects.requireNonNull(RlHelper.build(OriginiumArts.MOD_ID, rl)),listener);
     }
 
     /**

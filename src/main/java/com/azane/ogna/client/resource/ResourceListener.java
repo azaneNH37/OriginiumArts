@@ -3,6 +3,7 @@ package com.azane.ogna.client.resource;
 import com.azane.ogna.client.resource.manager.ModelAdditionManager;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.debug.log.LogLv;
+import com.azane.ogna.lib.RlHelper;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.ModelEvent;
@@ -36,7 +37,7 @@ public class ResourceListener
             .map(ModelAdditionManager::getItemModels)
             .filter(Objects::nonNull)
             .flatMap(List::stream)
-            .map(rl -> ResourceLocation.tryBuild(rl.getNamespace(), "item_gui/" + rl.getPath()))
+            .map(rl -> RlHelper.build(rl.getNamespace(), "item_gui/" + rl.getPath()))
             .filter(Objects::nonNull)
             .forEach(event::register);
     }

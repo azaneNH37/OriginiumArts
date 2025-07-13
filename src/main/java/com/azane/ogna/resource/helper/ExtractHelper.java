@@ -1,5 +1,6 @@
 package com.azane.ogna.resource.helper;
 
+import com.azane.ogna.lib.RlHelper;
 import net.minecraft.resources.ResourceLocation;
 
 public final class ExtractHelper
@@ -25,6 +26,6 @@ public final class ExtractHelper
     {
         String path = id.getPath();
         int slashIndex = path.lastIndexOf('/');
-        return ResourceLocation.tryBuild(id.getNamespace(), (slashIndex == -1) ? path : path.substring(slashIndex + 1));
+        return RlHelper.build(id.getNamespace(), (slashIndex == -1) ? path : path.substring(slashIndex + 1));
     }
 }

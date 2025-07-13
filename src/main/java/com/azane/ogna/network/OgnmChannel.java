@@ -1,6 +1,7 @@
 package com.azane.ogna.network;
 
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.network.to_client.SyncGlobalDatapackPacket;
 import com.azane.ogna.network.to_server.InputAttackPacket;
 import com.azane.ogna.network.to_server.InputReloadPacket;
@@ -13,7 +14,7 @@ public class OgnmChannel extends BasePacketHandler
 
     private OgnmChannel(){}
 
-    private final SimpleChannel CHANNEL = createChannel(ResourceLocation.tryBuild(OriginiumArts.MOD_ID,"main"),"1.0");
+    private final SimpleChannel CHANNEL = createChannel(RlHelper.build(OriginiumArts.MOD_ID,"main"),"1.0");
 
     public SimpleChannel getChannel()
     {

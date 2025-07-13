@@ -2,6 +2,7 @@ package com.azane.ogna.client.model.atkentity;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.entity.SlashEntity;
+import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.util.GeoExtendUtil;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +13,7 @@ public class SlashModel extends DefaultedEntityGeoModel<SlashEntity>
 {
     public SlashModel()
     {
-        super(ResourceLocation.tryBuild(OriginiumArts.MOD_ID,"slash"));
+        super(RlHelper.build(OriginiumArts.MOD_ID,"slash"));
     }
 
     @Override
