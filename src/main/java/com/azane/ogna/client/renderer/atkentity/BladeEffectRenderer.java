@@ -1,8 +1,7 @@
 package com.azane.ogna.client.renderer.atkentity;
 
-import com.azane.ogna.Config;
+import com.azane.ogna.OgnaConfig;
 import com.azane.ogna.client.model.atkentity.BladeEffectModel;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.entity.genable.BladeEffect;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,7 +15,6 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class BladeEffectRenderer extends GeoEntityRenderer<BladeEffect>
 {
@@ -32,7 +30,7 @@ public class BladeEffectRenderer extends GeoEntityRenderer<BladeEffect>
     {
 
         Vector3f scale = entity.getEntityData().get(BladeEffect.SCALE);
-        if(Config.isDebughitbox())
+        if(OgnaConfig.isDebughitbox())
         {
             AABB box = entity.getEntityData().get(BladeEffect.ATTACK_AREA);
             //OriginiumArts.LOGGER.warn("{}", box);

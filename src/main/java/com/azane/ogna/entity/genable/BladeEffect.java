@@ -1,8 +1,7 @@
 package com.azane.ogna.entity.genable;
 
-import com.azane.ogna.Config;
+import com.azane.ogna.OgnaConfig;
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.manager.BladeEffectAABBManager;
 import com.azane.ogna.lib.EdataSerializer;
@@ -112,7 +111,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         //float[] rotations = BladeEffectAABBManager.extractRotationFromDirection(blade.getOrCreateTransform().forward());
         blade.setRot(blade.transform.yRot(), blade.transform.xRot());
         blade.getEntityData().set(SCALE, blade.transform.renderScale().toVector3f());
-        if(Config.isDebughitbox())
+        if(OgnaConfig.isDebughitbox())
             blade.getEntityData().set(ATTACK_AREA, blade.transform.aabb());
     }
 
@@ -216,7 +215,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         this.getEntityData().define(DATABASE_ID, FAILSAFE_ID);
         this.getEntityData().define(SCALE, new Vector3f(1, 1, 1));
         this.getEntityData().define(DELAY,0);
-        if(Config.isDebughitbox())
+        if(OgnaConfig.isDebughitbox())
             this.getEntityData().define(ATTACK_AREA, AABB.ofSize(Vec3.ZERO, 0, 0,0));
     }
 
