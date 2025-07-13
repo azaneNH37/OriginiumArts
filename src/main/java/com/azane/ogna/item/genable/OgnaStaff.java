@@ -109,16 +109,7 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
     {
-        if (pLevel instanceof ServerLevel serverLevel)
-        {
-            RandomSource rand = serverLevel.getRandom();
-            triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getItemInHand(pUsedHand), serverLevel), "default","attack");
-            //pLevel.addFreshEntity(SlashEntity.createSlash(serverLevel,pPlayer,12,
-            //    FastColor.ARGB32.color(255,rand.nextInt(150,255),rand.nextInt(150,255),rand.nextInt(150,255))));
-            pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer, getDataBaseForStack(pPlayer.getItemInHand(pUsedHand)).getAtkEntities().getNormal()));
-        }
-
-        return super.use(pLevel, pPlayer, pUsedHand);
+       return super.use(pLevel, pPlayer, pUsedHand);
     }
 
     @Override
@@ -133,7 +124,7 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
             //pLevel.addFreshEntity(SlashEntity.createSlash(serverLevel,pPlayer,12,
             //    FastColor.ARGB32.color(255,rand.nextInt(150,255),rand.nextInt(150,255),rand.nextInt(150,255))));
             pLevel.addFreshEntity(BladeEffect.createBlade(pLevel,pPlayer,
-                getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getNormal(),
+                getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getNormal().getId(),
                 getDataBaseForStack(pPlayer.getMainHandItem()).getAtkDelay()));
         }
     }

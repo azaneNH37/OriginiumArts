@@ -4,10 +4,7 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gameplay.AttackInputHandler;
 import com.azane.ogna.client.lib.OffHandItemTransform;
 import com.azane.ogna.client.renderer.atkentity.BladeEffectRenderer;
-import com.azane.ogna.client.renderer.atkentity.SlashRenderer;
-import com.azane.ogna.client.renderer.StaffRenderer;
 import com.azane.ogna.registry.EntityRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -37,7 +34,6 @@ public class OgnmartsClient
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event)
     {
-        event.registerEntityRenderer(EntityRegistry.SLASH.get(), SlashRenderer::new);
         event.registerEntityRenderer(EntityRegistry.BLADE_EFFECT.get(), BladeEffectRenderer::new);
     }
 }

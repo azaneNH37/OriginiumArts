@@ -10,14 +10,23 @@ public class WeaponAtkEntityData
 {
     @Getter
     @SerializedName("normal")
-    private ResourceLocation normal;
+    private AtkUnit normal;
     @SerializedName("skill")
-    private List<ResourceLocation> skill;
+    private List<AtkUnit> skill;
 
-    public ResourceLocation getSkillAtkEntity(int index)
+    public AtkUnit getSkillAtkUnit(int index)
     {
         if (index < 0 || index >= skill.size())
             return normal;
         return skill.get(index);
+    }
+
+    @Getter
+    public static class AtkUnit
+    {
+        @SerializedName("id")
+        private ResourceLocation id;
+        @SerializedName("delay")
+        private int delay = 0;
     }
 }
