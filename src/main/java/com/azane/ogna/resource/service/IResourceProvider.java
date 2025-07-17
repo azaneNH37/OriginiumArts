@@ -1,7 +1,9 @@
 package com.azane.ogna.resource.service;
 
 import com.azane.ogna.genable.entity.IBladeEffect;
+import com.azane.ogna.genable.entity.IBullet;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
+import com.azane.ogna.lib.GsonExtra;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +16,8 @@ public interface IResourceProvider
 {
     Gson GSON = new GsonBuilder()
         .registerTypeAdapter(ResourceLocation.class,new ResourceLocation.Serializer())
+        .addDeserializationExclusionStrategy(GsonExtra.EXPOSE_FILTER_deserialize)
+        .addSerializationExclusionStrategy(GsonExtra.EXPOSE_FILTER_serialize)
         .create();
 
 
@@ -21,6 +25,9 @@ public interface IResourceProvider
     Set<Map.Entry<ResourceLocation, IBladeEffect>> getAllBladeEffects();
 
     @Nullable IBladeEffect getBladeEffect(ResourceLocation id);
+
+    Set<Map.Entry<ResourceLocation, IBullet>> getAllBullets();
+    @Nullable IBullet getBullet(ResourceLocation id);
 
     Set<Map.Entry<ResourceLocation, IStaffDataBase>> getAllStaffs();
 

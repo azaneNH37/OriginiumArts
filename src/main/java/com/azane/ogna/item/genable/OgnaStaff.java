@@ -1,11 +1,14 @@
 package com.azane.ogna.item.genable;
 
+import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.renderer.weapon.OgnaWeaponRenderer;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.entity.genable.BladeEffect;
+import com.azane.ogna.entity.genable.Bullet;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
+import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.resource.service.ServerDataService;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
@@ -109,7 +112,14 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
     {
-       return super.use(pLevel, pPlayer, pUsedHand);
+        if(!pLevel.isClientSide())
+        {
+            var bdata = RlHelper.build(OriginiumArts.MOD_ID,"bullet-default");
+            var bullet = new Bullet(pPlayer,pLevel,bdata);
+            bullet.shootFromRotation(pPlayer,pPlayer.getXRot(),pPlayer.getYRot(),0,ServerDataService.get().getBullet(bdata).getSpeed(),0);
+            pLevel.addFreshEntity(bullet);
+        }
+        return super.use(pLevel,pPlayer,pUsedHand);
     }
 
     @Override

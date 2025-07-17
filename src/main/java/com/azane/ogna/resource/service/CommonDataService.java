@@ -3,6 +3,7 @@ package com.azane.ogna.resource.service;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.genable.entity.IBladeEffect;
+import com.azane.ogna.genable.entity.IBullet;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.resource.manager.DynamicDataManager;
@@ -27,6 +28,7 @@ public abstract class CommonDataService implements IResourceProvider
     //此处添加需要全局管理的data类
     //从json导入的data
     protected DynamicDataManager<IBladeEffect> bladeEffects;
+    protected DynamicDataManager<IBullet> bullets;
     protected DyItemDataManager<IStaffDataBase> staffs;
     //游戏内自存储的data
 
@@ -46,6 +48,17 @@ public abstract class CommonDataService implements IResourceProvider
     }
 
     @Override
+    public Set<Map.Entry<ResourceLocation, IBullet>> getAllBullets()
+    {
+        return bullets.getAllDataEntries();
+    }
+    @Override
+    public @Nullable IBullet getBullet(ResourceLocation id)
+    {
+        return bullets.getData(id);
+    }
+
+    @Override
     public Set<Map.Entry<ResourceLocation, IStaffDataBase>> getAllStaffs()
     {
         return staffs.getAllDataEntries();
@@ -57,6 +70,7 @@ public abstract class CommonDataService implements IResourceProvider
         return staffs.getData(id);
     }
 
+
     /**
      * 理论上 每一次服务端的重新加载都会重新调用该方法
      * 但客户端只会在初始化时调用该方法
@@ -64,14 +78,16 @@ public abstract class CommonDataService implements IResourceProvider
     protected void reloadAndBind()
     {
        //实例化全局数据
-        bladeEffects = new DynamicDataManager<>(IBladeEffect.class,GSON,"ogna/blade","BladeEffects",JsonTypeManagers.modTypeManager,(i)->{});
-        staffs = new DyItemDataManager<>(IStaffDataBase.class,GSON,"ogna/staff","Staffs",JsonTypeManagers.modTypeManager,(i)->{});
+        bladeEffects = new DynamicDataManager<>(IBladeEffect.class,GSON,"ogna/blade","BladeEffects",JsonTypeManagers.modTypeManager,DataServiceInit.bladeEffectInit);
+        staffs = new DyItemDataManager<>(IStaffDataBase.class,GSON,"ogna/staff","Staffs",JsonTypeManagers.modTypeManager,DataServiceInit.staffInit);
+        bullets = new DynamicDataManager<>(IBullet.class,GSON,"ogna/bullet","Bullets",JsonTypeManagers.modTypeManager,DataServiceInit.bulletInit);
 
 
         ImmutableMap.Builder<ResourceLocation, INetworkCacheReloadListener> builder = ImmutableMap.builder();
         //注册C/S传递和reload加载
         register(bladeEffects, "blade_effects", builder);
         register(staffs, "staffs", builder);
+        register(bullets, "bullets", builder);
         listeners = builder.build();
     }
 

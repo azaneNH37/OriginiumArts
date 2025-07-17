@@ -1,0 +1,15 @@
+{
+  "life": 120,
+  "speed": 0.95,
+  "gecko_asset": {
+    "all": "ognmarts:bullet-default"
+  },
+  "fx": {
+    "start": {
+      "id": "ognmarts:protal_roman"
+    },
+    "end": {
+      "id": "ognmarts:explode_roman"
+    }
+  }
+}

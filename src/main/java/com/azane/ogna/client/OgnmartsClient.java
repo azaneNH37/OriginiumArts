@@ -4,6 +4,7 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gameplay.AttackInputHandler;
 import com.azane.ogna.client.lib.OffHandItemTransform;
 import com.azane.ogna.client.renderer.atkentity.BladeEffectRenderer;
+import com.azane.ogna.client.renderer.atkentity.BulletRenderer;
 import com.azane.ogna.registry.EntityRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -35,5 +36,6 @@ public class OgnmartsClient
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event)
     {
         event.registerEntityRenderer(EntityRegistry.BLADE_EFFECT.get(), BladeEffectRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.BULLET.get(), BulletRenderer::new);
     }
 }

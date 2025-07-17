@@ -11,7 +11,9 @@
     "staff.attack": "THIRD_PLAYER_FRONT"
   },
   "attack_entities": {
-    "normal": "ognmarts:blade-lockkey",
+    "normal": {
+      "id":"ognmarts:blade-lockkey"
+    },
     "skill": []
   },
   "atk_delay": 25,

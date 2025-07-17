@@ -19,7 +19,7 @@ import static com.azane.ogna.genable.manager.BladeEffectAABBManager.*;
 /**
  * 用于处理一种无法移动，碰撞箱可在实体创建时确定的范围性攻击特效
  */
-@JsonClassTypeBinder(fullName = "blade",simpleName = "blade",namespace = OriginiumArts.MOD_ID)
+@JsonClassTypeBinder(fullName = "blade",namespace = OriginiumArts.MOD_ID)
 public class BladeEffectDatabase implements IBladeEffect
 {
     public static final BladeEffectDatabase DEFAULT = new BladeEffectDatabase();
