@@ -3,6 +3,8 @@ package com.azane.ogna.entity.genable;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.entity.IBullet;
+import com.azane.ogna.network.OgnmChannel;
+import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
 import com.azane.ogna.registry.EntityRegistry;
 import com.azane.ogna.resource.service.CommonDataService;
 import com.azane.ogna.util.OgnaFxHelper;
@@ -13,8 +15,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -74,7 +76,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
 
         if(life == 0 && this.level().isClientSide())
         {
-            OgnaFxHelper.extractFxUnit(getDataBase().getFxData(),FxData::getStartFx)
+            OgnaFxHelper.extractFxUnit(getDataBase().getFxData(),FxData::getAwakeFx)
                 .map(FxData.FxUnit::getId).map(FXHelper::getFX)
                 .ifPresent(fx->{
                     var effect = new EntityEffect(fx, this.level(), this, EntityEffect.AutoRotate.FORWARD);
@@ -142,14 +144,17 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     protected void onHitEntity(EntityHitResult result)
     {
         DebugLogger.log("Bullet hit entity: " + result.getEntity().getName().getString());
-        if(this.level().isClientSide())
+        //TODO:网络包合并
+        if(!this.level().isClientSide())
         {
-            DebugLogger.log("client");
             OgnaFxHelper.extractFxUnit(getDataBase().getFxData(),FxData::getEndFx)
-                .map(FxData.FxUnit::getId).map(FXHelper::getFX)
-                .ifPresent(fx->{
-                    var effect = new EntityEffect(fx, this.level(), result.getEntity(), EntityEffect.AutoRotate.NONE);
-                    effect.start();
+                .map(FxData.FxUnit::getId).ifPresent(rl->{
+                    OgnmChannel.DEFAULT.sendToWithinRange(
+                        new FxEntityEffectTriggerPacket(rl,result.getEntity().getId(),false),
+                        (ServerLevel) level(),
+                        this.getOnPos(),
+                        128
+                    );
                 });
         }
         this.discard();

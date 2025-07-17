@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 public class FxData
 {
     @Nullable
-    @SerializedName("start")
-    private FxUnit startFx;
+    @SerializedName("awake")
+    private FxUnit awakeFx;
     @Nullable
     @SerializedName("end")
     private FxUnit endFx;
