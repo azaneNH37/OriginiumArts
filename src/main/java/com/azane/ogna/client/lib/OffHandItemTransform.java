@@ -89,6 +89,6 @@ public final class OffHandItemTransform
     {
         return getCurrentAnimationHash(animatable, stack, animatable.getControllerName(stack))
             .map((hash) -> animatable.getCurrentAnimeDatums(stack, context,hash))
-            .orElse(Datums.NONE);
+            .orElse(Datums.none);
     }
 }

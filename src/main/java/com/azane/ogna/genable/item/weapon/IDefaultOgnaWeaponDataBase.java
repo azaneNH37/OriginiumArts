@@ -18,6 +18,4 @@ public interface IDefaultOgnaWeaponDataBase extends IGenItemDatabase
     WeaponAtkEntityData getAtkEntities();
 
     OgnaWeaponData getOgnaWeaponData();
-
-    int getAtkDelay();
 }

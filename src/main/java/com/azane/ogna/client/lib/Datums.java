@@ -8,12 +8,13 @@ package com.azane.ogna.client.lib;
  */
 public enum Datums
 {
-    NONE(0,0,0),
-    FIRST_PLAYER_HAND(0D,-1D,-1D),
-    FIRST_PLAYER_CENTRAL(-0.5D,-1D,-1D),
-    THIRD_PLAYER_RIGHT_HAND(0D,-1D,-1D),
-    THIRD_PLAYER_CENTRAL(-0.5D,-1D,-0.5D),
-    THIRD_PLAYER_FRONT(-0.5D,-1D,-1.5D);
+    none(0,0,0),
+    hand1(0D,-0.5D,-1D),
+    central1(-0.5D,-0.5D,-1D),
+    front1(-0.5D,-0.5D,-1.25D),
+    hand3(0D,-0.5D,-1D),
+    central3(-0.5D,-0.5D,-0.5D),
+    front3(-0.5D,-0.5D,-1.5D);
 
     public final double dx;
     public final double dy;

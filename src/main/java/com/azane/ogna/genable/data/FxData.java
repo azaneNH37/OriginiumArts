@@ -17,9 +17,9 @@ public class FxData
     private FxUnit endFx;
 
 
+    @Getter
     public static class FxUnit
     {
-        @Getter
         @SerializedName("id")
         private ResourceLocation id = RlHelper.EMPTY;
     }

@@ -2,23 +2,32 @@
   "gecko_asset": {
     "all": "ognmarts:staff-lockkey"
   },
-  "anime_datum_first": {
-    "staff.idle": "FIRST_PLAYER_CENTRAL",
-    "staff.attack": "FIRST_PLAYER_CENTRAL"
-  },
-  "anime_datum_third": {
-    "staff.idle": "THIRD_PLAYER_CENTRAL",
-    "staff.attack": "THIRD_PLAYER_FRONT"
+  "anime_datum": {
+    "map": {
+      "staff.idle": {
+        "first": "front1",
+        "third": "central3"
+      },
+      "staff.attack.normal": {
+        "first": "central1",
+        "third": "front3"
+      },
+      "staff.attack.skill": {
+        "first": "central1",
+        "third": "front3"
+      }
+    }
   },
   "attack_entities": {
     "normal": {
-      "id":"ognmarts:blade-lockkey"
+      "id":"ognmarts:bullet-default"
     },
-    "skill": []
+    "skill": [{
+      "id": "ognmarts:blade-lockkey"
+    }]
   },
-  "atk_delay": 25,
   "weapon_data": {
-    "cooldown": 3000,
+    "cooldown": 1500,
     "max_charge_time": 3000,
     "reload_time": 5000,
     "energy_max": 100,
