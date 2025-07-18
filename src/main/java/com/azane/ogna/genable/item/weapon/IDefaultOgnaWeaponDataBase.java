@@ -2,7 +2,7 @@ package com.azane.ogna.genable.item.weapon;
 
 import com.azane.ogna.client.lib.Datums;
 import com.azane.ogna.genable.data.GeckoAssetData;
-import com.azane.ogna.genable.data.OgnaWeaponData;
+import com.azane.ogna.combat.data.OgnaWeaponData;
 import com.azane.ogna.genable.data.WeaponAtkEntityData;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;
 import net.minecraft.world.item.ItemDisplayContext;

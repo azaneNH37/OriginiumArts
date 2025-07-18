@@ -1,10 +1,9 @@
 package com.azane.ogna.capability.weapon;
 
-import com.azane.ogna.genable.data.OgnaWeaponData;
+import com.azane.ogna.combat.data.OgnaWeaponData;
 import com.azane.ogna.registry.CapabilityRegistry;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -19,11 +18,8 @@ public class OgnaWeaponCapProvider implements ICapabilitySerializable<CompoundTa
 
     public OgnaWeaponCapProvider(OgnaWeaponData data,CompoundTag tag)
     {
-        this.capability = new OgnaWeaponCap(data);
+        this.capability = new OgnaWeaponCap(data,tag);
         this.optional = LazyOptional.of(() -> capability);
-        if (tag != null) {
-            capability.deserializeNBT(tag);
-        }
     }
 
     @Override

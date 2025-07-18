@@ -1,6 +1,7 @@
 package com.azane.ogna.client.gameplay;
 
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.client.lib.InputExtraCheck;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.item.genable.AttackType;
@@ -9,6 +10,7 @@ import com.azane.ogna.lib.AsyncHandler;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_server.InputAttackPacket;
 import com.azane.ogna.network.to_server.InputReloadPacket;
+import com.azane.ogna.registry.AttributeRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -145,7 +147,9 @@ public class AttackInputHandler
 
         // 判断攻击类型
         AttackType attackType;
-        long maxChargeTime = weapon.getWeaponCap(mainHand).getMaxChargeTime(mainHand);
+        long maxChargeTime = (long) weapon.getWeaponCap(mainHand).submitAttrVal(
+            AttributeRegistry.WEAPON_MAX_CHARGE_TIME.get(), player, mainHand,
+            weapon.getWeaponCap(mainHand).getBaseAttrVal(AttributeRegistry.WEAPON_MAX_CHARGE_TIME.get(), mainHand));
 
         if (holdTime < 200) {
             attackType = AttackType.SIMPLE;
@@ -208,9 +212,12 @@ public class AttackInputHandler
     private static void executeAttack(Player player, ItemStack weapon, IOgnaWeapon weaponImpl,
                                       AttackType attackType, long chargeTime) {
         UUID playerId = player.getUUID();
+        IOgnaWeaponCap weaponCap = weaponImpl.getWeaponCap(weapon);
 
         // 设置客户端冷却
-        long cooldown = weaponImpl.getWeaponCap(weapon).getCooldownTime(weapon);
+        long cooldown = (long) weaponCap.submitAttrVal(AttributeRegistry.WEAPON_ATTACK_CD.get(), player, weapon,
+            weaponCap.getBaseAttrVal(AttributeRegistry.WEAPON_ATTACK_CD.get(), weapon));
+        DebugLogger.log("{}",cooldown);
         stateManager.setAttackCooldown(playerId, cooldown);
 
         // 发送攻击包到服务端
@@ -222,9 +229,11 @@ public class AttackInputHandler
 
     private static void executeReload(Player player, ItemStack weapon, IOgnaWeapon weaponImpl) {
         UUID playerId = player.getUUID();
+        IOgnaWeaponCap weaponCap = weaponImpl.getWeaponCap(weapon);
 
         // 获取重装时间和武器UUID
-        long reloadTime = weaponImpl.getWeaponCap(weapon).getReloadTime(weapon);
+        long reloadTime = (long) weaponCap.submitAttrVal(AttributeRegistry.WEAPON_RELOAD_CD.get(), player, weapon,
+            weaponCap.getBaseAttrVal(AttributeRegistry.WEAPON_RELOAD_CD.get(), weapon));
         String weaponUUID = weaponImpl.getOrCreateStackUUID(weapon);
 
         // 设置重装状态

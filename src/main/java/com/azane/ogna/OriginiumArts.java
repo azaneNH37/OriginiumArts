@@ -3,6 +3,7 @@ package com.azane.ogna;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.lib.EdataSerializer;
 import com.azane.ogna.network.OgnmChannel;
+import com.azane.ogna.registry.AttributeRegistry;
 import com.azane.ogna.registry.EntityRegistry;
 import com.azane.ogna.registry.ItemRegistry;
 import com.azane.ogna.registry.ModCreativeTabRegistry;
@@ -40,7 +41,7 @@ public class OriginiumArts
 
         modEventBus.addListener(this::commonSetup);
 
-
+        AttributeRegistry.ATTRIBUTES.register(modEventBus);
         EntityRegistry.ENTITIES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         ModCreativeTabRegistry.TABS.register(modEventBus);
