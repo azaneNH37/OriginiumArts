@@ -30,8 +30,6 @@ public abstract class OgnaHud
         graphics.pose().popPose();
     }
 
-    public abstract Vec2 getBaseSize();
-
     public abstract void actuallyRender(GuiGraphics graphics,int width,int height,float partialTicks);
 
     public void blitTextureSimple(GuiGraphics graphics, ResourceLocation rl,int width, int height)

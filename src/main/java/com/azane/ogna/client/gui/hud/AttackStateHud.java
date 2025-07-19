@@ -26,12 +26,6 @@ public class AttackStateHud extends OgnaHud
     }
 
     @Override
-    public Vec2 getBaseSize()
-    {
-        return null;
-    }
-
-    @Override
     public void actuallyRender(GuiGraphics graphics, int width, int height, float partialTicks)
     {
         AttackStateManager.AttackStateData data = AttackStateManager.getInstance().getAttackStateData(Minecraft.getInstance().player.getUUID());
