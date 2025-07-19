@@ -125,7 +125,9 @@ public class AttackInputHandler
 
         // 开始蓄力
         String weaponUUID = weapon.getOrCreateStackUUID(mainHand);
-        stateManager.startCharging(playerId, weaponUUID);
+        stateManager.startCharging(playerId, weaponUUID,(long) weapon.getWeaponCap(mainHand).submitAttrVal(
+            AttributeRegistry.WEAPON_MAX_CHARGE_TIME.get(), player, mainHand,
+            weapon.getWeaponCap(mainHand).getBaseAttrVal(AttributeRegistry.WEAPON_MAX_CHARGE_TIME.get(), mainHand)));
     }
 
     private static void onMouseReleased(Player player) {

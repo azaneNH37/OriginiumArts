@@ -1,5 +1,6 @@
 package com.azane.ogna.client.gameplay;
 
+import lombok.Getter;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.UUID;
@@ -24,9 +25,10 @@ public class AttackStateManager
         playerStates.remove(player.getUUID());
     }
 
-    public AttackState getAttackState(UUID playerId) {
-        AttackStateData state = playerStates.get(playerId);
-        if (state == null) return AttackState.UNKNOWN;
+    public AttackStateData getAttackStateData(UUID id)
+    {
+        AttackStateData state = playerStates.get(id);
+        if (state == null) return null;
 
         long currentTime = System.currentTimeMillis();
 
@@ -36,6 +38,13 @@ public class AttackStateManager
             state.stateEndTime = 0;
             state.weaponUUID = null;
         }
+
+        return state;
+    }
+
+    public AttackState getAttackState(UUID playerId) {
+        AttackStateData state = getAttackStateData(playerId);
+        if (state == null) return AttackState.UNKNOWN;
 
         return state.weaponState;
     }
@@ -53,7 +62,8 @@ public class AttackStateManager
         playerStates.compute(playerId, (id, stateData) -> {
             if (stateData == null) stateData = new AttackStateData();
             stateData.weaponState = state;
-            stateData.stateEndTime = durationMs > 0 ? System.currentTimeMillis() + durationMs : 0;
+            stateData.stateEndTime = state != AttackState.CHARGING ? System.currentTimeMillis() + durationMs : 0;
+            stateData.expectLastingTime = durationMs;
             stateData.weaponUUID = weaponUUID;
             if (state == AttackState.CHARGING) {
                 stateData.chargeStartTime = System.currentTimeMillis();
@@ -62,8 +72,8 @@ public class AttackStateManager
         });
     }
 
-    public void startCharging(UUID playerId, String weaponUUID) {
-        setAttackState(playerId, AttackState.CHARGING, 0, weaponUUID);
+    public void startCharging(UUID playerId, String weaponUUID,long expectLastingTimeMs) {
+        setAttackState(playerId, AttackState.CHARGING, expectLastingTimeMs, weaponUUID);
     }
 
     public long stopCharging(UUID playerId) {
@@ -93,10 +103,12 @@ public class AttackStateManager
         return state.weaponUUID;
     }
 
-    private static class AttackStateData {
+    @Getter
+    public static class AttackStateData {
         volatile AttackState weaponState = AttackState.IDLE;
         volatile long stateEndTime = 0;
         volatile long chargeStartTime = 0;
+        volatile long expectLastingTime = 0; // 预期持续时间
         volatile String weaponUUID = null; // 执行动作时的武器UUID
     }
 

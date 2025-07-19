@@ -146,6 +146,10 @@ repositories {
         name "firstdarkdev"
         url "https://maven.firstdarkdev.xyz/snapshots"
     }
+    maven {
+        name "TslatEntityStatus (TES) Maven Repo"
+        url "https://dl.cloudsmith.io/public/tslat/tes/maven/"
+    }
 }
 
 dependencies {
@@ -171,6 +175,7 @@ dependencies {
     //implementation fg.deobf("curse.maven:${ldlib_id}:${ldlib_curse_version}")
     //implementation fg.deobf("curse.maven:${photon_id}:${photon_version}")
 
+    runtimeOnly fg.deobf("net.tslat.tes:TES-forge-${project.minecraft_version}:1.5.1")
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
