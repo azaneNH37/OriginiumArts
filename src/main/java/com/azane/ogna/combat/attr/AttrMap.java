@@ -1,5 +1,6 @@
 package com.azane.ogna.combat.attr;
 
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.lib.RlHelper;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @NoArgsConstructor
@@ -31,9 +33,9 @@ public class AttrMap implements INBTSerializable<CompoundTag>
         return attributes.computeIfAbsent(attribute, attr -> new AttrUnit());
     }
 
-    public Matrices extractMatrices()
+    public Matrices extractMatrices(Set<Attribute> requirement)
     {
-        return new Matrices(this);
+        return new Matrices(this, requirement);
     }
 
     @Override
@@ -57,20 +59,31 @@ public class AttrMap implements INBTSerializable<CompoundTag>
         });
     }
 
-    @Getter
     public static class Matrices
     {
+        public static final Matrices EMPTY = new Matrices();
+
         private final ImmutableMap<Attribute,AttrMatrix> matrices;
 
-        private Matrices(AttrMap attrMap)
+        private Matrices()
+        {
+            matrices = ImmutableMap.of();
+        }
+
+        private Matrices(AttrMap attrMap, Set<Attribute> requirement)
         {
             ImmutableMap.Builder<Attribute, AttrMatrix> builder = ImmutableMap.builder();
-            attrMap.attributes.forEach((attribute, unit) -> builder.put(attribute, unit.extractMatrix()));
+            requirement.forEach(attribute -> {
+                AttrMatrix matrix = attrMap.getAttribute(attribute).extractMatrix();
+                if (matrix != null) {
+                    builder.put(attribute, matrix);
+                }
+            });
             matrices = builder.build();
         }
 
         @Nullable
-        private AttrMatrix get(Attribute attribute)
+        public AttrMatrix get(Attribute attribute)
         {
             return matrices.get(attribute);
         }

@@ -26,5 +26,5 @@ public class AttrModifier
     @SerializedName("amount")
     private double amount;
     @SerializedName("stack_size")
-    private int stackSize;
+    private int stackSize = 1;
 }

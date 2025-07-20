@@ -1,6 +1,11 @@
 package com.azane.ogna.item.genable;
 
 import com.azane.ogna.client.renderer.weapon.OgnaWeaponRenderer;
+import com.azane.ogna.combat.data.CombatUnit;
+import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.util.ArkDmgTypes;
+import com.azane.ogna.combat.util.DmgCategory;
+import com.azane.ogna.combat.util.SelectorType;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
@@ -9,12 +14,16 @@ import com.azane.ogna.util.AtkEntityHelper;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,6 +34,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -114,7 +124,18 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
         {
             triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack_skill");
             AtkEntityHelper.createDefaultBlade(serverLevel,(ServerPlayer) pPlayer,
-                getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getSkillAtkUnit(0));
+                getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getSkillAtkUnit(0),
+                CombatUnit.of(
+                    ArkDmgTypes.getHolder(ArkDmgTypes.DEFAULT),
+                    pPlayer.getAttribute(Attributes.ATTACK_DAMAGE).getValue(),
+                    getWeaponCap(pPlayer.getMainHandItem()).extractMatrices(Set.of(Attributes.ATTACK_DAMAGE)),
+                    DmgCategory.ARTS),
+                SelectorUnit.of(
+                    SelectorType.AREA,
+                    0D,1,
+                    en->true
+                )
+                );
         }
         return super.use(pLevel,pPlayer,pUsedHand);
     }
@@ -128,7 +149,17 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
         {
             triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack_normal");
             AtkEntityHelper.shootDefaultBullet(serverLevel, pPlayer,
-                getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getNormal());
+                getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getNormal(),
+                CombatUnit.of(
+                    ArkDmgTypes.getHolder(ArkDmgTypes.DEFAULT),
+                    pPlayer.getAttribute(Attributes.ATTACK_DAMAGE).getValue(),
+                    getWeaponCap(stack).extractMatrices(Set.of(Attributes.ATTACK_DAMAGE)),
+                    DmgCategory.ARTS),
+                SelectorUnit.of(
+                    SelectorType.AREA,
+                    2D,1,
+                    en->true
+                ));
         }
     }
 }

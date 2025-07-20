@@ -46,6 +46,13 @@
         "bucket": "DIRECT_MUL",
         "amount": 0.1,
         "stack_size": 1
+      },
+      {
+        "attr": "generic.attack_damage",
+        "id": "a3e05a6c-6ece-4894-b930-5d61a76c87c4",
+        "bucket": "TOTAL_ADD",
+        "amount": 5,
+        "stack_size": 1
       }
     ]
   }

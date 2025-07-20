@@ -2,6 +2,10 @@ package com.azane.ogna.entity.genable;
 
 import com.azane.ogna.OgnaConfig;
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.combat.data.ArkDamageSource;
+import com.azane.ogna.combat.data.CombatUnit;
+import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.util.SelectorType;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.manager.BladeEffectAABBManager;
 import com.azane.ogna.lib.EdataSerializer;
@@ -20,10 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.VisibleForDebug;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TraceableEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -45,6 +46,7 @@ import java.util.UUID;
 
 public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
 {
+    public static final EntityType<BladeEffect> TYPE = EntityType.Builder.of(BladeEffect::new, MobCategory.MISC).noSummon().noSave().fireImmune().sized(0.1F, 0.1F).clientTrackingRange(5).updateInterval(5).setShouldReceiveVelocityUpdates(false).build("blade_effect");
     public static final String FAILSAFE_ID = "ogna:default_blade_effect";
     //geckolib
     @Getter
@@ -59,6 +61,9 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     private UUID ownerUUID = null;
     @Nullable
     private Entity cachedOwner = null;
+
+    private CombatUnit combatUnit;
+    private SelectorUnit selectorUnit;
 
     @Getter
     private int age = 0;
@@ -80,15 +85,19 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         this.noPhysics = true;
     }
 
-    public static BladeEffect createBlade(Level pLevel, @NotNull Entity owner, ResourceLocation rl)
+    public static BladeEffect createBlade(Level pLevel, @NotNull Entity owner, ResourceLocation rl,
+                                          CombatUnit combatUnit,SelectorUnit selectorUnit)
     {
-        return createBlade(pLevel, owner, rl, 0);
+        return createBlade(pLevel, owner, rl, 0,combatUnit,selectorUnit);
     }
-    public static BladeEffect createBlade(Level pLevel, @NotNull Entity owner, ResourceLocation rl,int delay)
+    public static BladeEffect createBlade(Level pLevel, @NotNull Entity owner, ResourceLocation rl,int delay,
+                                          CombatUnit combatUnit,SelectorUnit selectorUnit)
     {
         BladeEffect blade = new BladeEffect(EntityRegistry.BLADE_EFFECT.get(), pLevel);
         blade.setOwner(owner);
         blade.setDataBase(rl);
+        blade.combatUnit = combatUnit;
+        blade.selectorUnit = selectorUnit;
         updateTransform(blade);
         blade.getEntityData().set(DELAY,delay);
         blade.setInvisible(true);
@@ -149,21 +158,19 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         age++;
     }
 
+    @Override
+    protected void readAdditionalSaveData(CompoundTag pCompound) {}
+    @Override
+    protected void addAdditionalSaveData(CompoundTag pCompound) {}
+
     public void dealDamageToTargets()
     {
         if(this.level().isClientSide())
             return;
-        List<LivingEntity> targets = level().getEntitiesOfClass(
-            LivingEntity.class,
-            getOrCreateTransform().aabb(),
-            entity -> entity != getOwner()
-        );
-        DamageSource damageSource = getOwner() != null ?
-            damageSources().playerAttack((Player) getOwner()) :
-            damageSources().magic();
-        for (LivingEntity target : targets) {
-            target.hurt(damageSource, 10.0F);
-        }
+        var dmgSource = new ArkDamageSource(combatUnit,this,this.getOwner(),null);
+        float submitVal = dmgSource.submitSidedVal();
+        selectorUnit.gatherMultiTargets((ServerLevel) this.level(),getOrCreateTransform().aabb(),(living)->living != getOwner())
+                .forEach(living -> living.hurt(dmgSource,submitVal));
     }
 
     public void setDataBase(@Nullable ResourceLocation rl)
@@ -217,36 +224,6 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         this.getEntityData().define(DELAY,0);
         if(OgnaConfig.isDebughitbox())
             this.getEntityData().define(ATTACK_AREA, AABB.ofSize(Vec3.ZERO, 0, 0,0));
-    }
-
-    @Override
-    protected void readAdditionalSaveData(CompoundTag pCompound)
-    {
-        if (pCompound.hasUUID("Owner")) {
-            this.ownerUUID = pCompound.getUUID("Owner");
-            this.cachedOwner = null;
-        }
-        if (pCompound.contains("Age", 3)) {
-            this.age = pCompound.getInt("Age");
-        } else {
-            this.age = 0;
-        }
-        if (pCompound.contains("DatabaseId", 8)) {
-            this.getEntityData().set(DATABASE_ID, pCompound.getString("DatabaseId"));
-        } else {
-            this.getEntityData().set(DATABASE_ID, FAILSAFE_ID);
-        }
-        setDataBase(RlHelper.parse(this.getEntityData().get(DATABASE_ID)));
-    }
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag pCompound)
-    {
-        if (this.ownerUUID != null) {
-            pCompound.putUUID("Owner", this.ownerUUID);
-        }
-        pCompound.putString("DatabaseId", this.getEntityData().get(DATABASE_ID));
-        pCompound.putInt("Age", this.age);
     }
 
     @Override

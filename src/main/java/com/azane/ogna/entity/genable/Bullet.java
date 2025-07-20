@@ -1,5 +1,9 @@
 package com.azane.ogna.entity.genable;
 
+import com.azane.ogna.combat.data.ArkDamageSource;
+import com.azane.ogna.combat.data.CombatUnit;
+import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.util.SelectorType;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.entity.IBullet;
@@ -52,6 +56,9 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     private int life;
     private Vec3 startPos;
 
+    private CombatUnit combatUnit;
+    private SelectorUnit selectorUnit;
+
 
     public Bullet(EntityType<? extends Bullet> entityType, Level level) {
         super(entityType, level);
@@ -59,12 +66,14 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
         this.noPhysics = true;
     }
 
-    public Bullet(LivingEntity shooter, Level level,ResourceLocation dataBase) {
+    public Bullet(LivingEntity shooter, Level level,ResourceLocation dataBase,CombatUnit combatUnit,SelectorUnit selectorUnit) {
         this(EntityRegistry.BULLET.get(), level);
         this.setPos(shooter.getX(), shooter.getEyeY(), shooter.getZ());
         this.setOwner(shooter);
         this.dataBase = CommonDataService.get().getBullet(dataBase);
         this.startPos = this.position();
+        this.combatUnit = combatUnit;
+        this.selectorUnit = selectorUnit;
     }
 
     @Override
@@ -156,6 +165,18 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
                         128
                     );
                 });
+            var dmgSource = new ArkDamageSource(combatUnit,this,this.getOwner(),null);
+            float submitVal = dmgSource.submitSidedVal();
+
+            if(selectorUnit.getType() == SelectorType.SINGLE)
+            {
+                if(result.getEntity() instanceof LivingEntity living)
+                    living.hurt(dmgSource,submitVal);
+            }
+            else {
+                selectorUnit.gatherMultiTargets((ServerLevel) this.level(),this.getBoundingBox(),(living)->true)
+                    .forEach(living -> living.hurt(dmgSource,submitVal));
+            }
         }
         this.discard();
     }

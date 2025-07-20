@@ -13,6 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AttrMatrix implements INBTSerializable<CompoundTag>
 {
+    public static final AttrMatrix UNIT_MATRIX = new AttrMatrix(true);
+
     private final Map<DmgBucket,Double> matrix = new ConcurrentHashMap<>();
     @Getter
     private boolean immutable;

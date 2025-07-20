@@ -11,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 //TODO: 注意C/S端数据同步！
 public class OgnaWeaponCap implements IOgnaWeaponCap
 {
@@ -54,6 +56,12 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     public double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack, double baseValue)
     {
         return attrMap.getAttribute(attribute).extractMatrix().submit(baseValue);
+    }
+
+    @Override
+    public AttrMap.Matrices extractMatrices(Set<Attribute> requirement)
+    {
+        return attrMap.extractMatrices(requirement);
     }
 
     @Override

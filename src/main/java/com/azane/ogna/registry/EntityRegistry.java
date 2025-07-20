@@ -16,7 +16,7 @@ public class EntityRegistry
 {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, OriginiumArts.MOD_ID);
 
-    public static final RegistryObject<EntityType<BladeEffect>> BLADE_EFFECT = registerMisc("blade_effect",BladeEffect::new,1.0F,1.0F);
+    public static final RegistryObject<EntityType<BladeEffect>> BLADE_EFFECT = ENTITIES.register("blade_effect",()->BladeEffect.TYPE);
     public static final RegistryObject<EntityType<Bullet>> BULLET = ENTITIES.register("bullet",()->Bullet.TYPE);
 
     public static <T extends Entity> RegistryObject<EntityType<T>> registerMisc(String name, EntityType.EntityFactory<T> entity, float width, float height)

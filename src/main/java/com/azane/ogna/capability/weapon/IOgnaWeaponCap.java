@@ -1,5 +1,6 @@
 package com.azane.ogna.capability.weapon;
 
+import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.item.genable.AttackType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -7,6 +8,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Set;
 
 public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>
 {
@@ -25,6 +28,12 @@ public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>
         public double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack, double baseValue) {return Double.NaN;}
 
         @Override
+        public AttrMap.Matrices extractMatrices(Set<Attribute> requirement)
+        {
+            return null;
+        }
+
+        @Override
         public double getCurrentEnergy(ItemStack stack) {return 0;}
 
         @Override
@@ -41,6 +50,8 @@ public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>
     double getBaseAttrVal(Attribute attribute,ItemStack stack);
 
     double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack,double baseValue);
+
+    AttrMap.Matrices extractMatrices(Set<Attribute> requirement);
 
     double getCurrentEnergy(ItemStack stack);
 }

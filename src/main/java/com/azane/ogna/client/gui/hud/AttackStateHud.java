@@ -3,12 +3,10 @@ package com.azane.ogna.client.gui.hud;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gameplay.AttackState;
 import com.azane.ogna.client.gameplay.AttackStateManager;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.lib.RlHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 
 import java.util.List;
@@ -22,7 +20,7 @@ public class AttackStateHud extends OgnaHud
 
     public AttackStateHud()
     {
-        super(new Vec2(0.5f,0.5f), new Vec2(40f,40f), List.of());
+        super(new Vec2(0.5f,0.5f), new Vec2(35f,35f), List.of());
     }
 
     @Override
