@@ -1,7 +1,7 @@
 package com.azane.ogna.registry;
 
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.item.genable.OgnaStaff;
+import com.azane.ogna.item.weapon.OgnaStaff;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

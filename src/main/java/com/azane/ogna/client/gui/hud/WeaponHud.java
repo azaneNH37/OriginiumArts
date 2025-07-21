@@ -1,7 +1,7 @@
 package com.azane.ogna.client.gui.hud;
 
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.item.genable.IOgnaWeapon;
+import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.AttributeRegistry;
 import net.minecraft.client.Minecraft;

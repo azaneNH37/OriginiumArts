@@ -2,7 +2,7 @@ package com.azane.ogna.capability.weapon;
 
 import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.combat.data.OgnaWeaponData;
-import com.azane.ogna.item.genable.AttackType;
+import com.azane.ogna.item.weapon.AttackType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;

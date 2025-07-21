@@ -1,7 +1,6 @@
 package com.azane.ogna.network.to_server;
 
-import com.azane.ogna.item.genable.AttackType;
-import com.azane.ogna.item.genable.IOgnaWeapon;
+import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.network.IOgnmPacket;
 import lombok.Getter;
 import net.minecraft.network.FriendlyByteBuf;

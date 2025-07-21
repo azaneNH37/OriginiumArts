@@ -1,4 +1,4 @@
-package com.azane.ogna.item.genable;
+package com.azane.ogna.item.weapon;
 
 public enum AttackType
 {

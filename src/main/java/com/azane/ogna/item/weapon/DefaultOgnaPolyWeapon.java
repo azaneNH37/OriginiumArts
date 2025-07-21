@@ -1,4 +1,4 @@
-package com.azane.ogna.item.genable;
+package com.azane.ogna.item.weapon;
 
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.capability.weapon.OgnaWeaponCapProvider;

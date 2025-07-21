@@ -2,10 +2,9 @@ package com.azane.ogna.client.gameplay;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
-import com.azane.ogna.client.lib.InputExtraCheck;
 import com.azane.ogna.debug.log.DebugLogger;
-import com.azane.ogna.item.genable.AttackType;
-import com.azane.ogna.item.genable.IOgnaWeapon;
+import com.azane.ogna.item.weapon.AttackType;
+import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.AsyncHandler;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_server.InputAttackPacket;

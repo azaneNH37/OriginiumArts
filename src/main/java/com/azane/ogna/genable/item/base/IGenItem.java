@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 public interface IGenItem
 {
     Marker GEN_ITEM_MARKER = MarkerManager.getMarker("GenItemTemplate");
-    String GEN_TAG = "genable";
+    String GEN_TAG = "weapon";
     String IDENTIFIER_TAG = "template_identifier";
 
     <T extends Item> T getItem();
@@ -45,7 +45,7 @@ public interface IGenItem
     {
         if(tag == null || !tag.contains(IresourceLocation.TAG_RL))
         {
-            DebugLogger.log(LogLv.ERROR, GEN_ITEM_MARKER, "Item {} templateBuildItemStack called with missing genable item resource location tag. Ignored. ",getTagIdentifier());
+            DebugLogger.log(LogLv.ERROR, GEN_ITEM_MARKER, "Item {} templateBuildItemStack called with missing weapon item resource location tag. Ignored. ",getTagIdentifier());
             return null;
         }
         ItemStack stack = new ItemStack(getItem().asItem(), count);

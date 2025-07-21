@@ -1,7 +1,7 @@
 package com.azane.ogna.client.model.weapon;
 
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.item.genable.OgnaWeapon;
+import com.azane.ogna.item.weapon.OgnaWeapon;
 import com.azane.ogna.lib.RlHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;

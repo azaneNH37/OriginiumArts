@@ -1,4 +1,4 @@
-package com.azane.ogna.item.genable;
+package com.azane.ogna.item.weapon;
 
 import com.azane.ogna.client.renderer.weapon.OgnaWeaponRenderer;
 import com.azane.ogna.combat.data.CombatUnit;
@@ -14,10 +14,7 @@ import com.azane.ogna.util.AtkEntityHelper;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
