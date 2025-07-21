@@ -51,6 +51,11 @@ public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>
 
     double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack,double baseValue);
 
+    default double submitBaseAttrVal(Attribute attribute,@Nullable Player player, ItemStack stack)
+    {
+        return submitAttrVal(attribute,player,stack,getBaseAttrVal(attribute,stack));
+    }
+
     AttrMap.Matrices extractMatrices(Set<Attribute> requirement);
 
     double getCurrentEnergy(ItemStack stack);

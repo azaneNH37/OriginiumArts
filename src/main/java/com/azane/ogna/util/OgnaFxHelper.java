@@ -1,12 +1,15 @@
 package com.azane.ogna.util;
 
 import com.azane.ogna.genable.data.FxData;
+import com.azane.ogna.network.to_client.FxBlockEffectTriggerPacket;
 import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
+import com.lowdragmc.photon.client.fx.BlockEffect;
 import com.lowdragmc.photon.client.fx.EntityEffect;
 import com.lowdragmc.photon.client.fx.FX;
 import com.lowdragmc.photon.client.fx.FXHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -38,6 +41,23 @@ public final class OgnaFxHelper
                     effect.setForcedDeath(triggerPacket.isForceDead());
                     effect.start();
                 }
+            }
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void clientTriggerBlockEffectFx(FxBlockEffectTriggerPacket triggerPacket)
+    {
+        ClientLevel level = Minecraft.getInstance().level;
+        if(level != null)
+        {
+            BlockPos pos = triggerPacket.getBlockPos();
+            FX fx = FXHelper.getFX(triggerPacket.getFx());
+            if(fx != null)
+            {
+                var effect = new BlockEffect(fx,level,pos);
+                effect.setForcedDeath(triggerPacket.isForceDead());
+                effect.start();
             }
         }
     }

@@ -3,6 +3,7 @@ package com.azane.ogna.client.gui.hud;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gameplay.AttackState;
 import com.azane.ogna.client.gameplay.AttackStateManager;
+import com.azane.ogna.client.lib.GuiPosHelper;
 import com.azane.ogna.lib.RlHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,19 +19,21 @@ public class AttackStateHud extends OgnaHud
     public static final ResourceLocation CHARGE = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/astate_charge.png");
     public static final ResourceLocation RELOAD = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/astate_reload.png");
 
+    public static final Vec2 SIZE = new Vec2(64f,64f);
+
     public AttackStateHud()
     {
-        super(new Vec2(0.5f,0.5f), new Vec2(35f,35f), List.of());
+        super(new Vec2(0.5f,0.5f),
+           SIZE, WindowHud.SIZE,List.of());
     }
 
     @Override
-    public void actuallyRender(GuiGraphics graphics, int width, int height, float partialTicks)
+    public void actuallyRender(GuiGraphics graphics, float partialTicks)
     {
         AttackStateManager.AttackStateData data = AttackStateManager.getInstance().getAttackStateData(Minecraft.getInstance().player.getUUID());
         if(data == null || data.getWeaponState() == AttackState.UNKNOWN || data.getWeaponState() == AttackState.IDLE)
             return;
         graphics.pose().pushPose();
-        graphics.pose().scale(width/64f, height/64f, 1);
         graphics.blit(TARGET,0, 0,0,0, 64, 64,64,64);
         double process = data.getWeaponState() == AttackState.CHARGING ?
             (System.currentTimeMillis() - data.getChargeStartTime()) / (double) data.getExpectLastingTime() :
@@ -40,13 +43,13 @@ public class AttackStateHud extends OgnaHud
         int cSize = (int) (64*process);
         graphics.pose().pushPose();
         graphics.pose().translate((64-cSize)/2f, (64-cSize)/2f, 0);
-        graphics.pose().scale((float) process, (float) process,1);
+        graphics.pose().scale((float) process, (float) process,0);
         ResourceLocation texture = switch (data.getWeaponState()) {
             case CHARGING -> CHARGE;
             case RELOADING -> RELOAD;
             default -> CD;
         };
-        graphics.blit(texture,0,0,0,0, 64, 64, 64, 64);
+        blitTextureSimple(graphics, texture, 64, 64);
         graphics.pose().popPose();
         graphics.pose().popPose();
     }

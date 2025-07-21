@@ -2,6 +2,7 @@ package com.azane.ogna.network;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.lib.RlHelper;
+import com.azane.ogna.network.to_client.FxBlockEffectTriggerPacket;
 import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
 import com.azane.ogna.network.to_client.SyncGlobalDatapackPacket;
 import com.azane.ogna.network.to_server.InputAttackPacket;
@@ -25,6 +26,7 @@ public class OgnmChannel extends BasePacketHandler
     {
         registerServerToClient(SyncGlobalDatapackPacket.class,SyncGlobalDatapackPacket::new);
         registerServerToClient(FxEntityEffectTriggerPacket.class, FxEntityEffectTriggerPacket::new);
+        registerServerToClient(FxBlockEffectTriggerPacket.class,FxBlockEffectTriggerPacket::new);
 
         registerClientToServer(InputAttackPacket.class,InputAttackPacket::new);
         registerClientToServer(InputReloadPacket.class,InputReloadPacket::new);

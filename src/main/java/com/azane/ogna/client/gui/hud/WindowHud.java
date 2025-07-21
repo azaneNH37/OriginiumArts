@@ -7,13 +7,21 @@ import java.util.List;
 
 public class WindowHud extends OgnaHud
 {
+    public static final Vec2 SIZE = new Vec2(1280f, 720f);
+
     public WindowHud(List<OgnaHud> children)
     {
-        super(new Vec2(0.5f,0.5f), Vec2.ONE, children);
+        super(Vec2.ZERO,SIZE,SIZE, children);
     }
 
     @Override
-    public void actuallyRender(GuiGraphics graphics, int width, int height, float partialTicks)
+    public void render(int width, int height, GuiGraphics graphics, float partialTicks)
+    {
+        children.forEach(hud->hud.render(width, height, graphics, partialTicks));
+    }
+
+    @Override
+    public void actuallyRender(GuiGraphics graphics, float partialTicks)
     {
 
     }

@@ -8,6 +8,7 @@ import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.entity.IBullet;
 import com.azane.ogna.network.OgnmChannel;
+import com.azane.ogna.network.to_client.FxBlockEffectTriggerPacket;
 import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
 import com.azane.ogna.registry.EntityRegistry;
 import com.azane.ogna.resource.service.CommonDataService;
@@ -159,7 +160,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
             OgnaFxHelper.extractFxUnit(getDataBase().getFxData(),FxData::getEndFx)
                 .map(FxData.FxUnit::getId).ifPresent(rl->{
                     OgnmChannel.DEFAULT.sendToWithinRange(
-                        new FxEntityEffectTriggerPacket(rl,result.getEntity().getId(),false),
+                        new FxBlockEffectTriggerPacket(rl,result.getEntity().getOnPos().above(),false),
                         (ServerLevel) level(),
                         this.getOnPos(),
                         128
