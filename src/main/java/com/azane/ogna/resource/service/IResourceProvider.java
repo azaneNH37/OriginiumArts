@@ -2,6 +2,7 @@ package com.azane.ogna.resource.service;
 
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.entity.IBullet;
+import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.lib.GsonExtra;
 import com.google.gson.Gson;
@@ -32,4 +33,7 @@ public interface IResourceProvider
     Set<Map.Entry<ResourceLocation, IStaffDataBase>> getAllStaffs();
 
     @Nullable IStaffDataBase getStaff(ResourceLocation id);
+
+    Set<Map.Entry<ResourceLocation, ISkill>> getAllSkills();
+    @Nullable ISkill getSkill(ResourceLocation id);
 }

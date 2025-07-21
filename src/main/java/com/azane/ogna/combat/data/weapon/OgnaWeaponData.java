@@ -1,5 +1,6 @@
-package com.azane.ogna.combat.data;
+package com.azane.ogna.combat.data.weapon;
 
+import com.azane.ogna.combat.data.AttrModifier;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;

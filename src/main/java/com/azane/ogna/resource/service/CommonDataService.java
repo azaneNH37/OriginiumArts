@@ -4,6 +4,7 @@ package com.azane.ogna.resource.service;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.entity.IBullet;
+import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.resource.manager.DynamicDataManager;
@@ -30,16 +31,14 @@ public abstract class CommonDataService implements IResourceProvider
     protected DynamicDataManager<IBladeEffect> bladeEffects;
     protected DynamicDataManager<IBullet> bullets;
     protected DyItemDataManager<IStaffDataBase> staffs;
+    protected DyItemDataManager<ISkill> skills;
     //游戏内自存储的data
 
     //此处添加继承自IResourceProvider的接口实现
 
 
     @Override
-    public Set<Map.Entry<ResourceLocation, IBladeEffect>> getAllBladeEffects()
-    {
-        return bladeEffects.getAllDataEntries();
-    }
+    public Set<Map.Entry<ResourceLocation, IBladeEffect>> getAllBladeEffects() {return bladeEffects.getAllDataEntries();}
 
     @Override
     public @Nullable IBladeEffect getBladeEffect(ResourceLocation id)
@@ -70,6 +69,11 @@ public abstract class CommonDataService implements IResourceProvider
         return staffs.getData(id);
     }
 
+    @Override
+    public Set<Map.Entry<ResourceLocation, ISkill>> getAllSkills() {return skills.getAllDataEntries();}
+
+    @Override
+    public @Nullable ISkill getSkill(ResourceLocation id) {return skills.getData(id);}
 
     /**
      * 理论上 每一次服务端的重新加载都会重新调用该方法
@@ -81,6 +85,7 @@ public abstract class CommonDataService implements IResourceProvider
         bladeEffects = new DynamicDataManager<>(IBladeEffect.class,GSON,"ogna/blade","BladeEffects",JsonTypeManagers.modTypeManager,DataServiceInit.bladeEffectInit);
         staffs = new DyItemDataManager<>(IStaffDataBase.class,GSON,"ogna/staff","Staffs",JsonTypeManagers.modTypeManager,DataServiceInit.staffInit);
         bullets = new DynamicDataManager<>(IBullet.class,GSON,"ogna/bullet","Bullets",JsonTypeManagers.modTypeManager,DataServiceInit.bulletInit);
+        skills = new DyItemDataManager<>(ISkill.class,GSON,"ogna/skill","Skills",JsonTypeManagers.modTypeManager,DataServiceInit.skillInit);
 
 
         ImmutableMap.Builder<ResourceLocation, INetworkCacheReloadListener> builder = ImmutableMap.builder();
@@ -88,6 +93,7 @@ public abstract class CommonDataService implements IResourceProvider
         register(bladeEffects, "blade_effects", builder);
         register(staffs, "staffs", builder);
         register(bullets, "bullets", builder);
+        register(skills, "skills", builder);
         listeners = builder.build();
     }
 

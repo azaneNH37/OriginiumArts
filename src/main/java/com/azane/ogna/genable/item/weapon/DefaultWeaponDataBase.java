@@ -3,8 +3,8 @@ package com.azane.ogna.genable.item.weapon;
 import com.azane.ogna.client.lib.Datums;
 import com.azane.ogna.genable.data.AnimeDatumData;
 import com.azane.ogna.genable.data.GeckoAssetData;
-import com.azane.ogna.combat.data.OgnaWeaponData;
-import com.azane.ogna.genable.data.WeaponAtkEntityData;
+import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
+import com.azane.ogna.genable.data.AtkEntityData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class DefaultWeaponDataBase
 {
-    //TODO: a fail-safe id
     @Expose(deserialize = false)
     @Setter
     @Getter
@@ -31,7 +30,7 @@ public class DefaultWeaponDataBase
 
     @SerializedName("attack_entities")
     @Getter
-    private WeaponAtkEntityData atkEntities;
+    private AtkEntityData atkEntities;
 
     @SerializedName("weapon_data")
     @Getter

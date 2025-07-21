@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
-public class WeaponAtkEntityData
+public class AtkEntityData
 {
     @Getter
     @SerializedName("normal")

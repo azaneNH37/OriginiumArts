@@ -2,8 +2,8 @@ package com.azane.ogna.genable.item.weapon;
 
 import com.azane.ogna.client.lib.Datums;
 import com.azane.ogna.genable.data.GeckoAssetData;
-import com.azane.ogna.combat.data.OgnaWeaponData;
-import com.azane.ogna.genable.data.WeaponAtkEntityData;
+import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
+import com.azane.ogna.genable.data.AtkEntityData;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +15,7 @@ public interface IDefaultOgnaWeaponDataBase extends IGenItemDatabase
 
     Datums getAnimeDatum(ItemDisplayContext context, String animeName);
 
-    WeaponAtkEntityData getAtkEntities();
+    AtkEntityData getAtkEntities();
 
     OgnaWeaponData getOgnaWeaponData();
 }
