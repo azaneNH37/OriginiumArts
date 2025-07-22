@@ -3,7 +3,7 @@ package com.azane.ogna;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.lib.EdataSerializer;
 import com.azane.ogna.network.OgnmChannel;
-import com.azane.ogna.registry.AttributeRegistry;
+import com.azane.ogna.registry.ModAttributes;
 import com.azane.ogna.registry.EntityRegistry;
 import com.azane.ogna.registry.ItemRegistry;
 import com.azane.ogna.registry.ModCreativeTabRegistry;
@@ -12,7 +12,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -41,7 +40,7 @@ public class OriginiumArts
 
         modEventBus.addListener(this::commonSetup);
 
-        AttributeRegistry.ATTRIBUTES.register(modEventBus);
+        ModAttributes.ATTRIBUTES.register(modEventBus);
         EntityRegistry.ENTITIES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         ModCreativeTabRegistry.TABS.register(modEventBus);

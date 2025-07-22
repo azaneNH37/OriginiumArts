@@ -31,7 +31,7 @@
     "max_charge_time": 3000,
     "reload_time": 5000,
     "energy_max": 100,
-    "energy_consume": 10,
+    "energy_consume": 15,
     "attr_modifiers": [
       {
         "attr": "ognmarts:weapon.attack.cd",

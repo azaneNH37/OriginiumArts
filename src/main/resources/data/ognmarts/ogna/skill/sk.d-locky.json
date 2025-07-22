@@ -1,0 +1,15 @@
+{
+  "level": 1,
+  "base_data": {
+    "sp": 50,
+    "duration": 30
+  },
+  "attack_entities": {
+    "normal": {
+      "id":"ognmarts:bullet-default"
+    },
+    "skill": [{
+      "id": "ognmarts:blade-lockkey"
+    }]
+  }
+}

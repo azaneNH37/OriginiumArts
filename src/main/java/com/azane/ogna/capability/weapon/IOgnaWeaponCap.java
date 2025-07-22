@@ -1,5 +1,6 @@
 package com.azane.ogna.capability.weapon;
 
+import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.item.weapon.AttackType;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,9 @@ public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>
 {
     IOgnaWeaponCap FALLBACK = new IOgnaWeaponCap()
     {
+        @Override
+        public ISkillCap getSkillCap() { return ISkillCap.FALLBACK; }
+
         @Override
         public boolean canAttack(ItemStack stack, Player player, AttackType attackType) {return false;}
 
@@ -34,7 +38,10 @@ public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>
         }
 
         @Override
-        public double getCurrentEnergy(ItemStack stack) {return 0;}
+        public double getCurrentEnergy() {return 0;}
+
+        @Override
+        public void modifyCurrentEnergy(double val, boolean needSync, Player player, ItemStack stack) {}
 
         @Override
         public CompoundTag serializeNBT(){return new CompoundTag(); }
@@ -42,6 +49,8 @@ public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>
         @Override
         public void deserializeNBT(CompoundTag nbt){}
     };
+
+    ISkillCap getSkillCap();
 
     boolean canAttack(ItemStack stack, Player player, AttackType attackType);
 
@@ -58,5 +67,7 @@ public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>
 
     AttrMap.Matrices extractMatrices(Set<Attribute> requirement);
 
-    double getCurrentEnergy(ItemStack stack);
+    double getCurrentEnergy();
+
+    void modifyCurrentEnergy(double val, boolean needSync, Player player, ItemStack stack);
 }

@@ -36,8 +36,6 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
-    public abstract IDefaultOgnaWeaponDataBase getDefaultDatabase(ItemStack stack);
-
     public abstract Map<Integer,String> getAnimeHashMap();
 
     @Override

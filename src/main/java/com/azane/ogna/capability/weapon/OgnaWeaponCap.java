@@ -1,9 +1,20 @@
 package com.azane.ogna.capability.weapon;
 
+import com.azane.ogna.capability.skill.ISkillCap;
+import com.azane.ogna.capability.skill.OgnaSkillCap;
 import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.item.weapon.AttackType;
+import com.azane.ogna.item.weapon.DefaultOgnaPolyWeapon;
+import com.azane.ogna.item.weapon.IOgnaWeapon;
+import com.azane.ogna.network.OgnmChannel;
+import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
+import com.azane.ogna.registry.ModAttributes;
+import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -12,38 +23,53 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
+import java.util.UUID;
 
 //TODO: 注意C/S端数据同步！
 public class OgnaWeaponCap implements IOgnaWeaponCap
 {
     //不需要持久化，因为每次加载时都会刷进来
     private OgnaWeaponData baseData;
+    @Getter
+    private ISkillCap skillCap;
+    @Getter
+    private double currentEnergy = 100;
 
     private AttrMap attrMap = new AttrMap(Attributes.ATTACK_DAMAGE);
 
     public OgnaWeaponCap(OgnaWeaponData baseData,@Nullable CompoundTag storedData)
     {
         this.baseData = baseData;
+        this.skillCap = new OgnaSkillCap(this);
         if(storedData == null)
+        {
             baseData.getAttrModifiers().forEach(attrModifier -> {
                 Attribute attribute = ForgeRegistries.ATTRIBUTES.getValue(attrModifier.getAttribute());
                 if (attribute != null)
                     attrMap.getAttribute(attribute).acceptModifier(attrModifier);
             });
+            currentEnergy = submitBaseAttrVal(ModAttributes.WEAPON_ENERGY_STORE.get(), null, null);
+        }
         else
-            attrMap.deserializeNBT(storedData);
+        {
+            if(storedData.contains("Parent"))
+                this.deserializeNBT(storedData.getCompound("Parent"));
+            else
+                this.deserializeNBT(storedData);
+        }
+
     }
 
     @Override
     public boolean canAttack(ItemStack stack, Player player, AttackType attackType)
     {
-        return baseData.isCanAttack() && baseData.getConsumption() <= getCurrentEnergy(stack);
+        return baseData.isCanAttack() && baseData.getConsumption() <= getCurrentEnergy();
     }
 
     @Override
     public boolean canReload(ItemStack stack, Player player)
     {
-        return baseData.isCanReload() && baseData.getMaxEnergy() > getCurrentEnergy(stack);
+        return baseData.isCanReload() && baseData.getMaxEnergy() > getCurrentEnergy();
     }
 
     @Override
@@ -65,9 +91,13 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     }
 
     @Override
-    public double getCurrentEnergy(ItemStack stack)
+    public void modifyCurrentEnergy(double val, boolean needSync, Player player, ItemStack stack)
     {
-        return 100;
+        currentEnergy = Mth.clamp(currentEnergy + val, 0, submitBaseAttrVal(ModAttributes.WEAPON_ENERGY_STORE.get(),player, stack));
+        if(!needSync || player == null || stack == null)
+            return;
+        if(player instanceof ServerPlayer serverPlayer)
+            SyncWeaponCapPacket.trySend(serverPlayer,stack, SyncWeaponCapPacket.CapData.CURRENT_ENERGY, currentEnergy);
     }
 
     @Override
@@ -75,6 +105,8 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     {
         var nbt = new CompoundTag();
         nbt.put("attrMap", attrMap.serializeNBT());
+        nbt.put("skillCap", skillCap.serializeNBT());
+        nbt.putDouble("currentEnergy", currentEnergy);
         return nbt;
     }
 
@@ -82,5 +114,7 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     public void deserializeNBT(CompoundTag nbt)
     {
         attrMap.deserializeNBT((CompoundTag) nbt.get("attrMap"));
+        skillCap.deserializeNBT((CompoundTag) nbt.get("skillCap"));
+        currentEnergy = nbt.getDouble("currentEnergy");
     }
 }

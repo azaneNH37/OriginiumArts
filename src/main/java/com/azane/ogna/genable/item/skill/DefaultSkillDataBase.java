@@ -2,6 +2,7 @@ package com.azane.ogna.genable.item.skill;
 
 import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.combat.data.skill.OgnaSkillData;
 import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.AtkEntityData;
@@ -34,7 +35,7 @@ public class DefaultSkillDataBase implements ISkill
     @SerializedName("level")
     private int skillLevel;
     @SerializedName("base_data")
-    private OgnaWeaponData skillData;
+    private OgnaSkillData skillData;
     @SerializedName("attack_entities")
     private AtkEntityData atkEntities;
     @SerializedName("prefix")
@@ -44,7 +45,7 @@ public class DefaultSkillDataBase implements ISkill
 
 
     @Override
-    public void onSkillTick(Level level, Player player, IOgnaWeapon weapon, ItemStack stack, boolean isOpen, int millisecond)
+    public void onSkillTick(Level level, Player player, IOgnaWeapon weapon, ItemStack stack, boolean isOpen)
     {
 
     }
@@ -52,19 +53,20 @@ public class DefaultSkillDataBase implements ISkill
     @Override
     public void onSkillStart(Level level, Player player, IOgnaWeapon weapon, ItemStack stack)
     {
-
+        DebugLogger.log("Skill %s started for player %s".formatted(id, player.getName().getString()));
     }
 
     @Override
     public void onSkillEnd(Level level, Player player, IOgnaWeapon weapon, ItemStack stack)
     {
-
+        DebugLogger.log("Skill %s ended for player %s".formatted(id, player.getName().getString()));
     }
 
     @Override
-    public void onServerAttack(ServerLevel level, ServerPlayer player, IOgnaWeapon weapon, ItemStack stack, AttackType attackType, long chargeTime, boolean isOpen, int millisecond)
+    public boolean onServerAttack(ServerLevel level, ServerPlayer player, IOgnaWeapon weapon, ItemStack stack, AttackType attackType, long chargeTime, boolean isOpen)
     {
-
+        DebugLogger.log("Skill %s executed by player %s with attack type %s".formatted(id, player.getName().getString(), attackType));
+        return false;
     }
 
     @Override

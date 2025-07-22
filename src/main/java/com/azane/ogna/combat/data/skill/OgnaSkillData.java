@@ -2,18 +2,22 @@ package com.azane.ogna.combat.data.skill;
 
 import com.azane.ogna.combat.data.AttrModifier;
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class OgnaSkillData
 {
-    @SerializedName("cd")
-    private int cooldown;
+    @SerializedName("sp")
+    private int SP;
     @SerializedName("duration")
     private int duration;
     @SerializedName("storage")
     private int storage = 1;
-    @SerializedName("attr_modifiers")
-    private List<AttrModifier> attrModifiers = new ArrayList<>();
+    @SerializedName("base_attr_modifiers")
+    private List<AttrModifier> baseAttrModifiers = new ArrayList<>();
+    @SerializedName("skill_attr_modifiers")
+    private List<AttrModifier> skillAttrModifiers = new ArrayList<>();
 }

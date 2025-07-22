@@ -1,5 +1,7 @@
 package com.azane.ogna.item.weapon;
 
+import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.client.renderer.weapon.OgnaWeaponRenderer;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
@@ -9,9 +11,12 @@ import com.azane.ogna.combat.util.SelectorType;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
+import com.azane.ogna.lib.RlHelper;
+import com.azane.ogna.registry.ModAttributes;
 import com.azane.ogna.resource.service.ServerDataService;
 import com.azane.ogna.util.AtkEntityHelper;
 import com.google.common.collect.ImmutableMap;
+import com.lowdragmc.lowdraglib.gui.widget.ItemStackSelectorWidget;
 import lombok.Getter;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.NonNullList;
@@ -117,6 +122,16 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
     {
+        if(pUsedHand == InteractionHand.MAIN_HAND)
+        {
+            ItemStack stack = pPlayer.getMainHandItem();
+            IOgnaWeaponCap weaponCap = getWeaponCap(stack);
+            if(weaponCap.getSkillCap().getSkill() == null)
+                weaponCap.getSkillCap().equipSkill(RlHelper.build(OriginiumArts.MOD_ID,"sk.d-locky"));
+            else
+                onSkillInvoke(pLevel,pPlayer,stack);
+        }
+        /*
         if(pLevel instanceof ServerLevel serverLevel)
         {
             triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack_skill");
@@ -134,6 +149,7 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
                 )
                 );
         }
+         */
         return super.use(pLevel,pPlayer,pUsedHand);
     }
 
@@ -157,6 +173,11 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
                     2D,1,
                     en->true
                 ));
+            IOgnaWeaponCap cap = getWeaponCap(stack);
+            cap.modifyCurrentEnergy(
+                -cap.submitBaseAttrVal(ModAttributes.WEAPON_ENERGY_CONSUME.get(), pPlayer, stack),
+                true,pPlayer,stack
+            );
         }
     }
 }

@@ -3,7 +3,7 @@ package com.azane.ogna.client.gui.hud;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.RlHelper;
-import com.azane.ogna.registry.AttributeRegistry;
+import com.azane.ogna.registry.ModAttributes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -40,19 +40,19 @@ public class WeaponHud extends OgnaHud
         graphics.pose().pushPose();
         graphics.pose().translate(70f,5f,0f);
         graphics.pose().scale(3f,3f,1f);
-        graphics.drawString(font,"%d".formatted((int)weapon.getWeaponCap(mainHandItem).getCurrentEnergy(mainHandItem)),0,0,0xFFFFFF);
+        graphics.drawString(font,"%d".formatted((int)weapon.getWeaponCap(mainHandItem).getCurrentEnergy()),0,0,0xFFFFFF);
         graphics.pose().popPose();
 
         graphics.pose().pushPose();
         graphics.pose().translate(85f,37f,0f);
         graphics.pose().scale(2f,2f,1f);
-        graphics.drawString(font,"%d".formatted((int)weapon.getWeaponCap(mainHandItem).submitBaseAttrVal(AttributeRegistry.WEAPON_ENERGY_CONSUME.get(),Minecraft.getInstance().player, mainHandItem)),0,0,0x00FFFF);
+        graphics.drawString(font,"%d".formatted((int)weapon.getWeaponCap(mainHandItem).submitBaseAttrVal(ModAttributes.WEAPON_ENERGY_CONSUME.get(),Minecraft.getInstance().player, mainHandItem)),0,0,0x00FFFF);
         graphics.pose().popPose();
 
         graphics.pose().pushPose();
         graphics.pose().translate(155f,37f,0f);
         graphics.pose().scale(2f,2f,1f);
-        graphics.drawString(font,"%d".formatted((int)weapon.getWeaponCap(mainHandItem).submitBaseAttrVal(AttributeRegistry.WEAPON_ENERGY_STORE.get(),Minecraft.getInstance().player, mainHandItem)),0,0,0xFFFFFF);
+        graphics.drawString(font,"%d".formatted((int)weapon.getWeaponCap(mainHandItem).submitBaseAttrVal(ModAttributes.WEAPON_ENERGY_STORE.get(),Minecraft.getInstance().player, mainHandItem)),0,0,0xFFFFFF);
         graphics.pose().popPose();
 
         graphics.pose().pushPose();

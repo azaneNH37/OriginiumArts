@@ -24,11 +24,11 @@ public interface ISkill extends IGenItemDatabase
     ResourceLocation getSuffixSkill();
 
     //双端均调用
-    void onSkillTick(Level level, Player player, IOgnaWeapon weapon, ItemStack stack, boolean isOpen,int millisecond);
+    void onSkillTick(Level level, Player player, IOgnaWeapon weapon, ItemStack stack, boolean isOpen);
 
     void onSkillStart(Level level, Player player, IOgnaWeapon weapon, ItemStack stack);
 
     void onSkillEnd(Level level, Player player, IOgnaWeapon weapon,ItemStack stack);
 
-    void onServerAttack(ServerLevel level, ServerPlayer player, IOgnaWeapon weapon, ItemStack stack, AttackType attackType, long chargeTime, boolean isOpen,int millisecond);
+    boolean onServerAttack(ServerLevel level, ServerPlayer player, IOgnaWeapon weapon, ItemStack stack, AttackType attackType, long chargeTime, boolean isOpen);
 }

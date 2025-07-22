@@ -7,7 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class AttributeRegistry
+public class ModAttributes
 {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, OriginiumArts.MOD_ID);
 
@@ -16,6 +16,9 @@ public class AttributeRegistry
     public static final RegistryObject<Attribute> WEAPON_MAX_CHARGE_TIME = registerRange("weapon.charge.max",3000,50,Double.MAX_VALUE);
     public static final RegistryObject<Attribute> WEAPON_ENERGY_STORE = registerRange("weapon.energy.store",100,0,Double.MAX_VALUE);
     public static final RegistryObject<Attribute> WEAPON_ENERGY_CONSUME = registerRange("weapon.energy.consume",10,Double.MIN_VALUE,Double.MAX_VALUE);
+
+    public static final RegistryObject<Attribute> SKILL_SP = registerRange("skill.sp",300,1,Double.MAX_VALUE);
+    public static final RegistryObject<Attribute> SKILL_DURATION = registerRange("skill.duration",150,1,Double.MAX_VALUE);
 
     public static RegistryObject<Attribute> registerRange(String name,double defaultVal,double minVal,double maxVal)
     {
