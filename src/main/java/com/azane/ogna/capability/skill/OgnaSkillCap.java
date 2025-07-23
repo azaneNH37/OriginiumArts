@@ -26,8 +26,11 @@ public class OgnaSkillCap implements ISkillCap
 {
     private IOgnaWeaponCap weaponCap;
 
-    @Getter
     private boolean active;
+    public boolean isActive()
+    {
+        return active && skill != null;
+    }
 
     @Getter
     @Nullable

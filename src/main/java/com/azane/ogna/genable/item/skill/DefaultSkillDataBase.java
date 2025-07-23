@@ -4,6 +4,7 @@ import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.combat.data.skill.OgnaSkillData;
 import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
+import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.AtkEntityData;
 import com.azane.ogna.genable.item.base.IGenItem;
@@ -14,6 +15,7 @@ import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ItemRegistry;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.lowdragmc.photon.client.fx.FXHelper;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.resources.ResourceLocation;
@@ -66,7 +68,8 @@ public class DefaultSkillDataBase implements ISkill
     public boolean onServerAttack(ServerLevel level, ServerPlayer player, IOgnaWeapon weapon, ItemStack stack, AttackType attackType, long chargeTime, boolean isOpen)
     {
         DebugLogger.log("Skill %s executed by player %s with attack type %s".formatted(id, player.getName().getString(), attackType));
-        return false;
+        CombatFirer.fireDefault(level,player,weapon,weapon.getWeaponCap(stack),stack,"skill","skill");
+        return true;
     }
 
     @Override

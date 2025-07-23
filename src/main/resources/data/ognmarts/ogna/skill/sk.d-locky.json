@@ -2,14 +2,25 @@
   "level": 1,
   "base_data": {
     "sp": 50,
-    "duration": 30
+    "duration": 300,
+    "dmg_dataset": {
+      "fallback": "skill",
+      "map": {
+        "skill": {
+          "dmg_type": "ognmarts:ark_default",
+          "dmg_category": "ARTS",
+          "selector": "AREA",
+          "range": 0.0
+        }
+      }
+    }
   },
   "attack_entities": {
-    "normal": {
-      "id":"ognmarts:bullet-default"
-    },
-    "skill": [{
-      "id": "ognmarts:blade-lockkey"
-    }]
+    "fallback": "skill",
+    "map": {
+      "skill": {
+        "id":"ognmarts:blade-lockkey"
+      }
+    }
   }
 }

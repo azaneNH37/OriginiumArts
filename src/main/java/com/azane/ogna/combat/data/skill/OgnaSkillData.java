@@ -1,6 +1,7 @@
 package com.azane.ogna.combat.data.skill;
 
 import com.azane.ogna.combat.data.AttrModifier;
+import com.azane.ogna.combat.data.DmgDataSet;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 
@@ -20,4 +21,6 @@ public class OgnaSkillData
     private List<AttrModifier> baseAttrModifiers = new ArrayList<>();
     @SerializedName("skill_attr_modifiers")
     private List<AttrModifier> skillAttrModifiers = new ArrayList<>();
+    @SerializedName("dmg_dataset")
+    private DmgDataSet dmgDataSet = new DmgDataSet();
 }

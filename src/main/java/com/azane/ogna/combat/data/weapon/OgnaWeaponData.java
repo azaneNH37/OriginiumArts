@@ -1,6 +1,7 @@
 package com.azane.ogna.combat.data.weapon;
 
 import com.azane.ogna.combat.data.AttrModifier;
+import com.azane.ogna.combat.data.DmgDataSet;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +30,8 @@ public class OgnaWeaponData
     private double consumption = 10;
     @SerializedName("attr_modifiers")
     private List<AttrModifier> attrModifiers = new ArrayList<>();
+    @SerializedName("dmg_dataset")
+    private DmgDataSet dmgDataSet = new DmgDataSet();
 
     public double getBaseValue(Attribute attribute)
     {

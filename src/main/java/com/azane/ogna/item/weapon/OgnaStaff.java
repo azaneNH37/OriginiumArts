@@ -6,6 +6,7 @@ import com.azane.ogna.client.renderer.weapon.OgnaWeaponRenderer;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.combat.util.ArkDmgTypes;
+import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.combat.util.DmgCategory;
 import com.azane.ogna.combat.util.SelectorType;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
@@ -46,8 +47,11 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
      * gecko动画
      */
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("staff.idle");
+    private static final RawAnimation IDLE_SKILL = RawAnimation.begin().thenLoop("staff.idle.skill");
     private static final RawAnimation ATTACK_NORMAL = RawAnimation.begin().thenPlay("staff.attack.normal");
     private static final RawAnimation ATTACK_SKILL = RawAnimation.begin().thenPlay("staff.attack.skill");
+    private static final RawAnimation SKILL_START = RawAnimation.begin().thenPlay("staff.skill.start");
+    private static final RawAnimation SKILL_END = RawAnimation.begin().thenPlay("staff.skill.end");
 
     @Getter
     private final Map<Integer, String> animeHashMap = new ImmutableMap.Builder<Integer,String>()
@@ -83,8 +87,8 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
         controllers.add(
             new AnimationController<>(this, DEFAULT_CONTROLLER,0,
                 event-> event.setAndContinue(IDLE))
-                .triggerableAnim("attack_normal", ATTACK_NORMAL)
-                .triggerableAnim("attack_skill", ATTACK_SKILL)
+                .triggerableAnim("attack.normal", ATTACK_NORMAL)
+                .triggerableAnim("attack.skill", ATTACK_SKILL)
         );
     }
 
@@ -131,26 +135,7 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
             else
                 onSkillInvoke(pLevel,pPlayer,stack);
         }
-        /*
-        if(pLevel instanceof ServerLevel serverLevel)
-        {
-            triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack_skill");
-            AtkEntityHelper.createDefaultBlade(serverLevel,(ServerPlayer) pPlayer,
-                getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getSkillAtkUnit(0),
-                CombatUnit.of(
-                    ArkDmgTypes.getHolder(ArkDmgTypes.DEFAULT),
-                    pPlayer.getAttribute(Attributes.ATTACK_DAMAGE).getValue(),
-                    getWeaponCap(pPlayer.getMainHandItem()).extractMatrices(Set.of(Attributes.ATTACK_DAMAGE)),
-                    DmgCategory.ARTS),
-                SelectorUnit.of(
-                    SelectorType.AREA,
-                    0D,1,
-                    en->true
-                )
-                );
-        }
-         */
-        return super.use(pLevel,pPlayer,pUsedHand);
+        return InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand));
     }
 
     @Override
@@ -160,24 +145,23 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
         Level pLevel = pPlayer.level();
         if (pLevel instanceof ServerLevel serverLevel)
         {
-            triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack_normal");
-            AtkEntityHelper.shootDefaultBullet(serverLevel, pPlayer,
-                getDataBaseForStack(pPlayer.getMainHandItem()).getAtkEntities().getNormal(),
-                CombatUnit.of(
-                    ArkDmgTypes.getHolder(ArkDmgTypes.DEFAULT),
-                    pPlayer.getAttribute(Attributes.ATTACK_DAMAGE).getValue(),
-                    getWeaponCap(stack).extractMatrices(Set.of(Attributes.ATTACK_DAMAGE)),
-                    DmgCategory.ARTS),
-                SelectorUnit.of(
-                    SelectorType.AREA,
-                    2D,1,
-                    en->true
-                ));
             IOgnaWeaponCap cap = getWeaponCap(stack);
+            boolean isInSkill = cap.getSkillCap().isActive();
             cap.modifyCurrentEnergy(
                 -cap.submitBaseAttrVal(ModAttributes.WEAPON_ENERGY_CONSUME.get(), pPlayer, stack),
                 true,pPlayer,stack
             );
+            if(isInSkill)
+                triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack.skill");
+            else
+                triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack.normal");
+
+            if(!isInSkill || (cap.getSkillCap().getSkill() != null && !cap.getSkillCap().getSkill().onServerAttack(
+                serverLevel, pPlayer,
+                this, stack, attackType, chargeTime, true)))
+            {
+                CombatFirer.fireDefault(serverLevel, pPlayer,this, cap, stack, "normal", "normal");
+            }
         }
     }
 }

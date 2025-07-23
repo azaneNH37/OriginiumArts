@@ -12,15 +12,13 @@ import net.minecraft.server.level.ServerPlayer;
 
 public final class AtkEntityHelper
 {
-    public static void createDefaultBlade(ServerLevel level, ServerPlayer player, AtkEntityData.AtkUnit atkUnit, CombatUnit combatUnit, SelectorUnit selectorUnit)
-    {
+    public static AtkEntityConsumer BLADE = (level, player, atkUnit, combatUnit, selectorUnit) -> {
         if(atkUnit == null)
             return;
         level.addFreshEntity(BladeEffect.createBlade(level,player, atkUnit.getId(), atkUnit.getDelay(),combatUnit,selectorUnit));
-    }
+    };
 
-    public static void shootDefaultBullet(ServerLevel level, ServerPlayer player, AtkEntityData.AtkUnit atkUnit, CombatUnit combatUnit, SelectorUnit selectorUnit)
-    {
+    public static AtkEntityConsumer BULLET = (level, player, atkUnit, combatUnit, selectorUnit) -> {
         if (atkUnit == null)
             return;
         IBullet bulletData = ServerDataService.get().getBullet(atkUnit.getId());
@@ -30,5 +28,23 @@ public final class AtkEntityHelper
             bullet.shootFromRotation(player,player.getXRot(),player.getYRot(),0, bulletData.getSpeed(),0);
             level.addFreshEntity(bullet);
         }
+    };
+
+    public static AtkEntityConsumer DEFAULT = (level, player, atkUnit, combatUnit, selectorUnit) -> {
+        if(atkUnit == null)
+            return;
+        String type = atkUnit.getAtkEntityType();
+        switch (type)
+        {
+            case "blade" -> BLADE.create(level, player, atkUnit, combatUnit, selectorUnit);
+            case "bullet" -> BULLET.create(level, player, atkUnit, combatUnit, selectorUnit);
+            default -> throw new IllegalArgumentException("Unknown AtkEntity type: " + type);
+        }
+    };
+
+    @FunctionalInterface
+    public interface AtkEntityConsumer
+    {
+        void create(ServerLevel level, ServerPlayer player, AtkEntityData.AtkUnit atkUnit, CombatUnit combatUnit, SelectorUnit selectorUnit);
     }
 }

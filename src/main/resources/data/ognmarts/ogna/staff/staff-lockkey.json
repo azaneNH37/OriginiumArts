@@ -19,19 +19,30 @@
     }
   },
   "attack_entities": {
-    "normal": {
-      "id":"ognmarts:bullet-default"
-    },
-    "skill": [{
-      "id": "ognmarts:blade-lockkey"
-    }]
+    "fallback": "normal",
+    "map": {
+      "normal": {
+        "id":"ognmarts:bullet-default"
+      }
+    }
   },
   "weapon_data": {
     "cooldown": 1500,
     "max_charge_time": 3000,
     "reload_time": 5000,
-    "energy_max": 100,
+    "energy_max": 600,
     "energy_consume": 15,
+    "dmg_dataset": {
+      "fallback": "normal",
+      "map": {
+        "normal": {
+          "dmg_type": "ognmarts:ark_default",
+          "dmg_category": "ARTS",
+          "selector": "AREA",
+          "range": 2.0
+        }
+      }
+    },
     "attr_modifiers": [
       {
         "attr": "ognmarts:weapon.attack.cd",
