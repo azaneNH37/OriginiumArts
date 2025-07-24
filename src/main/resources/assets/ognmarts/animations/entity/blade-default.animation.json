@@ -10,6 +10,9 @@
 						"0.0": [0.01, 0.01, 0.01],
 						"0.2083": ["5+query.anim_time-0.21", "5+query.anim_time-0.21", "5+query.anim_time-0.21"]
 					}
+				},
+				"blade": {
+					"scale": 0.1
 				}
 			}
 		}
