@@ -157,6 +157,9 @@ public class OgnaSkillCap implements ISkillCap
             tag.putString("skill", skillRL.toString());
         tag.putDouble("SP", SP);
         tag.putDouble("RD", RD);
+        tag.putBoolean("active", active);
+        tag.put("baseAttrMap", baseAttrMap.serializeNBT());
+        tag.put("skillAttrMap", skillAttrMap.serializeNBT());
         return tag;
     }
 
@@ -168,7 +171,10 @@ public class OgnaSkillCap implements ISkillCap
             skillRL = ResourceLocation.tryParse(nbt.getString("skill"));
             skill = CommonDataService.get().getSkill(skillRL);
         }
-        SP = nbt.getLong("SP");
-        RD = nbt.getLong("RD");
+        SP = nbt.getDouble("SP");
+        RD = nbt.getDouble("RD");
+        active = nbt.getBoolean("active");
+        baseAttrMap.deserializeNBT(nbt.getCompound("baseAttrMap"));
+        skillAttrMap.deserializeNBT(nbt.getCompound("skillAttrMap"));
     }
 }

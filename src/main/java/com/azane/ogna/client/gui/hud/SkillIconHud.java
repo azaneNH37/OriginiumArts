@@ -14,8 +14,15 @@ import java.util.Collections;
 
 public class SkillIconHud extends OgnaHud
 {
-    private static final ResourceLocation BACKGROUND = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/skill/back.png");
-    private static final int ICON_SIZE = 24;
+    private static final ResourceLocation BACK = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/skill/back.png");
+    private static final ResourceLocation ACTIVE = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/skill/active.png");
+    private static final ResourceLocation CANUSE = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/skill/canuse.png");
+    private static final ResourceLocation CHARGE = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/skill/charge.png");
+    private static final ResourceLocation EMPTY = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/skill/empty.png");
+    private static final ResourceLocation LABEL_CHARGE = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/skill/label_charge.png");
+    private static final ResourceLocation LABEL_READY = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/skill/label_ready.png");
+
+    private static final int ICON_SIZE = 128;
     private static final int ANIMATION_DURATION = 10; // ticks
 
     private ItemStack lastMainHandItem = ItemStack.EMPTY;
@@ -35,7 +42,9 @@ public class SkillIconHud extends OgnaHud
 
         updateItems(mainHandItem);
 
-        if (!currentSkillItem.isEmpty()) {
+        if (!currentSkillItem.isEmpty())
+        {
+
             renderSkillIcon(graphics, partialTicks);
         }
     }
@@ -71,7 +80,7 @@ public class SkillIconHud extends OgnaHud
 
     private void renderSkillIcon(GuiGraphics graphics, float partialTicks) {
         // 渲染背景
-        blitTextureSimple(graphics, BACKGROUND, ICON_SIZE, ICON_SIZE);
+        blitTextureSimple(graphics, BACK, ICON_SIZE, ICON_SIZE);
 
         if (isAnimating) {
             float progress = (animationTicks + partialTicks) / ANIMATION_DURATION;

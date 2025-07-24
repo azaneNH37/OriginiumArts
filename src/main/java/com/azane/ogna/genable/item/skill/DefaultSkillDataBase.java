@@ -34,6 +34,8 @@ public class DefaultSkillDataBase implements ISkill
     @Setter
     @Getter
     private ResourceLocation id;
+    @SerializedName("icon")
+    private ResourceLocation icon;
     @SerializedName("level")
     private int skillLevel;
     @SerializedName("base_data")

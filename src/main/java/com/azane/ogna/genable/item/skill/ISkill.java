@@ -14,6 +14,8 @@ import net.minecraft.world.level.Level;
 
 public interface ISkill extends IGenItemDatabase
 {
+    ResourceLocation getIcon();
+
     int getSkillLevel();
 
     OgnaSkillData getSkillData();
