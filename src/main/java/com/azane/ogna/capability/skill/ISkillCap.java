@@ -60,6 +60,18 @@ public interface ISkillCap extends INBTSerializable<CompoundTag>
         public AttrMap.Matrices extractSkillMatrices(Set<Attribute> requirement) {return null;}
 
         @Override
+        public AttrMap getBaseAttrMap()
+        {
+            return null;
+        }
+
+        @Override
+        public AttrMap getSkillAttrMap()
+        {
+            return null;
+        }
+
+        @Override
         public CompoundTag serializeNBT() { return new CompoundTag(); }
 
         @Override
@@ -92,4 +104,7 @@ public interface ISkillCap extends INBTSerializable<CompoundTag>
     AttrMap.Matrices extractBaseMatrices(Set<Attribute> requirement);
 
     AttrMap.Matrices extractSkillMatrices(Set<Attribute> requirement);
+
+    AttrMap getBaseAttrMap();
+    AttrMap getSkillAttrMap();
 }

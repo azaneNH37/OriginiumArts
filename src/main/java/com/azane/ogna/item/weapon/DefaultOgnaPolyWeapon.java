@@ -8,6 +8,7 @@ import com.azane.ogna.genable.data.GeckoAssetData;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.CapabilityRegistry;
+import com.azane.ogna.registry.ModAttributes;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -105,5 +106,9 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
     public void onServerReload(ItemStack stack, ServerPlayer player)
     {
         DebugLogger.log("Server reload");
+        IOgnaWeaponCap cap = getWeaponCap(stack);
+        cap.modifyCurrentEnergy(
+            cap.submitBaseAttrVal(ModAttributes.WEAPON_ENERGY_STORE.get(),player,stack)- cap.getCurrentEnergy(),
+            true, player, stack);
     }
 }

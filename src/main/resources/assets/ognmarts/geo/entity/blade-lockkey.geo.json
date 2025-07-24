@@ -13,16 +13,16 @@
 			"bones": [
 				{
 					"name": "blade",
-					"pivot": [0, 0, 16],
+					"pivot": [0, 0, 24],
 					"rotation": [-7.5, 0, 0]
 				},
 				{
 					"name": "outer",
 					"parent": "blade",
-					"pivot": [0, 0, 11],
+					"pivot": [0, 0, 19],
 					"cubes": [
 						{
-							"origin": [-32, 0, -19],
+							"origin": [-32, 0, -11],
 							"size": [64, 0.1, 35],
 							"uv": {
 								"north": {"uv": [0, 62], "uv_size": [64, 2]},
@@ -38,10 +38,10 @@
 				{
 					"name": "inner",
 					"parent": "blade",
-					"pivot": [-1, 0.8, 22],
+					"pivot": [-1, 0.8, 30],
 					"cubes": [
 						{
-							"origin": [-29.1, 0.8, -10],
+							"origin": [-29.1, 0.8, -2],
 							"size": [57.6, 0.1, 42],
 							"uv": {
 								"north": {"uv": [0, 62], "uv_size": [64, 2]},

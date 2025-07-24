@@ -42,7 +42,9 @@ public class OgnaSkillCap implements ISkillCap
     @Getter
     private double RD;
 
+    @Getter
     private AttrMap baseAttrMap = new AttrMap(Attributes.ATTACK_DAMAGE);
+    @Getter
     private AttrMap skillAttrMap = new AttrMap(Attributes.ATTACK_DAMAGE);
 
     public OgnaSkillCap(IOgnaWeaponCap weaponCap)

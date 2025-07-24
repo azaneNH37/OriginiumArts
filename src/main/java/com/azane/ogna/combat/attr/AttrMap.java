@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -70,6 +71,8 @@ public class AttrMap implements INBTSerializable<CompoundTag>
             matrices = ImmutableMap.of();
         }
 
+        private Matrices(ImmutableMap.Builder<Attribute, AttrMatrix> builder){matrices = builder.build();}
+
         private Matrices(AttrMap attrMap, Set<Attribute> requirement)
         {
             ImmutableMap.Builder<Attribute, AttrMatrix> builder = ImmutableMap.builder();
@@ -80,6 +83,25 @@ public class AttrMap implements INBTSerializable<CompoundTag>
                 }
             });
             matrices = builder.build();
+        }
+
+        public static Matrices combine(Matrices... matrices)
+        {
+            Map<Attribute, AttrMatrix> tmp = new HashMap<>();
+            ImmutableMap.Builder<Attribute, AttrMatrix> builder = ImmutableMap.builder();
+            for (Matrices matrix : matrices)
+            {
+                if (matrix == null || matrix.matrices.isEmpty()) continue;
+                matrix.matrices.forEach((attribute, attrMatrix) -> {
+                    if (tmp.containsKey(attribute))
+                        tmp.get(attribute).absorb(attrMatrix);
+                    else
+                        tmp.put(attribute, attrMatrix.copy());
+                });
+            }
+            tmp.forEach((a,am)-> am.lock());
+            tmp.forEach(builder::put);
+            return new Matrices(builder);
         }
 
         @Nullable

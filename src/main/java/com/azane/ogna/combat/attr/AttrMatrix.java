@@ -32,7 +32,8 @@ public class AttrMatrix implements INBTSerializable<CompoundTag>
     {
         AttrMatrix result = new AttrMatrix(false);
         for (AttrMatrix matrix : matrices)
-            result.absorb(matrix);
+            if(matrix != null)
+                result.absorb(matrix);
         result.immutable = immutable;
         return result;
     }
@@ -43,6 +44,18 @@ public class AttrMatrix implements INBTSerializable<CompoundTag>
         matrix.forEach(copy::apply);
         copy.immutable = immutable;
         return copy;
+    }
+
+    public AttrMatrix copy(boolean immutable)
+    {
+        AttrMatrix cpy = copy();
+        cpy.immutable = immutable;
+        return cpy;
+    }
+
+    public void lock()
+    {
+        this.immutable = true;
     }
 
     public void absorb(AttrMatrix other)

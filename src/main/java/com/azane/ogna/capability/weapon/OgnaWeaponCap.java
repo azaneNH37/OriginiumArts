@@ -3,6 +3,8 @@ package com.azane.ogna.capability.weapon;
 import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.capability.skill.OgnaSkillCap;
 import com.azane.ogna.combat.attr.AttrMap;
+import com.azane.ogna.combat.attr.AttrMatrix;
+import com.azane.ogna.combat.attr.AttrUnit;
 import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.item.weapon.AttackType;
@@ -81,13 +83,21 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     @Override
     public double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack, double baseValue)
     {
-        return attrMap.getAttribute(attribute).extractMatrix().submit(baseValue);
+        return AttrMatrix.combine(true,
+            attrMap.getAttribute(attribute).extractMatrix(),
+            skillCap.getBaseAttrMap().getAttribute(attribute).extractMatrix(),
+            skillCap.isActive() ? skillCap.getSkillAttrMap().getAttribute(attribute).extractMatrix() : null
+            ).submit(baseValue);
     }
 
     @Override
     public AttrMap.Matrices extractMatrices(Set<Attribute> requirement)
     {
-        return attrMap.extractMatrices(requirement);
+        return AttrMap.Matrices.combine(
+            attrMap.extractMatrices(requirement),
+            skillCap.extractBaseMatrices(requirement),
+            skillCap.isActive() ? skillCap.extractSkillMatrices(requirement) : null
+            );
     }
 
     @Override
