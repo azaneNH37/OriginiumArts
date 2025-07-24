@@ -170,7 +170,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         var dmgSource = new ArkDamageSource(combatUnit,this,this.getOwner(),null);
         float submitVal = dmgSource.submitSidedVal();
         selectorUnit.gatherMultiTargets((ServerLevel) this.level(),getOrCreateTransform().aabb(),(living)->living != getOwner())
-                .forEach(living -> living.hurt(dmgSource,submitVal));
+                .forEach(living -> combatUnit.onHitEntity((ServerLevel) level(),living,selectorUnit,dmgSource));
     }
 
     public void setDataBase(@Nullable ResourceLocation rl)

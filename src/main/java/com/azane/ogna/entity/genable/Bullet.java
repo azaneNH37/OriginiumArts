@@ -167,16 +167,15 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
                     );
                 });
             var dmgSource = new ArkDamageSource(combatUnit,this,this.getOwner(),null);
-            float submitVal = dmgSource.submitSidedVal();
 
             if(selectorUnit.getType() == SelectorType.SINGLE)
             {
                 if(result.getEntity() instanceof LivingEntity living)
-                    living.hurt(dmgSource,submitVal);
+                    combatUnit.onHitEntity((ServerLevel) this.level(), living, selectorUnit, dmgSource);
             }
             else {
                 selectorUnit.gatherMultiTargets((ServerLevel) this.level(),this.getBoundingBox(),(living)->true)
-                    .forEach(living -> living.hurt(dmgSource,submitVal));
+                    .forEach(living -> combatUnit.onHitEntity((ServerLevel) this.level(), living, selectorUnit, dmgSource));
             }
         }
         this.discard();

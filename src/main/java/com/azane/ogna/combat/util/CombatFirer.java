@@ -8,6 +8,7 @@ import com.azane.ogna.genable.data.AtkEntityData;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.util.AtkEntityHelper;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,11 +35,16 @@ public final class CombatFirer
         DmgDataSet.DamageData DDunit = s_dd == null ? w_dd.getDamageData(DDunitID) :
             s_dd.hasDamageData(DDunitID) ? s_dd.getDamageData(DDunitID) : w_dd.getDamageData(DDunitID);
 
+        ImmutableList.Builder<OnImpactEntity> builder = new ImmutableList.Builder<>();
+        if(skill != null)
+            builder.add(skill::onImpactEntity);
+
         CombatUnit combatUnit = CombatUnit.of(
             DDunit.getDmgTypeHolder(false),
             baseVal,
             weaponCap.extractMatrices(Set.of(Attributes.ATTACK_DAMAGE)),
-            DDunit.getDmgCategory()
+            DDunit.getDmgCategory(),
+            builder.build()
         );
         SelectorUnit selectorUnit = SelectorUnit.of(
             DDunit.getSelectorType(),

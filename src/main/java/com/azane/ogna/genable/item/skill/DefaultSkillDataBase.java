@@ -2,8 +2,10 @@ package com.azane.ogna.genable.item.skill;
 
 import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.combat.data.ArkDamageSource;
+import com.azane.ogna.combat.data.CombatUnit;
+import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.combat.data.skill.OgnaSkillData;
-import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
 import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.AtkEntityData;
@@ -15,12 +17,15 @@ import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ItemRegistry;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.lowdragmc.photon.client.fx.FXHelper;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -72,6 +77,11 @@ public class DefaultSkillDataBase implements ISkill
         DebugLogger.log("Skill %s executed by player %s with attack type %s".formatted(id, player.getName().getString(), attackType));
         CombatFirer.fireDefault(level,player,weapon,weapon.getWeaponCap(stack),stack,"skill","skill");
         return true;
+    }
+
+    @Override
+    public void onImpactEntity(ServerLevel level, LivingEntity entity, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource)
+    {
     }
 
     @Override
