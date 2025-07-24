@@ -2,6 +2,11 @@
   "gecko_asset": {
     "all": "ognmarts:staff-lockkey"
   },
+  "display_context": {
+    "type_icon": "ognmarts:caster",
+    "code_name": "LT77-SPC-Y",
+    "color": 3735528
+  },
   "anime_datum": {
     "map": {
       "staff.idle": {

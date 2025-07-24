@@ -5,6 +5,7 @@ import com.azane.ogna.genable.data.AnimeDatumData;
 import com.azane.ogna.genable.data.GeckoAssetData;
 import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
 import com.azane.ogna.genable.data.AtkEntityData;
+import com.azane.ogna.genable.data.WeaponDisplayContext;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
@@ -24,6 +25,11 @@ public class DefaultWeaponDataBase
     @Getter
     @Nullable
     private GeckoAssetData geckoAsset;
+
+    @SerializedName("display_context")
+    @Getter
+    @Nullable
+    private WeaponDisplayContext displayContext;
 
     @SerializedName("anime_datum")
     private AnimeDatumData animeDatumData = new AnimeDatumData();
