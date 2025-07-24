@@ -14,7 +14,7 @@ public interface IEquipSkill
 
     void onItemStackTransform();
 
-    void onSkillInvoke(Level level, Player player, ItemStack stack);
+    boolean onSkillInvoke(Level level, Player player, ItemStack stack);
 
     void onSkillEquip(ItemStack stack, ResourceLocation rl);
 

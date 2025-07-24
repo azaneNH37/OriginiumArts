@@ -3,7 +3,6 @@ package com.azane.ogna.item.weapon;
 import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.client.lib.IDynamicAssetItem;
 import com.azane.ogna.client.lib.IOffHandItem;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.skill.ISkill;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 
@@ -89,11 +87,15 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
     }
 
     @Override
-    public void onSkillInvoke(Level level, Player player, ItemStack stack)
+    public boolean onSkillInvoke(Level level, Player player, ItemStack stack)
     {
         ISkillCap skillCap = getWeaponCap(stack).getSkillCap();
-        if(skillCap.canStart(level,player,stack))
+        if (skillCap.canStart(level, player, stack))
+        {
             skillCap.start(level, player, stack);
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -32,6 +32,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -58,6 +59,9 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
         .put(IDLE.hashCode(),"staff.idle")
         .put(ATTACK_NORMAL.hashCode(),"staff.attack.normal")
         .put(ATTACK_SKILL.hashCode(),"staff.attack.skill")
+        .put(IDLE_SKILL.hashCode(),"staff.idle.skill")
+        .put(SKILL_START.hashCode(),"staff.skill.start")
+        .put(SKILL_END.hashCode(),"staff.skill.end")
         .build();
 
     @Getter
@@ -86,9 +90,21 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
     {
         controllers.add(
             new AnimationController<>(this, DEFAULT_CONTROLLER,0,
-                event-> event.setAndContinue(IDLE))
+                event-> {
+                    ItemStack stack = event.getData(DataTickets.ITEMSTACK);
+                    if(IOgnaWeapon.isWeapon(stack))
+                    {
+                        IOgnaWeapon weapon = (IOgnaWeapon) stack.getItem();
+                        return weapon.getWeaponCap(stack).getSkillCap().isActive() ?
+                            event.setAndContinue(IDLE_SKILL) :
+                            event.setAndContinue(IDLE);
+                    }
+                    return event.setAndContinue(IDLE);
+                })
                 .triggerableAnim("attack.normal", ATTACK_NORMAL)
                 .triggerableAnim("attack.skill", ATTACK_SKILL)
+                .triggerableAnim("skill.start", SKILL_START)
+                .triggerableAnim("skill.end", SKILL_END)
         );
     }
 
@@ -133,7 +149,11 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
             if(weaponCap.getSkillCap().getSkill() == null)
                 weaponCap.getSkillCap().equipSkill(RlHelper.build(OriginiumArts.MOD_ID,"sk.d-locky"));
             else
-                onSkillInvoke(pLevel,pPlayer,stack);
+                if(onSkillInvoke(pLevel,pPlayer,stack))
+                {
+                    if(pLevel instanceof ServerLevel serverLevel)
+                        triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","skill.start");
+                }
         }
         return InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand));
     }
