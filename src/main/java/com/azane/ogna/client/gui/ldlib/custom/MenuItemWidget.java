@@ -17,18 +17,18 @@ public class MenuItemWidget extends WidgetGroup
 
     public MenuItemWidget()
     {
-        super(0,0,128,24);
-        addWidget(new ButtonWidget(3,2,122,20,this::onClick).setId("button"));
+        super(0,0,96,18);
+        addWidget(new ButtonWidget(2,1,91,15,this::onClick).setId("button"));
         var slotWidget = new SlotWidget().setId("item");
-        slotWidget.setSelfPosition(2,3);
+        slotWidget.setSelfPosition(1,0);
         addWidget(slotWidget);
-        addWidget(new ImageWidget(23,3,18,18,()->typeTexture).setId("type"));
-        var text1 = new TextTextureWidget(45,5,80,16);
+        addWidget(new ImageWidget(18,0,18,18,()->typeTexture).setId("type"));
+        var text1 = new TextTextureWidget(35,3,60,12);
         text1.setId("name");
         text1.getTextTexture().setType(TextTexture.TextType.LEFT_ROLL);
         text1.getTextTexture().setRollSpeed(0.4f);
         addWidget(text1);
-        var text2 = new TextTextureWidget(80,18,60,6);
+        var text2 = new TextTextureWidget(58,13,45,5);
         text2.setId("code_name");
         text2.getTextTexture().scale(0.6f);
         text2.getTextTexture().setType(TextTexture.TextType.RIGHT);

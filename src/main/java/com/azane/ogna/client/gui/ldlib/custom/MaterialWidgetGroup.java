@@ -8,17 +8,19 @@ import com.lowdragmc.lowdraglib.gui.texture.ColorRectTexture;
 import com.lowdragmc.lowdraglib.gui.texture.IGuiTexture;
 import com.lowdragmc.lowdraglib.gui.widget.DraggableScrollableWidgetGroup;
 import com.lowdragmc.lowdraglib.gui.widget.layout.Layout;
+import lombok.Getter;
 
 @LDLRegister(name = "material.group", group = "widget.custom")
 public class MaterialWidgetGroup extends DraggableScrollableWidgetGroup
 {
     @Configurable(name = "material.amt")
     @NumberRange(range = {0,100})
+    @Getter
     private int materialAmt = 0;
 
     public MaterialWidgetGroup()
     {
-        super(0,0,220,56);
+        super(0,0,110,28);
     }
 
     @ConfigSetter(field = "materialAmt")
@@ -46,8 +48,8 @@ public class MaterialWidgetGroup extends DraggableScrollableWidgetGroup
         super.initTemplate();
         this.setBackground((IGuiTexture) null);
         //TODO:issue
-        this.setLayoutPadding(4);
-        this.setXScrollBarHeight(3);
+        this.setLayoutPadding(10);
+        this.setXScrollBarHeight(2);
         this.setYScrollBarWidth(0);
         this.setXBarStyle(new ColorRectTexture(0xFF000000),new ColorRectTexture(0xFF006600));
         this.setScrollWheelDirection(ScrollWheelDirection.HORIZONTAL);
@@ -58,7 +60,7 @@ public class MaterialWidgetGroup extends DraggableScrollableWidgetGroup
     {
         super.computeMax();
         isComputingMax = true;
-        maxWidth += getLayoutPadding()*4;
+        maxWidth += getLayoutPadding()*3;
         isComputingMax = false;
     }
 }
