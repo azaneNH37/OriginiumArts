@@ -39,8 +39,11 @@ public class OriginiumArts
 
         ModAttribute.ATTRIBUTES.register(modEventBus);
         ModEntity.ENTITIES.register(modEventBus);
+        ModBlock.BLOCKS.register(modEventBus);
+        ModBlockEntity.BLOCK_ENTITIES.register(modEventBus);
         ModItem.ITEMS.register(modEventBus);
         ModCreativeTab.TABS.register(modEventBus);
+        ModRecipe.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
