@@ -9,8 +9,7 @@ import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.entity.IBullet;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_client.FxBlockEffectTriggerPacket;
-import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
-import com.azane.ogna.registry.EntityRegistry;
+import com.azane.ogna.registry.ModEntity;
 import com.azane.ogna.resource.service.CommonDataService;
 import com.azane.ogna.util.OgnaFxHelper;
 import com.lowdragmc.photon.client.fx.EntityEffect;
@@ -68,7 +67,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     }
 
     public Bullet(LivingEntity shooter, Level level,ResourceLocation dataBase,CombatUnit combatUnit,SelectorUnit selectorUnit) {
-        this(EntityRegistry.BULLET.get(), level);
+        this(ModEntity.BULLET.get(), level);
         this.setPos(shooter.getX(), shooter.getEyeY(), shooter.getZ());
         this.setOwner(shooter);
         this.dataBase = CommonDataService.get().getBullet(dataBase);

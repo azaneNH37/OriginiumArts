@@ -5,7 +5,7 @@ import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
-import com.azane.ogna.registry.ModAttributes;
+import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.resource.service.CommonDataService;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
@@ -57,7 +57,7 @@ public class OgnaSkillCap implements ISkillCap
     {
         if(skill == null || active)
             return false;
-        double need = weaponCap.submitAttrVal(ModAttributes.SKILL_SP.get(), player, stack, skill.getSkillData().getSP());
+        double need = weaponCap.submitAttrVal(ModAttribute.SKILL_SP.get(), player, stack, skill.getSkillData().getSP());
         return need <= SP;
     }
 
@@ -66,8 +66,8 @@ public class OgnaSkillCap implements ISkillCap
     {
         if(skill == null)
             return;
-        double consume = weaponCap.submitAttrVal(ModAttributes.SKILL_SP.get(),player,stack,skill.getSkillData().getSP());
-        double duration = weaponCap.submitAttrVal(ModAttributes.SKILL_DURATION.get(),player,stack,skill.getSkillData().getDuration());
+        double consume = weaponCap.submitAttrVal(ModAttribute.SKILL_SP.get(),player,stack,skill.getSkillData().getSP());
+        double duration = weaponCap.submitAttrVal(ModAttribute.SKILL_DURATION.get(),player,stack,skill.getSkillData().getDuration());
         SP = Mth.clamp(SP - consume, 0, Double.MAX_VALUE);
         RD = Mth.clamp(duration,0,Double.MAX_VALUE);
         active = true;
@@ -120,7 +120,7 @@ public class OgnaSkillCap implements ISkillCap
     {
         if(skill == null)
             return;
-        SP = Mth.clamp(SP + val, 0, skill.getSkillData().getStorage()*weaponCap.submitAttrVal(ModAttributes.SKILL_SP.get(),player, stack,skill.getSkillData().getSP()));
+        SP = Mth.clamp(SP + val, 0, skill.getSkillData().getStorage()*weaponCap.submitAttrVal(ModAttribute.SKILL_SP.get(),player, stack,skill.getSkillData().getSP()));
         if(!needSync || player == null || stack == null)
             return;
         if(player instanceof ServerPlayer serverPlayer)
@@ -132,7 +132,7 @@ public class OgnaSkillCap implements ISkillCap
     {
         if(skill == null)
             return;
-        RD = Mth.clamp(RD + val, 0, weaponCap.submitAttrVal(ModAttributes.SKILL_DURATION.get(),player, stack,skill.getSkillData().getDuration()));
+        RD = Mth.clamp(RD + val, 0, weaponCap.submitAttrVal(ModAttribute.SKILL_DURATION.get(),player, stack,skill.getSkillData().getDuration()));
         if(!needSync || player == null || stack == null)
             return;
         if(player instanceof ServerPlayer serverPlayer)

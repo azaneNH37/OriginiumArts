@@ -14,7 +14,7 @@ import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.RlHelper;
-import com.azane.ogna.registry.ItemRegistry;
+import com.azane.ogna.registry.ModItem;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
@@ -84,7 +84,7 @@ public class DefaultSkillDataBase implements ISkill
     @Override
     public void registerDataBase()
     {
-        Item item = ItemRegistry.OGNA_SKILL.get();
+        Item item = ModItem.OGNA_SKILL.get();
         if(item instanceof IPolyItemDataBase<?> polyItem)
         {
             polyItem.castToType(ISkill.class).registerDataBase(this);
@@ -94,7 +94,7 @@ public class DefaultSkillDataBase implements ISkill
     @Override
     public ItemStack buildItemStack(int count)
     {
-        Item item = ItemRegistry.OGNA_SKILL.get();
+        Item item = ModItem.OGNA_SKILL.get();
         if(item instanceof IGenItem genItem)
         {
             return genItem.templateBuildItemStack(buildTag(),1);

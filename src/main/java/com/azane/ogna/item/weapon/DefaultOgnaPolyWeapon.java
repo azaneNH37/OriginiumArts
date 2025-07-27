@@ -7,8 +7,8 @@ import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.GeckoAssetData;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.lib.RlHelper;
-import com.azane.ogna.registry.CapabilityRegistry;
-import com.azane.ogna.registry.ModAttributes;
+import com.azane.ogna.registry.ModCapability;
+import com.azane.ogna.registry.ModAttribute;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -86,7 +86,7 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
     @Override
     public IOgnaWeaponCap getWeaponCap(ItemStack stack)
     {
-        return stack.getCapability(CapabilityRegistry.OGNA_WEAPON).resolve().orElseGet(
+        return stack.getCapability(ModCapability.OGNA_WEAPON).resolve().orElseGet(
             ()->{
                 DebugLogger.error("capability should not be missing for stack: "+stack);
                 return IOgnaWeaponCap.FALLBACK;
@@ -108,7 +108,7 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
         DebugLogger.log("Server reload");
         IOgnaWeaponCap cap = getWeaponCap(stack);
         cap.modifyCurrentEnergy(
-            cap.submitBaseAttrVal(ModAttributes.WEAPON_ENERGY_STORE.get(),player,stack)- cap.getCurrentEnergy(),
+            cap.submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(),player,stack)- cap.getCurrentEnergy(),
             true, player, stack);
     }
 }

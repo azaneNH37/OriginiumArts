@@ -5,7 +5,7 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
-import com.azane.ogna.registry.ItemRegistry;
+import com.azane.ogna.registry.ModItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -15,7 +15,7 @@ public class StaffDataBase extends DefaultWeaponDataBase implements IStaffDataBa
     @Override
     public void registerDataBase()
     {
-        Item item = ItemRegistry.OGNA_STAFF.get();
+        Item item = ModItem.OGNA_STAFF.get();
         if(item instanceof IPolyItemDataBase<?> polyItem)
         {
             polyItem.castToType(IStaffDataBase.class).registerDataBase(this);
@@ -25,7 +25,7 @@ public class StaffDataBase extends DefaultWeaponDataBase implements IStaffDataBa
     @Override
     public ItemStack buildItemStack(int count)
     {
-        Item item = ItemRegistry.OGNA_STAFF.get();
+        Item item = ModItem.OGNA_STAFF.get();
         if(item instanceof IGenItem genItem)
         {
             return genItem.templateBuildItemStack(buildTag(),1);

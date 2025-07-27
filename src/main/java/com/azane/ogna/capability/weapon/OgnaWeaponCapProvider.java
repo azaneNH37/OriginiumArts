@@ -1,7 +1,7 @@
 package com.azane.ogna.capability.weapon;
 
 import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
-import com.azane.ogna.registry.CapabilityRegistry;
+import com.azane.ogna.registry.ModCapability;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
@@ -24,7 +24,7 @@ public class OgnaWeaponCapProvider implements ICapabilitySerializable<CompoundTa
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return cap == CapabilityRegistry.OGNA_WEAPON ? optional.cast() : LazyOptional.empty();
+        return cap == ModCapability.OGNA_WEAPON ? optional.cast() : LazyOptional.empty();
     }
 
     @Override

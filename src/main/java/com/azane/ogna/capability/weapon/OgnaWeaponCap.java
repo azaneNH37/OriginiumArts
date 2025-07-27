@@ -4,15 +4,10 @@ import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.capability.skill.OgnaSkillCap;
 import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.combat.attr.AttrMatrix;
-import com.azane.ogna.combat.attr.AttrUnit;
 import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.item.weapon.AttackType;
-import com.azane.ogna.item.weapon.DefaultOgnaPolyWeapon;
-import com.azane.ogna.item.weapon.IOgnaWeapon;
-import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
-import com.azane.ogna.registry.ModAttributes;
+import com.azane.ogna.registry.ModAttribute;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +20,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
-import java.util.UUID;
 
 //TODO: 注意C/S端数据同步！
 public class OgnaWeaponCap implements IOgnaWeaponCap
@@ -50,7 +44,7 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
                 if (attribute != null)
                     attrMap.getAttribute(attribute).acceptModifier(attrModifier);
             });
-            currentEnergy = submitBaseAttrVal(ModAttributes.WEAPON_ENERGY_STORE.get(), null, null);
+            currentEnergy = submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(), null, null);
         }
         else
         {
@@ -103,7 +97,7 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     @Override
     public void modifyCurrentEnergy(double val, boolean needSync, Player player, ItemStack stack)
     {
-        currentEnergy = Mth.clamp(currentEnergy + val, 0, submitBaseAttrVal(ModAttributes.WEAPON_ENERGY_STORE.get(),player, stack));
+        currentEnergy = Mth.clamp(currentEnergy + val, 0, submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(),player, stack));
         if(!needSync || player == null || stack == null)
             return;
         if(player instanceof ServerPlayer serverPlayer)

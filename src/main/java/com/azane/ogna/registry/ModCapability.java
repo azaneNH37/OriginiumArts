@@ -8,10 +8,9 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
 
 @Mod.EventBusSubscriber(modid = OriginiumArts.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class CapabilityRegistry
+public class ModCapability
 {
     public static final Capability<IOgnaWeaponCap> OGNA_WEAPON = CapabilityManager.get(new CapabilityToken<>() {});
 

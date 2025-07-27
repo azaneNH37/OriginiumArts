@@ -5,12 +5,11 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
-import com.azane.ogna.combat.util.SelectorType;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.manager.BladeEffectAABBManager;
 import com.azane.ogna.lib.EdataSerializer;
 import com.azane.ogna.lib.RlHelper;
-import com.azane.ogna.registry.EntityRegistry;
+import com.azane.ogna.registry.ModEntity;
 import com.azane.ogna.resource.service.CommonDataService;
 import com.lowdragmc.photon.client.fx.EntityEffect;
 import com.lowdragmc.photon.client.fx.FX;
@@ -23,9 +22,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.VisibleForDebug;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -40,7 +37,6 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -93,7 +89,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     public static BladeEffect createBlade(Level pLevel, @NotNull Entity owner, ResourceLocation rl,int delay,
                                           CombatUnit combatUnit,SelectorUnit selectorUnit)
     {
-        BladeEffect blade = new BladeEffect(EntityRegistry.BLADE_EFFECT.get(), pLevel);
+        BladeEffect blade = new BladeEffect(ModEntity.BLADE_EFFECT.get(), pLevel);
         blade.setOwner(owner);
         blade.setDataBase(rl);
         blade.combatUnit = combatUnit;
