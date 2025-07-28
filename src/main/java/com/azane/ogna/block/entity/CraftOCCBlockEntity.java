@@ -4,10 +4,12 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.custom.MaterialWidget;
 import com.azane.ogna.client.gui.ldlib.custom.MaterialWidgetGroup;
 import com.azane.ogna.client.gui.ldlib.custom.MenuItemWidget;
+import com.azane.ogna.client.gui.ldlib.custom.TriDImageWidget;
 import com.azane.ogna.client.gui.ldlib.helper.MenuItemDisplay;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
 import com.azane.ogna.craft.CraftHelper;
 import com.azane.ogna.craft.RlResultRecipe;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlockEntity;
 import com.azane.ogna.registry.ModRecipe;
@@ -81,6 +83,7 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
     private void setMenuItemCallback(WidgetGroup root, MenuItemWidget target, RlResultRecipe recipe,Player player)
     {
         var mtrGroup = (MaterialWidgetGroup)root.getFirstWidgetById("mtr.group");
+        var modelView = (TriDImageWidget)root.getFirstWidgetById("model.view");
 
         var ingredients = recipe.getRlrIngredients();
 
@@ -88,6 +91,8 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
         if(button != null)
         {
             button.setOnPressCallback(cdt -> {
+                if(modelView != null)
+                    modelView.setItemSupplier(()-> recipe.getResult().buildItemStack());
                 mtrGroup.setMaterialAmt(ingredients.size());
                 var lis = mtrGroup.getWidgetsById(MaterialWidgetGroup.CHILD_ID);
                 for(int i=0;i<Math.min(ingredients.size(),lis.size());i++)
