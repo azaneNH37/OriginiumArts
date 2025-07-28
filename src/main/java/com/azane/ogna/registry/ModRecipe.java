@@ -20,10 +20,10 @@ public class ModRecipe
         DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, OriginiumArts.MOD_ID);
 
     public static final RegistryObject<RecipeSerializer<RlResultRecipe>> RL_RESULT_SERIALIZER =
-        RECIPE_SERIALIZERS.register("rl_result", () -> RlResultRecipeSerializer.INSTANCE);
+        RECIPE_SERIALIZERS.register("rlr", () -> RlResultRecipeSerializer.INSTANCE);
 
     public static final RegistryObject<RecipeType<RlResultRecipe>> RL_RESULT_TYPE =
-        RECIPE_TYPES.register("rl_result", () -> RlResultRecipeType.INSTANCE);
+        RECIPE_TYPES.register("rlr", () -> RlResultRecipeType.INSTANCE);
 
     public static void register(IEventBus eventBus) {
         RECIPE_SERIALIZERS.register(eventBus);

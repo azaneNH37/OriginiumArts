@@ -20,6 +20,6 @@ public class RecipeResult {
         if(func == null) {
             return ItemStack.EMPTY;
         }
-        return func.apply(id,count);
+        return func.getBuildStack().apply(id,count);
     }
 }

@@ -4,7 +4,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 public class RlResultRecipeType implements RecipeType<RlResultRecipe> {
     public static final RlResultRecipeType INSTANCE = new RlResultRecipeType();
-    public static final String ID = "rl_result";
+    public static final String ID = "rlr";
 
     private RlResultRecipeType() {}
 

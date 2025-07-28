@@ -1,11 +1,14 @@
 package com.azane.ogna.client.gui.ldlib.custom;
 
+import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.lib.RlHelper;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.ConfigSetter;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.Configurable;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.LDLRegister;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.NumberRange;
 import com.lowdragmc.lowdraglib.gui.texture.ColorRectTexture;
 import com.lowdragmc.lowdraglib.gui.texture.IGuiTexture;
+import com.lowdragmc.lowdraglib.gui.texture.ResourceBorderTexture;
 import com.lowdragmc.lowdraglib.gui.widget.DraggableScrollableWidgetGroup;
 import com.lowdragmc.lowdraglib.gui.widget.layout.Layout;
 import lombok.Getter;
@@ -13,6 +16,9 @@ import lombok.Getter;
 @LDLRegister(name = "material.group", group = "widget.custom")
 public class MaterialWidgetGroup extends DraggableScrollableWidgetGroup
 {
+    public static final ResourceBorderTexture SLIDE_4 = new ResourceBorderTexture(RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/craft/slide_4.png").toString(),32,32,2,2);
+    public static final String CHILD_ID = "mtr.unit";
+
     @Configurable(name = "material.amt")
     @NumberRange(range = {0,100})
     @Getter
@@ -20,7 +26,7 @@ public class MaterialWidgetGroup extends DraggableScrollableWidgetGroup
 
     public MaterialWidgetGroup()
     {
-        super(0,0,110,28);
+        super(0,0,120,28);
     }
 
     @ConfigSetter(field = "materialAmt")
@@ -35,7 +41,7 @@ public class MaterialWidgetGroup extends DraggableScrollableWidgetGroup
         }
         while (this.materialAmt < materialAmt)
         {
-            addWidget(new MaterialWidget());
+            addWidget(new MaterialWidget().setId(CHILD_ID));
             this.materialAmt++;
         }
         this.setLayout(Layout.HORIZONTAL_TOP);
@@ -48,10 +54,10 @@ public class MaterialWidgetGroup extends DraggableScrollableWidgetGroup
         super.initTemplate();
         this.setBackground((IGuiTexture) null);
         //TODO:issue
-        this.setLayoutPadding(10);
+        this.setLayoutPadding(4);
         this.setXScrollBarHeight(2);
         this.setYScrollBarWidth(0);
-        this.setXBarStyle(new ColorRectTexture(0xFF000000),new ColorRectTexture(0xFF006600));
+        this.setXBarStyle(null,SLIDE_4.copy());
         this.setScrollWheelDirection(ScrollWheelDirection.HORIZONTAL);
     }
 

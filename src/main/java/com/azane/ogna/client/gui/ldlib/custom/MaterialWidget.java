@@ -1,17 +1,18 @@
 package com.azane.ogna.client.gui.ldlib.custom;
 
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.craft.RecipeIngredient;
+import com.azane.ogna.lib.NumStrHelper;
 import com.azane.ogna.lib.RlHelper;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.Configurable;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.LDLRegister;
-import com.lowdragmc.lowdraglib.gui.texture.IGuiTexture;
-import com.lowdragmc.lowdraglib.gui.texture.ResourceBorderTexture;
-import com.lowdragmc.lowdraglib.gui.texture.ResourceTexture;
-import com.lowdragmc.lowdraglib.gui.texture.TextTexture;
+import com.lowdragmc.lowdraglib.gui.texture.*;
 import com.lowdragmc.lowdraglib.gui.widget.ImageWidget;
 import com.lowdragmc.lowdraglib.gui.widget.TextTextureWidget;
 import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
 import lombok.Setter;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 @LDLRegister(name = "material", group = "widget.custom")
 public class MaterialWidget extends WidgetGroup
@@ -30,7 +31,8 @@ public class MaterialWidget extends WidgetGroup
         addWidget(new ImageWidget(4,3,16,16,()->itemTexture).setId("item"));
         addWidget(new ImageWidget(9,18,21,8,MTR_AMT_TEXTURE.copy()).setId("amt_bg"));
         var text = new TextTextureWidget(0,17,43,10);
-        text.setId("amt");
+        text.setId("amt_text");
+        text.getTextTexture().scale(0.6f);
         text.getTextTexture().setRollSpeed(0.3f);
         text.getTextTexture().setType(TextTexture.TextType.ROLL);
         addWidget(text);
@@ -48,5 +50,20 @@ public class MaterialWidget extends WidgetGroup
     {
         super.initWidget();
         this.setBackground(MTR_BACK_TEXTURE.copy());
+    }
+
+    public boolean injectIngredient(RecipeIngredient ingredient,int exist)
+    {
+        itemTexture = new ItemStackTexture(ingredient.getIngredient().getItems());
+        var itemWidget = (ImageWidget)getFirstWidgetById("item");
+        itemWidget.setHoverTooltips(ingredient.getIngredient().getItems()[0].getHoverName());
+        var amt = (TextTextureWidget)getFirstWidgetById("amt_text");
+        if(amt != null)
+        {
+            //TODO: Issue on component display
+            amt.setText(NumStrHelper.format(exist)+"/"+NumStrHelper.format(ingredient.getCount()));
+            amt.getTextTexture().setColor(exist >= ingredient.getCount() ? 0xFF00FF00 : 0xFFFF0000);
+        }
+        return true;
     }
 }
