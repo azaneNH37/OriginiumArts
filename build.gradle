@@ -1,3 +1,5 @@
+import groovy.json.JsonBuilder
+
 plugins {
     id 'eclipse'
     id 'idea'
@@ -258,4 +260,74 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+// 在 build.gradle 底部添加
+tasks.register('generateMultiResourceList') {
+    def modId = mod_id // 替换为你的模组ID
+
+    // 配置多个源目录（相对于资源根目录）
+    def sourceDirs = [
+            "assets/${modId}/models/item_gui",
+            "assets/${modId}/models/skill",
+    ]
+
+    // 配置截止目录（保留此目录及之后的路径）
+    def basePath = "src/main/resources/"
+    def cutoffDir = "assets/${modId}/models/" // 路径将从这里开始保留
+
+    // 输出文件配置
+    def outputFile = "src/main/resources/assets/${modId}/ogna/config/model_addition.json"
+
+    doLast {
+        def allPaths = []
+
+        // 处理每个源目录
+        sourceDirs.each { relativePath ->
+            def fullPath = basePath + relativePath
+            def dir = file(fullPath)
+
+            if (dir.exists()) {
+                // 递归扫描目录
+                fileTree(dir).matching {
+                    include "**/*.json"
+                }.each { file ->
+                    // 获取完整绝对路径
+                    def absolutePath = file.absolutePath.replace(File.separator, "/")
+
+                    // 计算截止目录后的相对路径
+                    def cutoffIndex = absolutePath.indexOf(cutoffDir)
+                    if (cutoffIndex != -1) {
+                        def relative = absolutePath.substring(cutoffIndex + cutoffDir.length())
+                        relative = relative.substring(0, relative.lastIndexOf('.')) // 去掉文件扩展名
+                        relative = mod_id + ":" + relative // 添加模组ID前缀
+                        allPaths.add(relative)
+                    } else {
+                        // 如果找不到截止目录，使用完整相对路径
+                        def relative = file.path.substring(basePath.length())
+                        allPaths.add(relative)
+                    }
+                }
+            }
+        }
+
+        // 确保输出目录存在
+        file(outputFile).parentFile.mkdirs()
+
+        // 构建JSON内容（按路径排序）
+        def sortedPaths = allPaths.sort()
+        def jsonContent = [
+            "item_models": sortedPaths
+        ]
+        jsonContent = new JsonBuilder(jsonContent).toPrettyString()
+
+        // 写入文件
+        new File(outputFile).text = jsonContent
+        println "Generated ${sortedPaths.size()} resource paths in $outputFile"
+    }
+}
+
+// 在构建流程中插入任务
+processResources {
+    dependsOn generateMultiResourceList
 }

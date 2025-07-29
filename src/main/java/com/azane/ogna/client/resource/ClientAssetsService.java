@@ -29,7 +29,7 @@ public enum ClientAssetsService
         if (listeners == null)
         {
             listeners = new ArrayList<>();
-            modelAddition = register(new NamelyDataManager<>(ModelAdditionManager.class, IResourceProvider.GSON,"ogna/config","model_addition",rl->rl.getPath().equals("model_addition"),true,i->{}));
+            modelAddition = register(new NamelyDataManager<>(ModelAdditionManager.class, IResourceProvider.GSON,"ogna/config","model_addition",rl->rl.getPath().contains("model_addition"),true,i->{}));
         }
         listeners.forEach(register);
     }

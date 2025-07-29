@@ -37,7 +37,6 @@ public class ResourceListener
             .map(ModelAdditionManager::getItemModels)
             .filter(Objects::nonNull)
             .flatMap(List::stream)
-            .map(rl -> RlHelper.build(rl.getNamespace(), "item_gui/" + rl.getPath()))
             .filter(Objects::nonNull)
             .forEach(event::register);
     }
