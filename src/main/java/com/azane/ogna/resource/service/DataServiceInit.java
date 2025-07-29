@@ -3,6 +3,7 @@ package com.azane.ogna.resource.service;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.entity.IBullet;
+import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.resource.manager.JsonDataManager;
@@ -28,4 +29,5 @@ public class DataServiceInit
     public static Consumer<JsonDataManager<IBullet>> bulletInit = debugRl::accept;
     public static Consumer<JsonDataManager<IStaffDataBase>> staffInit = debugRl::accept;
     public static Consumer<JsonDataManager<ISkill>> skillInit = debugRl::accept;
+    public static Consumer<JsonDataManager<IChip>> chipInit = debugRl::accept;
 }

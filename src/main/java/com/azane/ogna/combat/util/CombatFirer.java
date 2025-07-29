@@ -1,10 +1,12 @@
 package com.azane.ogna.combat.util;
 
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
+import com.azane.ogna.combat.chip.ChipTiming;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.DmgDataSet;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.genable.data.AtkEntityData;
+import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.util.AtkEntityHelper;
@@ -36,6 +38,7 @@ public final class CombatFirer
             s_dd.hasDamageData(DDunitID) ? s_dd.getDamageData(DDunitID) : w_dd.getDamageData(DDunitID);
 
         ImmutableList.Builder<OnImpactEntity> builder = new ImmutableList.Builder<>();
+        weaponCap.getChipSet().gather(ChipTiming.ON_HIT_ENTITY).forEach(chip -> builder.add(chip::onImpactEntity));
         if(skill != null)
             builder.add(skill::onImpactEntity);
 

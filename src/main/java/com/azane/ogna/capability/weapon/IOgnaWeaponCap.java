@@ -2,6 +2,7 @@ package com.azane.ogna.capability.weapon;
 
 import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.combat.attr.AttrMap;
+import com.azane.ogna.combat.chip.ChipSet;
 import com.azane.ogna.item.weapon.AttackType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -18,6 +19,9 @@ public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>
     {
         @Override
         public ISkillCap getSkillCap() { return ISkillCap.FALLBACK; }
+
+        @Override
+        public ChipSet getChipSet() { return ChipSet.FALLBACK;}
 
         @Override
         public boolean canAttack(ItemStack stack, Player player, AttackType attackType) {return false;}
@@ -51,6 +55,8 @@ public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>
     };
 
     ISkillCap getSkillCap();
+
+    ChipSet getChipSet();
 
     boolean canAttack(ItemStack stack, Player player, AttackType attackType);
 

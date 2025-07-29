@@ -3,12 +3,14 @@ package com.azane.ogna.item.weapon;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.client.renderer.OgnaWeaponRenderer;
+import com.azane.ogna.combat.chip.ChipArg;
 import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModAttribute;
+import com.azane.ogna.resource.service.CommonDataService;
 import com.azane.ogna.resource.service.ServerDataService;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
@@ -138,10 +140,14 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
             ItemStack stack = pPlayer.getMainHandItem();
             IOgnaWeaponCap weaponCap = getWeaponCap(stack);
             if(weaponCap.getSkillCap().getSkill() == null)
+            {
                 weaponCap.getSkillCap().equipSkill(RlHelper.build(OriginiumArts.MOD_ID,"skill.key_of_chronology-1"));
+                weaponCap.getChipSet().insertChip(CommonDataService.get().getChip(RlHelper.build(OriginiumArts.MOD_ID,"chip.inner.effect-poison")), ChipArg.of(pPlayer, stack));
+            }
             else
                 if(onSkillInvoke(pLevel,pPlayer,stack))
                 {
+                    weaponCap.getChipSet().removeChip(CommonDataService.get().getChip(RlHelper.build(OriginiumArts.MOD_ID,"chip.inner.effect-poison")), ChipArg.of(pPlayer, stack));
                     if(pLevel instanceof ServerLevel serverLevel)
                         triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","skill.start");
                 }

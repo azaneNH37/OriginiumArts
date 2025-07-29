@@ -2,6 +2,7 @@ package com.azane.ogna.resource.service;
 
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.entity.IBullet;
+import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.lib.GsonExtra;
@@ -36,4 +37,7 @@ public interface IResourceProvider
 
     Set<Map.Entry<ResourceLocation, ISkill>> getAllSkills();
     @Nullable ISkill getSkill(ResourceLocation id);
+
+    Set<Map.Entry<ResourceLocation, IChip>> getAllChips();
+    @Nullable IChip getChip(ResourceLocation id);
 }
