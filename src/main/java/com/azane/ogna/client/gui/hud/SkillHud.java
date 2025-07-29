@@ -61,8 +61,8 @@ public class SkillHud extends OgnaHud
             return;
         }
 
-        ResourceLocation icon = skill.getIcon();
-        icon = RlHelper.build(icon.getNamespace(), "textures/item/skill/%s.png".formatted(icon.getPath()));
+        ResourceLocation icon = skill.getDisplayContext().getIcon();
+        //icon = RlHelper.build(icon.getNamespace(), "textures/item/skill/%s.png".formatted(icon.getPath()));
         graphics.pose().pushPose();
         graphics.pose().translate(4f,4f,0f);
         graphics.pose().scale(120f/128f, 120f/128f, 1f);

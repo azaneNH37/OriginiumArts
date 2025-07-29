@@ -4,6 +4,8 @@ import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.capability.skill.OgnaSkillCap;
 import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.combat.attr.AttrMatrix;
+import com.azane.ogna.combat.chip.ChipEnv;
+import com.azane.ogna.combat.chip.ChipSet;
 import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
@@ -29,6 +31,8 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     @Getter
     private ISkillCap skillCap;
     @Getter
+    private ChipSet chipSet;
+    @Getter
     private double currentEnergy = 100;
 
     private AttrMap attrMap = new AttrMap(Attributes.ATTACK_DAMAGE);
@@ -37,6 +41,7 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     {
         this.baseData = baseData;
         this.skillCap = new OgnaSkillCap(this);
+        this.chipSet = new ChipSet(ChipEnv.WEAPON);
         if(storedData == null)
         {
             baseData.getAttrModifiers().forEach(attrModifier -> {
@@ -111,6 +116,7 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         nbt.put("attrMap", attrMap.serializeNBT());
         nbt.put("skillCap", skillCap.serializeNBT());
         nbt.putDouble("currentEnergy", currentEnergy);
+        nbt.put("chipSet", chipSet.serializeNBT());
         return nbt;
     }
 
@@ -120,5 +126,6 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         attrMap.deserializeNBT((CompoundTag) nbt.get("attrMap"));
         skillCap.deserializeNBT((CompoundTag) nbt.get("skillCap"));
         currentEnergy = nbt.getDouble("currentEnergy");
+        chipSet.deserializeNBT(nbt.getCompound("chipSet"));
     }
 }

@@ -1,4 +1,4 @@
-package com.azane.ogna.client.renderer.weapon;
+package com.azane.ogna.client.renderer;
 
 import com.azane.ogna.client.model.weapon.OgnaWeaponModel;
 import com.azane.ogna.item.weapon.OgnaWeapon;

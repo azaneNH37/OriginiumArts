@@ -2,7 +2,7 @@ package com.azane.ogna.item.weapon;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
-import com.azane.ogna.client.renderer.weapon.OgnaWeaponRenderer;
+import com.azane.ogna.client.renderer.OgnaWeaponRenderer;
 import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;

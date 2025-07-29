@@ -1,7 +1,5 @@
 package com.azane.ogna.client.gui.hud;
 
-import com.azane.ogna.client.renderer.weapon.OgnaWeaponRenderer;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
@@ -10,14 +8,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.List;
 

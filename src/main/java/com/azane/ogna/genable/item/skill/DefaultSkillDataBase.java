@@ -9,6 +9,7 @@ import com.azane.ogna.combat.data.skill.OgnaSkillData;
 import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.AtkEntityData;
+import com.azane.ogna.genable.data.SkillDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.item.weapon.AttackType;
@@ -36,8 +37,8 @@ public class DefaultSkillDataBase implements ISkill
     @Setter
     @Getter
     private ResourceLocation id;
-    @SerializedName("icon")
-    private ResourceLocation icon;
+    @SerializedName("display_context")
+    private SkillDisplayContext displayContext;
     @SerializedName("level")
     private int skillLevel;
     @SerializedName("base_data")

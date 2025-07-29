@@ -2,6 +2,7 @@
     "item_models": [
         "ognmarts:item_gui/staff-alpha.gui",
         "ognmarts:item_gui/staff-lockkey.gui",
-        "ognmarts:item_gui/staff-twice.gui"
+        "ognmarts:item_gui/staff-twice.gui",
+        "ognmarts:skill/key_of_chronology"
     ]
 }
