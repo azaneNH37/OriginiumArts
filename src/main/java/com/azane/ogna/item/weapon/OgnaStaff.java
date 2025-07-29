@@ -138,7 +138,7 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
             ItemStack stack = pPlayer.getMainHandItem();
             IOgnaWeaponCap weaponCap = getWeaponCap(stack);
             if(weaponCap.getSkillCap().getSkill() == null)
-                weaponCap.getSkillCap().equipSkill(RlHelper.build(OriginiumArts.MOD_ID,"sk.d-locky"));
+                weaponCap.getSkillCap().equipSkill(RlHelper.build(OriginiumArts.MOD_ID,"skill.key_of_chronology-1"));
             else
                 if(onSkillInvoke(pLevel,pPlayer,stack))
                 {
