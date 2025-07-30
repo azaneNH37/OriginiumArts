@@ -2,6 +2,7 @@ package com.azane.ogna.registry;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.block.CraftOCCBlock;
+import com.azane.ogna.block.InjectEPTBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -16,6 +17,7 @@ public class ModBlock
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, OriginiumArts.MOD_ID);
 
     public static final ItemBlock CRAFT_OCC = registerBlockItem("craft_occ", CraftOCCBlock::new);
+    public static final ItemBlock INJECT_EPT = registerBlockItem("inject_ept", InjectEPTBlock::new);
 
     public static RegistryObject<Block> register(String name, Supplier<? extends Block> supplier)
     {

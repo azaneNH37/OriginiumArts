@@ -1,4 +1,4 @@
-package com.azane.ogna.client.gui.ldlib.helper;
+package com.azane.ogna.inventory;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
