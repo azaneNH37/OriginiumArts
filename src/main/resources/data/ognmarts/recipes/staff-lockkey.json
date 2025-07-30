@@ -5,25 +5,25 @@
       "ingredient": {
         "item": "minecraft:diamond"
       },
-      "count": 10
+      "count": 1
     },
     {
       "ingredient": {
         "item":"minecraft:iron_ingot"
       },
-      "count": 10
+      "count": 3
     },
     {
       "ingredient": {
         "item":"minecraft:gold_ingot"
       },
-      "count": 324
+      "count": 1
     },
     {
       "ingredient": {
         "item":"minecraft:copper_ingot"
       },
-      "count": 114514
+      "count": 1
     }
   ],
   "result": {

@@ -20,6 +20,13 @@ import com.lowdragmc.lowdraglib.gui.widget.ButtonWidget;
 import com.lowdragmc.lowdraglib.gui.widget.DraggableScrollableWidgetGroup;
 import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
 import com.lowdragmc.lowdraglib.gui.widget.layout.Layout;
+import com.lowdragmc.lowdraglib.syncdata.IManaged;
+import com.lowdragmc.lowdraglib.syncdata.IManagedStorage;
+import com.lowdragmc.lowdraglib.syncdata.blockentity.IAsyncAutoSyncBlockEntity;
+import com.lowdragmc.lowdraglib.syncdata.blockentity.IAutoPersistBlockEntity;
+import com.lowdragmc.lowdraglib.syncdata.field.FieldManagedStorage;
+import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -29,8 +36,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockEntityUI
+public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged
 {
+    //===== LDLIB start ======
+    protected static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(CraftOCCBlockEntity.class);
+    @Getter
+    private final FieldManagedStorage syncStorage = new FieldManagedStorage(this);
+    @Override
+    public IManagedStorage getRootStorage() {return getSyncStorage();}
+    @Override
+    public ManagedFieldHolder getFieldHolder() {return MANAGED_FIELD_HOLDER;}
+    @Override
+    public void onChanged() {setChanged();}
+    //===== LDLIB end =======
+
     private final MenuItemDisplay menuItemDisplay = new MenuItemDisplay();
 
     public CraftOCCBlockEntity(BlockPos pPos, BlockState pBlockState)
@@ -57,6 +76,7 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
         boolean isClient = player.level().isClientSide();
         WidgetGroup ui = Optional.ofNullable(UiHelper.getUISupplier(RlHelper.build(OriginiumArts.MOD_ID,"craft"),isClient)).orElseThrow().get();
         var button = (ButtonWidget)ui.getFirstWidgetById("craft");
+        button.setOnPressCallback(cd->{});
         var mtrGroup = (MaterialWidgetGroup)ui.getFirstWidgetById("mtr.group");
         var resGroup = (DraggableScrollableWidgetGroup)ui.getFirstWidgetById("result.list");
         if(this.level != null && resGroup != null)
@@ -80,12 +100,23 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
         return ui;
     }
 
+    private void refreshMtrGroup(MaterialWidgetGroup group,RlResultRecipe recipe,Player player)
+    {
+        if(group == null || recipe == null || player == null) return;
+        group.setMaterialAmt(recipe.getRlrIngredients().size());
+        var lis = group.getWidgetsById(MaterialWidgetGroup.CHILD_ID);
+        for(int i=0;i<Math.min(recipe.getRlrIngredients().size(),lis.size());i++)
+        {
+            int amt = CraftHelper.getIngredientCount(player,recipe.getRlrIngredients().get(i));
+            ((MaterialWidget)lis.get(i)).injectIngredient(recipe.getRlrIngredients().get(i),amt);
+        }
+    }
+
     private void setMenuItemCallback(WidgetGroup root, MenuItemWidget target, RlResultRecipe recipe,Player player)
     {
         var mtrGroup = (MaterialWidgetGroup)root.getFirstWidgetById("mtr.group");
         var modelView = (TriDImageWidget)root.getFirstWidgetById("model.view");
-
-        var ingredients = recipe.getRlrIngredients();
+        var craftButton = (ButtonWidget)root.getFirstWidgetById("craft");
 
         var button = (ButtonWidget)target.getFirstWidgetById("button");
         if(button != null)
@@ -93,14 +124,22 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
             button.setOnPressCallback(cdt -> {
                 if(modelView != null)
                     modelView.setItemSupplier(()-> recipe.getResult().buildItemStack());
-                mtrGroup.setMaterialAmt(ingredients.size());
-                var lis = mtrGroup.getWidgetsById(MaterialWidgetGroup.CHILD_ID);
-                for(int i=0;i<Math.min(ingredients.size(),lis.size());i++)
-                {
-                    int amt = CraftHelper.getIngredientCount(player,ingredients.get(i));
-                    ((MaterialWidget)lis.get(i)).injectIngredient(ingredients.get(i),amt);
-                }
+                if(craftButton != null)
+                    setCraftButtonCallback(root, craftButton, recipe, player);
+                refreshMtrGroup(mtrGroup, recipe, player);
             });
         }
+    }
+
+    private void setCraftButtonCallback(WidgetGroup root, ButtonWidget target, RlResultRecipe recipe,Player player)
+    {
+        var mtrGroup = (MaterialWidgetGroup)root.getFirstWidgetById("mtr.group");
+        target.setOnPressCallback(cd->{
+            if(!CraftHelper.canCraft(player,recipe))
+                return;
+            if(!cd.isRemote)
+                CraftHelper.executeCraft(player,recipe);
+            refreshMtrGroup(mtrGroup,recipe, player);
+        });
     }
 }
