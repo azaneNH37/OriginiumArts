@@ -2,7 +2,6 @@ package com.azane.ogna.block.entity;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlockEntity;
 import com.lowdragmc.lowdraglib.gui.factory.BlockEntityUIFactory;
@@ -20,20 +19,16 @@ import com.lowdragmc.lowdraglib.syncdata.blockentity.IAsyncAutoSyncBlockEntity;
 import com.lowdragmc.lowdraglib.syncdata.blockentity.IAutoPersistBlockEntity;
 import com.lowdragmc.lowdraglib.syncdata.field.FieldManagedStorage;
 import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
-import com.lowdragmc.lowdraglib.utils.TagUtils;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -48,84 +43,17 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     @Override
     public ManagedFieldHolder getFieldHolder() {return MANAGED_FIELD_HOLDER;}
     @Override
-    public void onChanged() {
-        //DebugLogger.log("injectEPTBlockEntity changed at " + getBlockPos());
-        setChanged();
-    }
+    public void onChanged() {setChanged();}
     //===== LDLIB end =======
 
-    //@Persisted @DropSaved @DescSynced
-    //private final BlockEntityItemStorage items = new BlockEntityItemStorage(this, 2);
-
-    //@Persisted
-    //@DropSaved
-    //@DescSynced
     //TODO:不要用List不要用List不要用List不要用List不要用List不要用List!!!!!!!! 很好静默处理干掉我半天
-    @DropSaved
-    @DescSynced
-    @Persisted
-    @Nullable
-    private ItemStack[] stacks;
-
-    private ItemStack[] getOrCreateStacks()
-    {
-        if(stacks == null)
-        {
-            stacks = new ItemStack[2];
-            stacks[0] = ItemStack.EMPTY;
-            stacks[1] = ItemStack.EMPTY;
-        }
-        return stacks;
-    }
-
-    /*
-    @Persisted
-    private ItemStack tmp;
-
-    @Override
-    public void saveManagedPersistentData(CompoundTag tag, boolean forDrop)
-    {
-        IAutoPersistBlockEntity.super.saveManagedPersistentData(tag, forDrop);
-        DebugLogger.log("save data: {}",tag.getAsString());
-    }
-
-    @Override
-    public void loadManagedPersistentData(CompoundTag tag)
-    {
-        DebugLogger.log("load data1: {}",tag.getAsString());
-        //IAutoPersistBlockEntity.super.loadManagedPersistentData(tag);
-        var refs = getRootStorage().getPersistedFields();
-        DebugLogger.log("load data2: {}",tag.getAsString());
-        //IManagedAccessor.writePersistedFields(tag, refs);
-        for (var ref : refs) {
-            var fieldKey = ref.getKey();
-            var key = ref.getPersistedKey();
-            DebugLogger.log("key:{}",key);
-            var nbt = TagUtils.getTagExtended(tag, key);
-            DebugLogger.log("nbt!");
-            if (nbt != null) {
-                DebugLogger.log("nbt:{}",nbt.getAsString());
-                fieldKey.writePersistedField(ref, nbt);
-            }
-        }
-        DebugLogger.log("load data3: {}",tag.getAsString());
-        loadCustomPersistedData(tag);
-        DebugLogger.log("load data: {}",tag.getAsString());
-    }
-
-    @Override
-    public void load(CompoundTag pTag)
-    {
-        DebugLogger.log("see data:{}",pTag.copy());
-        loadManagedPersistentData(pTag.copy());
-        DebugLogger.log("Original load data. {}",pTag);
-        super.load(pTag);
-    }
-     */
+    @DropSaved @DescSynced @Persisted
+    private ItemStack[] stacks = new ItemStack[2];
 
     public InjectEPTBlockEntity(BlockPos pPos, BlockState pBlockState)
     {
         super(ModBlockEntity.INJECT_EPT_ENTITY.get(), pPos, pBlockState);
+        Arrays.fill(stacks,ItemStack.EMPTY);
     }
 
     @Override
@@ -152,12 +80,12 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     }
 
     @Override
-    public int getContainerSize() {return getOrCreateStacks().length;}
+    public int getContainerSize() {return stacks.length;}
 
     @Override
     public boolean isEmpty()
     {
-        for(ItemStack itemstack : this.getOrCreateStacks())
+        for(ItemStack itemstack : stacks)
             if (!itemstack.isEmpty())
                 return false;
         return true;
@@ -166,29 +94,25 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     @Override
     public ItemStack getItem(int pSlot)
     {
-        return getOrCreateStacks()[pSlot];
+        return stacks[pSlot];
     }
 
     @Override
     public ItemStack removeItem(int pSlot, int pAmount)
     {
-        //DebugLogger.log("Remove item from slot " + pSlot + " with amount " + pAmount);
-        return ContainerHelper.removeItem(Arrays.stream(this.getOrCreateStacks()).toList(), pSlot, pAmount);
+        return ContainerHelper.removeItem(Arrays.stream(this.stacks).toList(), pSlot, pAmount);
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int pSlot)
     {
-        //DebugLogger.log("Removing item noupdate from slot " + pSlot);
-        return ContainerHelper.takeItem(Arrays.stream(this.getOrCreateStacks()).toList(), pSlot);
+        return ContainerHelper.takeItem(Arrays.stream(this.stacks).toList(), pSlot);
     }
 
     @Override
     public void setItem(int pSlot, ItemStack pStack)
     {
-        //tmp = new ItemStack(Items.DIAMOND);
-        //DebugLogger.log("Setting item in slot " + pSlot + ": " + pStack);
-        this.getOrCreateStacks()[pSlot] =  pStack;
+        this.stacks[pSlot] =  pStack;
         if (pStack.getCount() > this.getMaxStackSize()) {
             pStack.setCount(this.getMaxStackSize());
         }
@@ -197,8 +121,5 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     @Override
     public boolean stillValid(Player pPlayer) {return true;}
     @Override
-    public void clearContent()
-    {
-        //getOrCreateStacks().replaceAll(ignored -> ItemStack.EMPTY);
-    }
+    public void clearContent() {}
 }
