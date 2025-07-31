@@ -31,6 +31,11 @@ public class OgnaSkill extends Item implements IGenItem, IPolyItemDataBase<ISkil
 
     public OgnaSkill() {super(new Properties().stacksTo(1));}
 
+    public static boolean isSkill(ItemStack stack)
+    {
+        return stack.getItem() instanceof OgnaSkill;
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public OgnaSkill getItem() {return this;}
