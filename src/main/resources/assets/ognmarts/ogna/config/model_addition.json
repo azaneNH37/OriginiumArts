@@ -1,5 +1,9 @@
 {
     "item_models": [
+        "ognmarts:chip/atk.1",
+        "ognmarts:chip/consume.1",
+        "ognmarts:chip/null",
+        "ognmarts:chip/store.1",
         "ognmarts:item_gui/staff-alpha.gui",
         "ognmarts:item_gui/staff-lockkey.gui",
         "ognmarts:item_gui/staff-twice.gui",

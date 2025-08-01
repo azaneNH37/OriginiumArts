@@ -16,6 +16,8 @@ public class SkillDisplayContext
     @Getter
     @JsonAdapter(HexColorTypeAdapter.class)
     private int color;
+    @SerializedName("type_icon")
+    private ResourceLocation typeIcon;
     @SerializedName("icon")
     private ResourceLocation icon;
     @SerializedName("model")
@@ -29,5 +31,9 @@ public class SkillDisplayContext
     public ResourceLocation getModel()
     {
         return RlHelper.build(model.getNamespace(),"skill/%s".formatted(model.getPath()));
+    }
+    public ResourceLocation getTypeIcon()
+    {
+        return RlHelper.build(typeIcon.getNamespace(),"textures/gui/type_icon/" + typeIcon.getPath() + ".png");
     }
 }

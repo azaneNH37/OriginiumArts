@@ -1,0 +1,20 @@
+{
+  "display_context": {
+    "name": "ogna.genable.chip.atk.1.name",
+    "color": "0xFF0000",
+    "model": "ognmarts:atk.1"
+  },
+  "base_data": {
+    "volume": 3
+  },
+  "env": "WEAPON",
+  "list": [
+    {
+      "attr": "generic.attack_damage",
+      "id": "cdec5ec4-4660-4e31-8c0b-c55aa3e84a5a",
+      "bucket": "TOTAL_ADD",
+      "amount": 2,
+      "stack_size": 1000000
+    }
+  ]
+}

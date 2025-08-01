@@ -6,6 +6,7 @@ import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.combat.attr.AttrMatrix;
 import com.azane.ogna.combat.chip.ChipEnv;
 import com.azane.ogna.combat.chip.ChipSet;
+import com.azane.ogna.combat.data.AttrModifier;
 import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
@@ -44,11 +45,7 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         this.chipSet = new ChipSet(ChipEnv.WEAPON);
         if(storedData == null)
         {
-            baseData.getAttrModifiers().forEach(attrModifier -> {
-                Attribute attribute = ForgeRegistries.ATTRIBUTES.getValue(attrModifier.getAttribute());
-                if (attribute != null)
-                    attrMap.getAttribute(attribute).acceptModifier(attrModifier);
-            });
+            baseData.getAttrModifiers().forEach(attrMap::acceptModifier);
             currentEnergy = submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(), null, null);
         }
         else
@@ -60,6 +57,12 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         }
 
     }
+
+    @Override
+    public void acceptModifier(AttrModifier modifier) {attrMap.acceptModifier(modifier);}
+
+    @Override
+    public void removeModifier(AttrModifier modifier) {attrMap.removeModifier(modifier);}
 
     @Override
     public boolean canAttack(ItemStack stack, Player player, AttackType attackType)

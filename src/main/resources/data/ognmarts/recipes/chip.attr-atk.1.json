@@ -1,0 +1,16 @@
+{
+  "type": "ognmarts:rlr",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:diamond"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "type": "chip",
+    "id": "ognmarts:chip.attr-atk.1",
+    "count": 1
+  }
+}

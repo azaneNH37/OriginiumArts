@@ -28,6 +28,8 @@ public class OgnaWeaponData
     private double maxEnergy = 100;
     @SerializedName("energy_consume")
     private double consumption = 10;
+    @SerializedName("chip_set_volume")
+    private double chipSetVolume = 100.0;
     @SerializedName("attr_modifiers")
     private List<AttrModifier> attrModifiers = new ArrayList<>();
     @SerializedName("dmg_dataset")
@@ -45,6 +47,7 @@ public class OgnaWeaponData
             case "weapon.charge.max" -> {return maxChargeTime;}
             case "weapon.energy.store" -> {return maxEnergy;}
             case "weapon.energy.consume" -> {return consumption;}
+            case "chip.set.volume" -> {return chipSetVolume;}
         }
         return Double.NaN;
     }

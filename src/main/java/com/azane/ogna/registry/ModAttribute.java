@@ -20,6 +20,8 @@ public class ModAttribute
     public static final RegistryObject<Attribute> SKILL_SP = registerRange("skill.sp",300,1,Double.MAX_VALUE);
     public static final RegistryObject<Attribute> SKILL_DURATION = registerRange("skill.duration",150,1,Double.MAX_VALUE);
 
+    public static final RegistryObject<Attribute> CHIP_SET_VOLUME = registerRange("chip.set.volume",100,0,Double.MAX_VALUE);
+
     public static RegistryObject<Attribute> registerRange(String name,double defaultVal,double minVal,double maxVal)
     {
         return ATTRIBUTES.register(name, () -> new RangedAttribute("attribute.name." + name, defaultVal, minVal, maxVal));

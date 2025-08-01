@@ -60,5 +60,22 @@ public class DmgDataSet
                 return null;
             return ArkDmgTypes.getHolder(ResourceKey.create(Registries.DAMAGE_TYPE,dmgType),isClient);
         }
+
+        public static DamageData combine(DamageData higher,DamageData lower)
+        {
+            if(higher == null && lower == null)
+                return null;
+            if(higher == null)
+                return lower;
+            if(lower == null)
+                return higher;
+            DamageData combined = new DamageData();
+            combined.dmgType = higher.dmgType != null ? higher.dmgType : lower.dmgType;
+            combined.dmgCategory = higher.dmgCategory != null ? higher.dmgCategory : lower.dmgCategory;
+            combined.selectorType = higher.selectorType != null ? higher.selectorType : lower.selectorType;
+            combined.range = Math.max(higher.range, lower.range);
+            combined.hitCount = Math.max(higher.hitCount, lower.hitCount);
+            return combined;
+        }
     }
 }

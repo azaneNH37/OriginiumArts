@@ -35,7 +35,7 @@ public final class CombatFirer
         DmgDataSet w_dd = weapon.getDefaultDatabase(stack).getOgnaWeaponData().getDmgDataSet();
         DmgDataSet s_dd = skill == null ? null : skill.getSkillData().getDmgDataSet();
         DmgDataSet.DamageData DDunit = s_dd == null ? w_dd.getDamageData(DDunitID) :
-            s_dd.hasDamageData(DDunitID) ? s_dd.getDamageData(DDunitID) : w_dd.getDamageData(DDunitID);
+            DmgDataSet.DamageData.combine(s_dd.getDamageData(DDunitID),w_dd.getDamageData(DDunitID));
 
         ImmutableList.Builder<OnImpactEntity> builder = new ImmutableList.Builder<>();
         weaponCap.getChipSet().gather(ChipTiming.ON_HIT_ENTITY).forEach(chip -> builder.add(chip::onImpactEntity));

@@ -6,6 +6,7 @@ import com.azane.ogna.combat.chip.ChipTiming;
 import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.genable.data.ChipDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;
 import com.azane.ogna.resource.helper.IresourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -18,11 +19,15 @@ import java.util.List;
  */
 public interface IChip extends IresourceLocation, IGenItemDatabase
 {
+    default ChipDisplayContext getDisplayContext() {return ChipDisplayContext.EMPTY;}
+
     boolean isItem();
 
     boolean canPlugIn(ChipSet chipSet, ChipArg arg);
 
     List<ChipTiming> registerTiming();
+
+    int getVolumeConsume(ChipSet chipSet, ChipArg arg);
 
     default void onInsert(ChipSet chipSet, ChipArg arg) {}
 

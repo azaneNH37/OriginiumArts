@@ -1,7 +1,9 @@
 package com.azane.ogna.combat.chip;
 
 import com.azane.ogna.genable.item.chip.IChip;
+import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.RlHelper;
+import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.resource.service.CommonDataService;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +11,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
@@ -23,6 +26,8 @@ public class ChipSet implements INBTSerializable<CompoundTag>
 
     @Getter
     private ChipEnv chipEnv;
+    @Getter
+    private int volumeTake;
 
     private final Map<ChipTiming, List<ResourceLocation>> triggeredChips = new ConcurrentHashMap<>();
     private final Map<ResourceLocation,Integer> chips = new ConcurrentHashMap<>();
@@ -33,6 +38,19 @@ public class ChipSet implements INBTSerializable<CompoundTag>
         this.chipEnv = chipEnv;
         for(ChipTiming timing : ChipTiming.values())
             triggeredChips.put(timing, new ArrayList<>());
+    }
+
+    public int getVolumeLimit(ChipArg arg)
+    {
+        if(IOgnaWeapon.isWeapon(arg.getWeaponStack()))
+        {
+            IOgnaWeapon weapon = (IOgnaWeapon)arg.getWeaponStack().getItem();
+            return (int) weapon.getWeaponCap(arg.getWeaponStack())
+                .submitBaseAttrVal(ModAttribute.CHIP_SET_VOLUME.get(),
+                    arg.getEntity() instanceof Player ? (Player) arg.getEntity() : null,
+                    arg.getWeaponStack());
+        }
+        return 0;
     }
 
     public void cleanUp()
@@ -54,6 +72,7 @@ public class ChipSet implements INBTSerializable<CompoundTag>
         cleanUp();
         if(chip.canPlugIn(this,arg))
         {
+            volumeTake += chip.getVolumeConsume(this, arg);
             chip.registerTiming().forEach(timing -> triggeredChips.get(timing).add(chip.getId()));
             chips.compute(chip.getId(), (rl, count) -> count == null ? 1 : count + 1);
             chip.onInsert(this, arg);
@@ -66,6 +85,7 @@ public class ChipSet implements INBTSerializable<CompoundTag>
     {
         if(chips.containsKey(chip.getId()))
         {
+            volumeTake -= chip.getVolumeConsume(this, arg);
             chip.onRemove(this, arg);
             toRemove.add(chip.getId());
             return true;
@@ -103,6 +123,7 @@ public class ChipSet implements INBTSerializable<CompoundTag>
         var lis = new ListTag();
         toRemove.forEach(rl -> lis.add(StringTag.valueOf(rl.toString())));
         nbt.put("toRemove", lis);
+        nbt.putInt("volumeTake", volumeTake);
         return nbt;
     }
 
@@ -131,5 +152,6 @@ public class ChipSet implements INBTSerializable<CompoundTag>
         {
             toRemove.add(RlHelper.parse(lis.getString(i)));
         }
+        volumeTake = nbt.getInt("volumeTake");
     }
 }

@@ -43,6 +43,14 @@ public final class RlrRecipes
             id -> ServerDataService.get().getSkill(id) != null
             )
         );
+        builder.put("chip", RecipeMapping.of(
+            (id,amt)->
+                Optional.ofNullable(ServerDataService.get().getChip(id)).
+                    map(i->i.buildItemStack(amt)).
+                    orElseThrow(()->new IllegalArgumentException("Chip Database not found or not a available ItemChip: " + id)),
+            id -> ServerDataService.get().getChip(id) != null
+            )
+        );
         map = builder.build();
     }
 }

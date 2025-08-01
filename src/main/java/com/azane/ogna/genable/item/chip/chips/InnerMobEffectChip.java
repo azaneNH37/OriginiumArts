@@ -1,4 +1,4 @@
-package com.azane.ogna.genable.item.chip;
+package com.azane.ogna.genable.item.chip.chips;
 
 import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
@@ -9,6 +9,7 @@ import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.debug.log.DebugLogger;
+import com.azane.ogna.genable.item.chip.NonItemChip;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

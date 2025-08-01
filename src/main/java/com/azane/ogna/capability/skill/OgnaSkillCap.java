@@ -91,16 +91,8 @@ public class OgnaSkillCap implements ISkillCap
         skill = CommonDataService.get().getSkill(skillRL);
         if(skill != null)
         {
-            skill.getSkillData().getBaseAttrModifiers().forEach(am->{
-                Attribute attribute = ForgeRegistries.ATTRIBUTES.getValue(am.getAttribute());
-                if (attribute != null)
-                    baseAttrMap.getAttribute(attribute).acceptModifier(am);
-            });
-            skill.getSkillData().getSkillAttrModifiers().forEach(am->{
-                Attribute attribute = ForgeRegistries.ATTRIBUTES.getValue(am.getAttribute());
-                if (attribute != null)
-                    skillAttrMap.getAttribute(attribute).acceptModifier(am);
-            });
+            skill.getSkillData().getBaseAttrModifiers().forEach(baseAttrMap::acceptModifier);
+            skill.getSkillData().getSkillAttrModifiers().forEach(skillAttrMap::acceptModifier);
         }
     }
 

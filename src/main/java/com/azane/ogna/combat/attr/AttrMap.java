@@ -1,9 +1,8 @@
 package com.azane.ogna.combat.attr;
 
-import com.azane.ogna.debug.log.DebugLogger;
+import com.azane.ogna.combat.data.AttrModifier;
 import com.azane.ogna.lib.RlHelper;
 import com.google.common.collect.ImmutableMap;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -32,6 +31,20 @@ public class AttrMap implements INBTSerializable<CompoundTag>
     public AttrUnit getAttribute(Attribute attribute)
     {
         return attributes.computeIfAbsent(attribute, attr -> new AttrUnit());
+    }
+
+    public void acceptModifier(AttrModifier modifier)
+    {
+        Attribute attribute = ForgeRegistries.ATTRIBUTES.getValue(modifier.getAttribute());
+        if (attribute != null)
+            getAttribute(attribute).acceptModifier(modifier);
+    }
+
+    public void removeModifier(AttrModifier modifier)
+    {
+        Attribute attribute = ForgeRegistries.ATTRIBUTES.getValue(modifier.getAttribute());
+        if (attribute != null)
+            getAttribute(attribute).removeModifier(modifier);
     }
 
     public Matrices extractMatrices(Set<Attribute> requirement)

@@ -13,6 +13,9 @@
   "ogna.gui.inject.skill.slot.skill": "技能槽位",
   "ogna.genable.weapon.missing.name": "<WEAPON MISSING>",
   "ogna.genable.skill.missing.name": "<SKILL MISSING>",
-  "ogna.genable.weapon.staff.lockkey.name": "“锁与钥”",
-  "ogna.genable.skill.key_of_chronology.name": "序时之锁"
+  "ogna.genable.weapon.staff.lockkey.name": "“锁与匙”",
+  "ogna.genable.skill.key_of_chronology.name": "序时之匙",
+  "ogna.genable.chip.atk.1.name": "攻击芯片 I",
+  "ogna.genable.chip.consume.1.name": "节能芯片 I",
+  "ogna.genable.chip.store.1.name": "储能芯片 I"
 }

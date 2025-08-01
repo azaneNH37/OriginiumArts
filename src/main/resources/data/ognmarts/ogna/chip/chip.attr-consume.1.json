@@ -1,0 +1,20 @@
+{
+  "display_context": {
+    "name": "ogna.genable.chip.consume.1.name",
+    "color": "0x00FFFF",
+    "model": "ognmarts:consume.1"
+  },
+  "base_data": {
+    "volume": 8
+  },
+  "env": "WEAPON",
+  "list": [
+    {
+      "attr": "ognmarts:weapon.energy.consume",
+      "id": "74529e7e-0405-44ab-bf54-8ca5824975b6",
+      "bucket": "DIRECT_ADD",
+      "amount": -2,
+      "stack_size": 10000000
+    }
+  ]
+}

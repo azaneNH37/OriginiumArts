@@ -30,6 +30,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -84,6 +85,7 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
             menuItemDisplay.clearContent();
             AtomicInteger index = new AtomicInteger(0);
             this.level.getRecipeManager().getAllRecipesFor(ModRecipe.RL_RESULT_TYPE.get())
+                .stream().sorted(Comparator.comparing(e->e.getResult().getType()))
                 .forEach(rlrr-> {
                     var wg = new MenuItemWidget();
                     if(wg.injectRecipe(rlrr,menuItemDisplay,index.get()))

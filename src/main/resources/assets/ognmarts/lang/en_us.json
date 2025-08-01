@@ -15,5 +15,9 @@
   "ogna.genable.weapon.missing.name": "<WEAPON MISSING>",
   "ogna.genable.skill.missing.name": "<SKILL MISSING>",
   "ogna.genable.weapon.staff.lockkey.name": "\"Lock and Key\"",
-  "ogna.genable.skill.key_of_chronology.name": "Key of Chronology"
+  "ogna.genable.skill.key_of_chronology.name": "Key of Chronology",
+
+  "ogna.genable.chip.atk.1.name": "Attack Chip I",
+  "ogna.genable.chip.consume.1.name": "Energy-Save Chip I",
+  "ogna.genable.chip.store.1.name": "Energy-Storage Chip I"
 }

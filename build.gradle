@@ -270,6 +270,7 @@ tasks.register('generateMultiResourceList') {
     def sourceDirs = [
             "assets/${modId}/models/item_gui",
             "assets/${modId}/models/skill",
+            "assets/${modId}/models/chip",
     ]
 
     // 配置截止目录（保留此目录及之后的路径）

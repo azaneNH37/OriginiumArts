@@ -24,6 +24,6 @@ public class WeaponDisplayContext
 
     public ResourceLocation getTypeIcon()
     {
-        return RlHelper.build(typeIcon.getNamespace(),"textures/gui/weapon_type/" + typeIcon.getPath() + ".png");
+        return RlHelper.build(typeIcon.getNamespace(),"textures/gui/type_icon/" + typeIcon.getPath() + ".png");
     }
 }
