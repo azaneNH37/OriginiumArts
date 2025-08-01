@@ -1,9 +1,19 @@
 {
+  "ogna.gui.craft.title": "Origin Core Compiler (OCC)",
+  "ogna.gui.craft.button": "Compile",
+  "ogna.gui.craft.display.item.slot": "Pre-Compiled Item",
+  "ogna.gui.craft.display.item.type": "Compile Type",
+  "ogna.gui.craft.display.item.model": "Pre-Compiled Item Model",
   "ogna.gui.inject.title": "Etching Protocol Terminal (EPT)",
-  "ogna.gui.inject.sd.skill": "Skill Install/Uninstall",
-  "ogna.gui.inject.sd.chip": "Chip Insert/Eject",
+  "ogna.gui.inject.tab.skill": "Skill Install/Uninstall",
+  "ogna.gui.inject.tab.chip": "Chip Insert/Eject",
   "ogna.gui.inject.skill.in": "Install Skill",
   "ogna.gui.inject.skill.out": "Uninstall Skill",
   "ogna.gui.inject.skill.slot.weapon": "Weapon Slot",
-  "ogna.gui.inject.skill.slot.skill": "Skill Slot"
+  "ogna.gui.inject.skill.slot.skill": "Skill Slot",
+
+  "ogna.genable.weapon.missing.name": "<WEAPON MISSING>",
+  "ogna.genable.skill.missing.name": "<SKILL MISSING>",
+  "ogna.genable.weapon.staff.lockkey.name": "\"Lock and Key\"",
+  "ogna.genable.skill.key_of_chronology.name": "Key of Chronology"
 }

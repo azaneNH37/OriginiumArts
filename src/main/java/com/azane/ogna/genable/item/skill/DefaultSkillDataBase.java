@@ -38,7 +38,7 @@ public class DefaultSkillDataBase implements ISkill
     @Getter
     private ResourceLocation id;
     @SerializedName("display_context")
-    private SkillDisplayContext displayContext;
+    private SkillDisplayContext displayContext = new SkillDisplayContext();
     @SerializedName("level")
     private int skillLevel;
     @SerializedName("base_data")

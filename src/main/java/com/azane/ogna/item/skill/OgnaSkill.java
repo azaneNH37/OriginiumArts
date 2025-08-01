@@ -18,6 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
+import java.awt.*;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,6 +52,12 @@ public class OgnaSkill extends Item implements IGenItem, IPolyItemDataBase<ISkil
     public ResourceLocation getGuiModel(ItemStack stack)
     {
         return getDataBaseForStack(stack).getDisplayContext().getModel();
+    }
+
+    @Override
+    public String getDescriptionId(ItemStack pStack)
+    {
+        return getDataBaseForStack(pStack).getDisplayContext().getName();
     }
 
     public static ResourceLocation getSkillId(ItemStack stack)

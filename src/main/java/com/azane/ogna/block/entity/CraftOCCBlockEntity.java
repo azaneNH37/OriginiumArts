@@ -4,7 +4,6 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.custom.MaterialWidget;
 import com.azane.ogna.client.gui.ldlib.custom.MaterialWidgetGroup;
 import com.azane.ogna.client.gui.ldlib.custom.MenuItemWidget;
-import com.azane.ogna.client.gui.ldlib.custom.TriDImageWidget;
 import com.azane.ogna.inventory.MenuItemDisplay;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
 import com.azane.ogna.craft.CraftHelper;
@@ -15,9 +14,7 @@ import com.azane.ogna.registry.ModRecipe;
 import com.lowdragmc.lowdraglib.gui.factory.BlockEntityUIFactory;
 import com.lowdragmc.lowdraglib.gui.modular.IUIHolder;
 import com.lowdragmc.lowdraglib.gui.modular.ModularUI;
-import com.lowdragmc.lowdraglib.gui.widget.ButtonWidget;
-import com.lowdragmc.lowdraglib.gui.widget.DraggableScrollableWidgetGroup;
-import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
+import com.lowdragmc.lowdraglib.gui.widget.*;
 import com.lowdragmc.lowdraglib.gui.widget.layout.Layout;
 import com.lowdragmc.lowdraglib.syncdata.IManaged;
 import com.lowdragmc.lowdraglib.syncdata.IManagedStorage;
@@ -28,12 +25,15 @@ import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.azane.ogna.client.lib.RegexHelper.*;
 
 public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged
 {
@@ -74,8 +74,8 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
     {
         boolean isClient = player.level().isClientSide();
         WidgetGroup ui = Optional.ofNullable(UiHelper.getUISupplier(RlHelper.build(OriginiumArts.MOD_ID,"craft"),isClient)).orElseThrow().get();
-        var button = (ButtonWidget)ui.getFirstWidgetById("craft");
-        button.setOnPressCallback(cd->{});
+        var craftButton = UiHelper.getAsNonnull(ButtonWidget.class, endWith("craft"), ui.widgets);
+        craftButton.setOnPressCallback(cd->{});
         var mtrGroup = (MaterialWidgetGroup)ui.getFirstWidgetById("mtr.group");
         var resGroup = (DraggableScrollableWidgetGroup)ui.getFirstWidgetById("result.list");
         if(this.level != null && resGroup != null)
@@ -88,7 +88,7 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
                     var wg = new MenuItemWidget();
                     if(wg.injectRecipe(rlrr,menuItemDisplay,index.get()))
                     {
-                        setMenuItemCallback(ui,wg,rlrr,player);
+                        setMenuItemCallback(ui,wg,rlrr,player,menuItemDisplay,index.get());
                         resGroup.addWidget(wg);
                         index.incrementAndGet();
                     }
@@ -111,23 +111,17 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
         }
     }
 
-    private void setMenuItemCallback(WidgetGroup root, MenuItemWidget target, RlResultRecipe recipe,Player player)
+    private void setMenuItemCallback(WidgetGroup root, MenuItemWidget target, RlResultRecipe recipe, Player player, Container displayContainer,int index)
     {
         var mtrGroup = (MaterialWidgetGroup)root.getFirstWidgetById("mtr.group");
-        var modelView = (TriDImageWidget)root.getFirstWidgetById("model.view");
-        var craftButton = (ButtonWidget)root.getFirstWidgetById("craft");
+        var craftButton = UiHelper.getAsNonnull(ButtonWidget.class, endWith("craft"), root.widgets);
 
-        var button = (ButtonWidget)target.getFirstWidgetById("button");
-        if(button != null)
-        {
-            button.setOnPressCallback(cdt -> {
-                if(modelView != null)
-                    modelView.setItemSupplier(()-> recipe.getResult().buildItemStack());
-                if(craftButton != null)
-                    setCraftButtonCallback(root, craftButton, recipe, player);
-                refreshMtrGroup(mtrGroup, recipe, player);
-            });
-        }
+        var button = UiHelper.getAsNonnull(ButtonWidget.class, endWith("button"), target.widgets);
+        button.setOnPressCallback(cdt -> {
+            target.displayInMainUI(root.getWidgetsById(startWith("display.item")),recipe,displayContainer,index);
+            setCraftButtonCallback(root, craftButton, recipe, player);
+            refreshMtrGroup(mtrGroup, recipe, player);
+        });
     }
 
     private void setCraftButtonCallback(WidgetGroup root, ButtonWidget target, RlResultRecipe recipe,Player player)

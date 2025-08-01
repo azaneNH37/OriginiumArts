@@ -29,7 +29,7 @@ public class DefaultWeaponDataBase
     @SerializedName("display_context")
     @Getter
     @Nullable
-    private WeaponDisplayContext displayContext;
+    private WeaponDisplayContext displayContext = new WeaponDisplayContext();
 
     @SerializedName("anime_datum")
     private AnimeDatumData animeDatumData = new AnimeDatumData();

@@ -1,9 +1,18 @@
 {
+  "ogna.gui.craft.title": "源核编译站 (OCC)",
+  "ogna.gui.craft.button": "编译",
+  "ogna.gui.craft.display.item.slot": "预编译产物",
+  "ogna.gui.craft.display.item.type": "编译类型",
+  "ogna.gui.craft.display.item.model": "预编译产物模型",
   "ogna.gui.inject.title": "蚀刻协议终端(EPT)",
-  "ogna.gui.inject.sd.skill": "技能装卸",
-  "ogna.gui.inject.sd.chip": "芯片插拔",
+  "ogna.gui.inject.tab.skill": "芯片插拔",
+  "ogna.gui.inject.tab.chip": "技能装卸",
   "ogna.gui.inject.skill.in": "安装技能",
   "ogna.gui.inject.skill.out": "卸载技能",
   "ogna.gui.inject.skill.slot.weapon": "武器槽位",
-  "ogna.gui.inject.skill.slot.skill": "技能槽位"
+  "ogna.gui.inject.skill.slot.skill": "技能槽位",
+  "ogna.genable.weapon.missing.name": "<WEAPON MISSING>",
+  "ogna.genable.skill.missing.name": "<SKILL MISSING>",
+  "ogna.genable.weapon.staff.lockkey.name": "“锁与钥”",
+  "ogna.genable.skill.key_of_chronology.name": "序时之锁"
 }

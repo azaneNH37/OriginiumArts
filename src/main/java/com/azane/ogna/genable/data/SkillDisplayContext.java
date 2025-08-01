@@ -1,11 +1,21 @@
 package com.azane.ogna.genable.data;
 
+import com.azane.ogna.lib.HexColorTypeAdapter;
 import com.azane.ogna.lib.RlHelper;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 
 public class SkillDisplayContext
 {
+    @SerializedName("name")
+    @Getter
+    private String name = "ogna.genable.skill.missing.name";
+    @SerializedName("color")
+    @Getter
+    @JsonAdapter(HexColorTypeAdapter.class)
+    private int color;
     @SerializedName("icon")
     private ResourceLocation icon;
     @SerializedName("model")

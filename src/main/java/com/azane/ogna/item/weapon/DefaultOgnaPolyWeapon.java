@@ -94,7 +94,11 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
         );
     }
 
-
+    @Override
+    public String getDescriptionId(ItemStack pStack)
+    {
+        return getDefaultDatabase(pStack).getDisplayContext().getName();
+    }
 
     @Override
     public void onServerAttack(ItemStack stack, ServerPlayer player, AttackType attackType, long chargeTime)
