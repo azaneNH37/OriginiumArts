@@ -8,6 +8,7 @@ import com.azane.ogna.genable.item.skill.ISkill;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -30,6 +31,12 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
     {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(Component.literal(this.getStackUUID(pStack)));
+    }
+
+    @Override
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected)
+    {
+        tick(pLevel, (Player) pEntity, pStack);
     }
 
     //C/S同步触发

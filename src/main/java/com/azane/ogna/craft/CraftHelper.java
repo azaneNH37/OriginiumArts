@@ -43,9 +43,7 @@ public class CraftHelper {
 
         // 给予产物
         ItemStack result = recipe.getResult().buildItemStack();
-        if (!player.getInventory().add(result)) {
-            player.drop(result, false);
-        }
+        player.drop(result, false);
 
         return true;
     }

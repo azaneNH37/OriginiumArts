@@ -15,7 +15,7 @@ public class PlayerTickListener
 {
     private static WeakHashMap<Player, ItemStack> lastMainHandMap = new WeakHashMap<>();
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void onPlayerTickEnd(TickEvent.PlayerTickEvent event)
     {
         /*
@@ -35,7 +35,7 @@ public class PlayerTickListener
                  */
     }
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void onPlayerTickStart(TickEvent.PlayerTickEvent event)
     {
         if (event.phase == TickEvent.Phase.END) return;
