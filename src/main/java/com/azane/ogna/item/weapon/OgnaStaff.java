@@ -141,7 +141,7 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
             IOgnaWeaponCap weaponCap = getWeaponCap(stack);
             if(weaponCap.getSkillCap().getSkill() == null)
             {
-                weaponCap.getSkillCap().equipSkill(RlHelper.build(OriginiumArts.MOD_ID,"skill.key_of_chronology-1"));
+                //weaponCap.getSkillCap().equipSkill(RlHelper.build(OriginiumArts.MOD_ID,"skill.key_of_chronology-1"));
                 weaponCap.getChipSet().insertChip(CommonDataService.get().getChip(RlHelper.build(OriginiumArts.MOD_ID,"chip.inner.effect-poison")), ChipArg.of(pPlayer, stack));
             }
             else

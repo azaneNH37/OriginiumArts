@@ -1,0 +1,9 @@
+{
+  "ogna.gui.inject.title": "Etching Protocol Terminal (EPT)",
+  "ogna.gui.inject.sd.skill": "Skill Install/Uninstall",
+  "ogna.gui.inject.sd.chip": "Chip Insert/Eject",
+  "ogna.gui.inject.skill.in": "Install Skill",
+  "ogna.gui.inject.skill.out": "Uninstall Skill",
+  "ogna.gui.inject.skill.slot.weapon": "Weapon Slot",
+  "ogna.gui.inject.skill.slot.skill": "Skill Slot"
+}

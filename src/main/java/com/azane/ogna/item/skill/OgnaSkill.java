@@ -7,6 +7,7 @@ import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.OgnaStaff;
+import com.azane.ogna.resource.service.CommonDataService;
 import com.azane.ogna.resource.service.ServerDataService;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -50,6 +51,21 @@ public class OgnaSkill extends Item implements IGenItem, IPolyItemDataBase<ISkil
     public ResourceLocation getGuiModel(ItemStack stack)
     {
         return getDataBaseForStack(stack).getDisplayContext().getModel();
+    }
+
+    public static ResourceLocation getSkillId(ItemStack stack)
+    {
+        if(!isSkill(stack)) return null;
+        OgnaSkill skillItem = (OgnaSkill) stack.getItem();
+        ISkill skill = skillItem.getDataBaseForStack(stack);
+        return skill.getId();
+    }
+
+    public static ItemStack buildSkillStack(ResourceLocation skillId)
+    {
+        ISkill skill = CommonDataService.get().getSkill(skillId);
+        if(skill == null) return ItemStack.EMPTY;
+        return skill.buildItemStack(1);
     }
 
     public static NonNullList<ItemStack> fillCreativeTab() {

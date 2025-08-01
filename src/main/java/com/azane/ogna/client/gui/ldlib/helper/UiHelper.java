@@ -2,6 +2,7 @@ package com.azane.ogna.client.gui.ldlib.helper;
 
 import com.azane.ogna.lib.RlHelper;
 import com.lowdragmc.lowdraglib.gui.editor.data.UIProject;
+import com.lowdragmc.lowdraglib.gui.widget.Widget;
 import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -10,13 +11,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 //TODO:需要C/S隔离测试
 @ParametersAreNonnullByDefault
@@ -47,5 +51,27 @@ public class UiHelper
                 return null;
             }
         });
+    }
+
+    @Nullable
+    public static <U extends Widget> U getAs(Class<U> clazz,Pattern rex,List<Widget> widgets)
+    {
+        for(var widget : widgets)
+        {
+            if(clazz.isInstance(widget) && rex.matcher(widget.getId()).find())
+            {
+                return clazz.cast(widget);
+            }
+        }
+        return null;
+    }
+    @Nonnull
+    public static <U extends Widget> U getAsNonnull(Class<U> clazz, Pattern rex, List<Widget> widgets)
+    {
+        U widget = getAs(clazz, rex, widgets);
+        if (widget == null) {
+            throw new NullPointerException("Widget not found for class: " + clazz.getName() + " with pattern: " + rex.pattern());
+        }
+        return widget;
     }
 }

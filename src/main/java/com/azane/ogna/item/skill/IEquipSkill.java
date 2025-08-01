@@ -5,9 +5,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
+
 
 public interface IEquipSkill
 {
+    boolean hasSkill(ItemStack stack);
+
+    @Nullable
+    ResourceLocation getSkillId(ItemStack stack);
+
     void tickSP(Level level, Player player, ItemStack stack);
 
     void tickDuration(Level level, Player player, ItemStack stack);

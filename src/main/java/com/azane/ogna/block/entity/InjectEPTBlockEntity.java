@@ -1,12 +1,12 @@
 package com.azane.ogna.block.entity;
 
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.client.gui.ldlib.extra.PredicateSlotWidget;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
 import com.azane.ogna.item.skill.OgnaSkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlockEntity;
-import com.azane.ogna.resource.service.ServerDataService;
 import com.lowdragmc.lowdraglib.gui.factory.BlockEntityUIFactory;
 import com.lowdragmc.lowdraglib.gui.modular.IUIHolder;
 import com.lowdragmc.lowdraglib.gui.modular.ModularUI;
@@ -24,7 +24,6 @@ import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -32,7 +31,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
@@ -40,10 +38,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
+
+import static com.azane.ogna.client.lib.RegexHelper.*;
 
 public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged
 {
     //===== LDLIB start ======
+    //记得改MANAGED_FIELD_HOLDER的classType
     protected static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(InjectEPTBlockEntity.class);
     @Getter
     private final FieldManagedStorage syncStorage = new FieldManagedStorage(this);
@@ -55,12 +57,22 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     public void onChanged() {setChanged();}
     //===== LDLIB end =======
 
+    public static final Pattern TAB_GROUP_PT = startWith("tab.");
+    public static final Pattern SKILL_GROUP_PT = startWith("skill.");
+
     @AllArgsConstructor
     public enum EPTOp
     {
-        SKILL(30);
+        SKILL_IN(30, ProgressTexture.FillDirection.RIGHT_TO_LEFT),
+        SKILL_OUT(30, ProgressTexture.FillDirection.LEFT_TO_RIGHT);
 
         public final int baseTick;
+        public final ProgressTexture.FillDirection fillDirection;
+
+        public static boolean isSkill(EPTOp op)
+        {
+            return op.equals(SKILL_IN) || op.equals(SKILL_OUT);
+        }
     }
 
     //TODO:不要用List不要用List不要用List不要用List不要用List不要用List!!!!!!!! 很好静默处理干掉我半天
@@ -72,12 +84,15 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     private EPTOp curOp;
     @DropSaved @Persisted
     private int curTick;
-    @DropSaved @Persisted
-    private ProgressTexture.FillDirection fillDirection;
 
     @Nullable
-    private ProgressTexture progressTexture;
-    private List<SlotWidget> activeSlots = new ArrayList<>();
+    private ProgressWidget skill_progressWidget;
+    @Nullable
+    private PredicateSlotWidget skill_weaponSlot;
+    @Nullable
+    private PredicateSlotWidget skill_skillSlot;
+
+    private final List<SlotWidget> slots = new ArrayList<>();
 
     public InjectEPTBlockEntity(BlockPos pPos, BlockState pBlockState)
     {
@@ -99,57 +114,72 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     {
         boolean isClient = player.level().isClientSide();
         WidgetGroup ui = Optional.ofNullable(UiHelper.getUISupplier(RlHelper.build(OriginiumArts.MOD_ID,"inject"),isClient)).orElseThrow().get();
+
         var group = Optional.ofNullable((TabContainer)ui.getFirstWidgetById("group")).orElseThrow();
-        var contents = group.containerGroup;
-        var progress = Optional.ofNullable((ProgressWidget)contents.getFirstWidgetById("progress")).orElseThrow();
-        progressTexture = (ProgressTexture)progress.getBackgroundTexture();
-        var weaponSlot = Optional.ofNullable((SlotWidget)contents.getFirstWidgetById("slot.weapon")).orElseThrow();
-        var skillSlot = Optional.ofNullable((SlotWidget)contents.getFirstWidgetById("slot.skill")).orElseThrow();
-        weaponSlot.setContainerSlot(this, 0);
-        skillSlot.setContainerSlot(this,1);
-        activeSlots.add(weaponSlot);
-        activeSlots.add(skillSlot);
-        var inButton = Optional.ofNullable((ButtonWidget)contents.getFirstWidgetById("in")).orElseThrow();
+
+        var tab = group.buttonGroup;
+        var content = group.containerGroup;
+
+        createSkillUIGroup(content,player);
+
+        return ui;
+    }
+
+    private void createSkillUIGroup(WidgetGroup group,Player player)
+    {
+        var widgets = group.getWidgetsById(SKILL_GROUP_PT);
+
+        skill_progressWidget = UiHelper.getAsNonnull(ProgressWidget.class,endWith("progress"),widgets);
+        skill_progressWidget.setProgressSupplier(()-> inInject ?(double) curTick / (double) curOp.baseTick : 0);
+
+        skill_weaponSlot = UiHelper.getAsNonnull(PredicateSlotWidget.class,endWith("slot.weapon"),widgets);
+        skill_skillSlot = UiHelper.getAsNonnull(PredicateSlotWidget.class,endWith("slot.skill"),widgets);
+        skill_weaponSlot.setContainerSlot(this, 0);
+        skill_skillSlot.setContainerSlot(this,1);
+        skill_weaponSlot.setPutPredicate(IOgnaWeapon::isWeapon);
+        skill_skillSlot.setPutPredicate(OgnaSkill::isSkill);
+
+        slots.add(skill_skillSlot);
+        slots.add(skill_weaponSlot);
+
+        var inButton = UiHelper.getAsNonnull(ButtonWidget.class,endWith("in"),widgets);
+        var outButton = UiHelper.getAsNonnull(ButtonWidget.class,endWith("out"),widgets);
         inButton.setOnPressCallback(cd->{
-           ItemStack weapon = weaponSlot.getItem();
-           ItemStack skill = skillSlot.getItem();
-           if(!inInject && IOgnaWeapon.isWeapon(weapon) && OgnaSkill.isSkill(skill))
-           {
-               IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weapon.getItem();
-               if(iOgnaWeapon.getWeaponCap(weapon).getSkillCap().getSkill() == null)
-               {
-                   inInject = true;
-                   curOp = EPTOp.SKILL;
-                   curTick = 0;
-                   fillDirection = ProgressTexture.FillDirection.RIGHT_TO_LEFT;
-                   activeSlots.forEach(slotWidget -> {
-                       slotWidget.setCanPutItems(false);
-                       slotWidget.setCanTakeItems(false);
-                   });
-               }
-           }
-        });
-        var outButton = Optional.ofNullable((ButtonWidget)contents.getFirstWidgetById("out")).orElseThrow();
-        outButton.setOnPressCallback(cd->{
-            ItemStack weapon = weaponSlot.getItem();
-            ItemStack skill = skillSlot.getItem();
-            if(!inInject && IOgnaWeapon.isWeapon(weapon) && skill.isEmpty())
+            ItemStack weapon = skill_weaponSlot.getItem();
+            ItemStack skill = skill_skillSlot.getItem();
+            if(!inInject && IOgnaWeapon.isWeapon(weapon) && OgnaSkill.isSkill(skill))
             {
                 IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weapon.getItem();
-                if(iOgnaWeapon.getWeaponCap(weapon).getSkillCap().getSkill() != null)
+                if(!iOgnaWeapon.hasSkill(weapon))
                 {
-                    inInject = true;
-                    curOp = EPTOp.SKILL;
-                    curTick = 0;
-                    fillDirection = ProgressTexture.FillDirection.LEFT_TO_RIGHT;
-                    activeSlots.forEach(slotWidget -> {
+                    inInject = true;curOp = EPTOp.SKILL_IN;curTick = 0;
+                    slots.forEach(slotWidget -> {
                         slotWidget.setCanPutItems(false);
                         slotWidget.setCanTakeItems(false);
                     });
+                    if(skill_progressWidget != null)
+                        skill_progressWidget.setFillDirection(curOp.fillDirection);
                 }
             }
         });
-        return ui;
+        outButton.setOnPressCallback(cd->{
+            ItemStack weapon = skill_weaponSlot.getItem();
+            ItemStack skill = skill_skillSlot.getItem();
+            if(!inInject && IOgnaWeapon.isWeapon(weapon) && skill.isEmpty())
+            {
+                IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weapon.getItem();
+                if(iOgnaWeapon.hasSkill(weapon))
+                {
+                    inInject = true;curOp = EPTOp.SKILL_OUT;curTick = 0;
+                    slots.forEach(slotWidget -> {
+                        slotWidget.setCanPutItems(false);
+                        slotWidget.setCanTakeItems(false);
+                    });
+                    if(skill_progressWidget != null)
+                        skill_progressWidget.setFillDirection(curOp.fillDirection);
+                }
+            }
+        });
     }
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, InjectEPTBlockEntity pBlockEntity)
@@ -159,43 +189,9 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
             pBlockEntity.curTick++;
             if(pBlockEntity.curTick >= pBlockEntity.curOp.baseTick)
             {
-                if(pBlockEntity.curOp == EPTOp.SKILL)
-                {
-                    ItemStack weapon = pBlockEntity.stacks[0];
-                    ItemStack skill = pBlockEntity.stacks[1];
-                    if(pBlockEntity.fillDirection.equals(ProgressTexture.FillDirection.RIGHT_TO_LEFT))
-                    {
-                        if(IOgnaWeapon.isWeapon(weapon) && OgnaSkill.isSkill(skill))
-                        {
-                            IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weapon.getItem();
-                            iOgnaWeapon.onSkillEquip(weapon,((OgnaSkill)skill.getItem()).getDataBaseForStack(skill).getId());
-                            pBlockEntity.stacks[0] = weapon;
-                            pBlockEntity.stacks[1] = ItemStack.EMPTY;
-                        }
-                    }
-                    else
-                    {
-                        if(IOgnaWeapon.isWeapon(weapon) && skill.isEmpty())
-                        {
-                            IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weapon.getItem();
-                            ResourceLocation skillRl = iOgnaWeapon.getWeaponCap(weapon).getSkillCap().getSkill().getId();
-                            iOgnaWeapon.onSkillUnequip(weapon);
-                            pBlockEntity.stacks[0] = weapon;
-                            pBlockEntity.stacks[1] = ServerDataService.get().getSkill(skillRl).buildItemStack(1);
-                        }
-                    }
-                }
-                pBlockEntity.inInject = false;
-                pBlockEntity.curTick = 0;
-                pBlockEntity.activeSlots.forEach(slotWidget -> {
-                    slotWidget.setCanPutItems(true);
-                    slotWidget.setCanTakeItems(true);
-                });
-            }
-            if(pBlockEntity.progressTexture != null)
-            {
-                pBlockEntity.progressTexture.setFillDirection(pBlockEntity.fillDirection);
-                pBlockEntity.progressTexture.setProgress((float)pBlockEntity.curTick / (float)pBlockEntity.curOp.baseTick);
+                if(EPTOp.isSkill(pBlockEntity.curOp))
+                    onSkillOpEnd(pBlockEntity);
+                onProgressEnd(pBlockEntity);
             }
         }
     }
@@ -207,31 +203,41 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
             pBlockEntity.curTick++;
             if(pBlockEntity.curTick >= pBlockEntity.curOp.baseTick)
             {
-                pBlockEntity.inInject = false;
-                pBlockEntity.curTick = 0;
-                pBlockEntity.activeSlots.forEach(slotWidget -> {
-                    slotWidget.setCanPutItems(true);
-                    slotWidget.setCanTakeItems(true);
-                });
-            }
-            if(pBlockEntity.progressTexture != null)
-            {
-                pBlockEntity.progressTexture.setFillDirection(pBlockEntity.fillDirection);
-                pBlockEntity.progressTexture.setProgress((float)pBlockEntity.curTick / (float)pBlockEntity.curOp.baseTick);
+                onProgressEnd(pBlockEntity);
             }
         }
     }
 
-
-    @Override
-    public boolean canPlaceItem(int pIndex, ItemStack pStack)
+    private static void onProgressEnd(InjectEPTBlockEntity pBlockEntity)
     {
-        return switch (pIndex)
+        pBlockEntity.inInject = false;
+        pBlockEntity.curTick = 0;
+        pBlockEntity.slots.forEach(slotWidget -> {
+            slotWidget.setCanPutItems(true);
+            slotWidget.setCanTakeItems(true);
+        });
+    }
+
+    private static void onSkillOpEnd(InjectEPTBlockEntity pBlockEntity)
+    {
+        if(pBlockEntity.skill_weaponSlot == null || pBlockEntity.skill_skillSlot == null)
+            return;
+        ItemStack weapon = pBlockEntity.skill_weaponSlot.getItem();
+        ItemStack skill = pBlockEntity.skill_skillSlot.getItem();
+        boolean available = IOgnaWeapon.isWeapon(weapon) && (pBlockEntity.curOp == EPTOp.SKILL_IN ? OgnaSkill.isSkill(skill) : skill.isEmpty());
+        if(!available)
+            return;
+        IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weapon.getItem();
+        if(pBlockEntity.curOp == EPTOp.SKILL_IN)
         {
-            case 0 -> IOgnaWeapon.isWeapon(pStack);
-            case 1 -> OgnaSkill.isSkill(pStack);
-            default -> false;
-        };
+            iOgnaWeapon.onSkillEquip(weapon,OgnaSkill.getSkillId(skill));
+            pBlockEntity.skill_skillSlot.setItem(ItemStack.EMPTY);
+        }
+        else
+        {
+            pBlockEntity.skill_skillSlot.setItem(OgnaSkill.buildSkillStack(iOgnaWeapon.getSkillId(weapon)));
+            iOgnaWeapon.onSkillUnequip(weapon);
+        }
     }
 
     @Override
@@ -247,22 +253,13 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     }
 
     @Override
-    public ItemStack getItem(int pSlot)
-    {
-        return stacks[pSlot];
-    }
+    public ItemStack getItem(int pSlot) {return stacks[pSlot];}
 
     @Override
-    public ItemStack removeItem(int pSlot, int pAmount)
-    {
-        return ContainerHelper.removeItem(Arrays.stream(this.stacks).toList(), pSlot, pAmount);
-    }
+    public ItemStack removeItem(int pSlot, int pAmount) {return ContainerHelper.removeItem(Arrays.stream(this.stacks).toList(), pSlot, pAmount);}
 
     @Override
-    public ItemStack removeItemNoUpdate(int pSlot)
-    {
-        return ContainerHelper.takeItem(Arrays.stream(this.stacks).toList(), pSlot);
-    }
+    public ItemStack removeItemNoUpdate(int pSlot) {return ContainerHelper.takeItem(Arrays.stream(this.stacks).toList(), pSlot);}
 
     @Override
     public void setItem(int pSlot, ItemStack pStack)

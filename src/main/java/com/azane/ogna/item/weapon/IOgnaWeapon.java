@@ -4,12 +4,14 @@ import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.genable.item.base.IuuidStack;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.item.skill.IEquipSkill;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * 注意区分 IOgnaWeaponCap 和 IOgnaWeapon<br>
@@ -20,6 +22,18 @@ public interface IOgnaWeapon extends IuuidStack, IEquipSkill
 {
     static boolean isWeapon(ItemStack stack) {
         return stack != null && !stack.isEmpty() && stack.getItem() instanceof IOgnaWeapon;
+    }
+
+    @Override
+    default boolean hasSkill(ItemStack stack)
+    {
+        return getWeaponCap(stack).getSkillCap().getSkill() != null;
+    }
+
+    @Override
+    default @Nullable ResourceLocation getSkillId(ItemStack stack)
+    {
+        return hasSkill(stack) ? getWeaponCap(stack).getSkillCap().getSkill().getId() : null;
     }
 
     IOgnaWeaponCap getWeaponCap(ItemStack stack);
