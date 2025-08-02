@@ -37,7 +37,7 @@ public abstract class ItemChip implements IChip
     @Override
     public boolean canPlugIn(ChipSet chipSet, ChipArg arg)
     {
-        return (!chipData.isLimitVolume() || chipSet.getVolumeTake() + getVolumeConsume(chipSet,arg) <= chipSet.getVolumeLimit(arg))
+        return (!chipData.isLimitVolume() || chipSet.getVolumeTake() + getVolumeConsume(chipSet,arg) <= ChipSet.getVolumeLimit(arg))
                 && (!chipData.isLimitSize() || chipSet.getChipCount(id) < chipData.getStackSize());
     }
 

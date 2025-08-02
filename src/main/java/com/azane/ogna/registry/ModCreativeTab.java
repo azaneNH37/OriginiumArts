@@ -1,6 +1,7 @@
 package com.azane.ogna.registry;
 
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.skill.OgnaSkill;
 import com.azane.ogna.item.weapon.OgnaStaff;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +22,6 @@ public class ModCreativeTab
         .title(Component.translatable("ogna.tab.azane"))
         .icon(() -> new ItemStack(Items.ENCHANTED_BOOK))
         .displayItems((parameters, output) -> output.acceptAll(
-            Stream.concat(OgnaStaff.fillCreativeTab().stream(), OgnaSkill.fillCreativeTab().stream()).toList()
+            Stream.concat(Stream.concat(OgnaStaff.fillCreativeTab().stream(), OgnaSkill.fillCreativeTab().stream()), OgnaChip.fillCreativeTab().stream()).toList()
         )).build());
 }

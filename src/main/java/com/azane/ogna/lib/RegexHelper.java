@@ -1,4 +1,4 @@
-package com.azane.ogna.client.lib;
+package com.azane.ogna.lib;
 
 import java.util.regex.Pattern;
 

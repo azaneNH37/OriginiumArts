@@ -1,6 +1,7 @@
 package com.azane.ogna.combat.chip;
 
 import com.azane.ogna.genable.item.chip.IChip;
+import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModAttribute;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 public class ChipSet implements INBTSerializable<CompoundTag>
 {
@@ -40,7 +42,17 @@ public class ChipSet implements INBTSerializable<CompoundTag>
             triggeredChips.put(timing, new ArrayList<>());
     }
 
-    public int getVolumeLimit(ChipArg arg)
+    public static int getVolumeTake(ChipArg arg)
+    {
+        if(IOgnaWeapon.isWeapon(arg.getWeaponStack()))
+        {
+            IOgnaWeapon weapon = (IOgnaWeapon)arg.getWeaponStack().getItem();
+            return weapon.getWeaponCap(arg.getWeaponStack()).getChipSet().getVolumeTake();
+        }
+        return 0;
+    }
+
+    public static int getVolumeLimit(ChipArg arg)
     {
         if(IOgnaWeapon.isWeapon(arg.getWeaponStack()))
         {
@@ -96,6 +108,13 @@ public class ChipSet implements INBTSerializable<CompoundTag>
     public int getChipCount(ResourceLocation rl)
     {
         return chips.getOrDefault(rl, 0);
+    }
+
+    public List<IChip> getStoredChips(Predicate<IChip> predicate)
+    {
+        cleanUp();
+        return chips.keySet().stream()
+            .map(OgnaChip::getChip).filter(predicate).toList();
     }
 
     public List<IChip> gather(ChipTiming timing)

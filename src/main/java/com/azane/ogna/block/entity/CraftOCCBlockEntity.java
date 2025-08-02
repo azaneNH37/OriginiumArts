@@ -34,7 +34,7 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azane.ogna.client.lib.RegexHelper.*;
+import static com.azane.ogna.lib.RegexHelper.*;
 
 public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged
 {

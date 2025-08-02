@@ -6,18 +6,22 @@
   "ogna.gui.craft.display.item.model": "Pre-Compiled Item Model",
   "ogna.gui.inject.title": "Etching Protocol Terminal (EPT)",
   "ogna.gui.inject.tab.skill": "Skill Install/Uninstall",
-  "ogna.gui.inject.tab.chip": "Chip Insert/Eject",
+  "ogna.gui.inject.tab.chip": "Module Insert/Eject",
   "ogna.gui.inject.skill.in": "Install Skill",
   "ogna.gui.inject.skill.out": "Uninstall Skill",
-  "ogna.gui.inject.skill.slot.weapon": "Weapon Slot",
+  "ogna.gui.inject.chip.in": "Install Module",
+  "ogna.gui.inject.chip.out": "Uninstall Module",
+  "ogna.gui.inject.skill.slot.weapon": "Arts Unit Slot",
   "ogna.gui.inject.skill.slot.skill": "Skill Slot",
+  "ogna.gui.inject.chip.slot.chip": "Module Slot",
 
+  "ogna.genable.chip.missing.name": "<Module MISSING>",
   "ogna.genable.weapon.missing.name": "<WEAPON MISSING>",
   "ogna.genable.skill.missing.name": "<SKILL MISSING>",
   "ogna.genable.weapon.staff.lockkey.name": "\"Lock and Key\"",
   "ogna.genable.skill.key_of_chronology.name": "Key of Chronology",
 
-  "ogna.genable.chip.atk.1.name": "Attack Chip I",
-  "ogna.genable.chip.consume.1.name": "Energy-Save Chip I",
-  "ogna.genable.chip.store.1.name": "Energy-Storage Chip I"
+  "ogna.genable.chip.atk.1.name": "Attack UP Module I",
+  "ogna.genable.chip.consume.1.name": "Energy-Save Module I",
+  "ogna.genable.chip.store.1.name": "Energy-Storage Module I"
 }

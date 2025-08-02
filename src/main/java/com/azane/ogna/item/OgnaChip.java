@@ -57,6 +57,11 @@ public class OgnaChip extends Item implements IGenItem, IPolyItemDataBase<IChip>
         return getDataBaseForStack(pStack).getDisplayContext().getName();
     }
 
+    public static IChip getChip(ResourceLocation rl)
+    {
+        return CommonDataService.get().getChip(rl);
+    }
+
     public static ResourceLocation getChipId(ItemStack stack)
     {
         if(!isChip(stack)) return null;

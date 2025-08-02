@@ -2,7 +2,7 @@ package com.azane.ogna.client.gui.ldlib.custom;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
-import com.azane.ogna.client.lib.RegexHelper;
+import com.azane.ogna.lib.RegexHelper;
 import com.azane.ogna.craft.RlResultRecipe;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.resource.service.CommonDataService;
@@ -10,18 +10,16 @@ import com.azane.ogna.util.RlrRecipes;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.Configurable;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.LDLRegister;
 import com.lowdragmc.lowdraglib.gui.texture.*;
-import com.lowdragmc.lowdraglib.gui.util.ClickData;
 import com.lowdragmc.lowdraglib.gui.widget.*;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.azane.ogna.client.lib.RegexHelper.endWith;
+import static com.azane.ogna.lib.RegexHelper.endWith;
 
 @LDLRegister(name = "menu.item",group = "widget.custom")
 public class MenuItemWidget extends WidgetGroup
