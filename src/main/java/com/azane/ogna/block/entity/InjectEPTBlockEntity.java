@@ -6,9 +6,7 @@ import com.azane.ogna.client.gui.ldlib.extra.PredicateSlotWidget;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
 import com.azane.ogna.combat.chip.ChipArg;
 import com.azane.ogna.combat.chip.ChipSet;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.item.chip.IChip;
-import com.azane.ogna.genable.item.chip.ItemChip;
 import com.azane.ogna.inventory.MenuItemDisplay;
 import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.skill.OgnaSkill;
@@ -35,7 +33,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -123,9 +120,6 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     @Nullable
     @Setter
     private ChipWidget selectedChipWidget;
-    @Setter
-    @Getter
-    private boolean chipListDirty = true;
 
     private final List<SlotWidget> slots = new ArrayList<>();
 
@@ -240,7 +234,10 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
 
         volumeIcon.setProgressSupplier(()-> {
             if(chip_weaponSlot == null || chip_weaponSlot.getItem().isEmpty())
+            {
+                volumeText.setText("NaN/NaN");
                 return 0.0;
+            }
             int take = ChipSet.getVolumeTake(ChipArg.of(player, chip_weaponSlot.getItem()));
             int limit = ChipSet.getVolumeLimit(ChipArg.of(player, chip_weaponSlot.getItem()));
             volumeText.setText("%d/%d".formatted(take, limit));
@@ -274,10 +271,10 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
                 ChipArg arg = ChipArg.of(player, weapon);
                 if(iChip.canPlugIn(chipSet,arg))
                 {
-                    DebugLogger.log("can Plug in");
                     chipSet.insertChip(iChip,arg);
                     chip.shrink(1);
-                    setChipListDirty(true);
+                    cleanUpChipList();
+                    sendSync((ServerPlayer) player, weapon, 2);
                 }
             }
         });
@@ -309,7 +306,8 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
                         chipSet.removeChip(iChip,arg);
                         chipSet.cleanUp();
                         chip_chipSlot.setItem(iChip.buildItemStack(1));
-                        setChipListDirty(true);
+                        cleanUpChipList();
+                        sendSync((ServerPlayer) player, weapon, 2);
                     }
                 }
             }
@@ -326,9 +324,19 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
             if(iOgnaWeapon.getStackUUID(weaponStack).equals(packet.getStackUUID().toString()))
             {
                 iOgnaWeapon.getWeaponCap(weaponStack).deserializeNBT(packet.getCapNBT());
-                DebugLogger.log("client sync weapon cap: {}, {}", iOgnaWeapon.getStackUUID(weaponStack), packet.getCapNBT().toString());
                 cleanUpChipList();
             }
+        }
+    }
+
+    private void sendSync(ServerPlayer player,ItemStack weaponStack, int slotIndex)
+    {
+        if(IOgnaWeapon.isWeapon(weaponStack))
+        {
+            IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weaponStack.getItem();
+            OgnmChannel.DEFAULT.sendTo(new SyncEPTWeaponStackCapPacket(
+                UUID.fromString(iOgnaWeapon.getOrCreateStackUUID(weaponStack)),
+                iOgnaWeapon.getWeaponCap(weaponStack).serializeNBT(),this.getBlockPos(), slotIndex), player);
         }
     }
 
@@ -346,25 +354,15 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
             ChipSet chipSet = iOgnaWeapon.getWeaponCap(weaponStack).getChipSet();
             if(chipSet != null)
             {
-                DebugLogger.log("env:{},nbt:{}",this.level.isClientSide,chipSet.serializeNBT().toString());
                 ChipWidget.refreshChipList(chipListWidget, chipSet, chipListDisplay, this::setSelectedChipWidget);
-            }
-            if(!this.level.isClientSide())
-            {
-                OgnmChannel.DEFAULT.sendToWithinRange(new SyncEPTWeaponStackCapPacket(
-                    UUID.fromString(iOgnaWeapon.getOrCreateStackUUID(weaponStack)),
-                    iOgnaWeapon.getWeaponCap(weaponStack).serializeNBT(),this.getBlockPos(), 2), (ServerLevel) this.level, this.getBlockPos(),16);
             }
         }
         else
             chipListWidget.clearAllWidgets();
-        setChipListDirty(false);
     }
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, InjectEPTBlockEntity pBlockEntity)
     {
-        if(pBlockEntity.isChipListDirty())
-            pBlockEntity.cleanUpChipList();
         if(pBlockEntity.inInject)
         {
             pBlockEntity.curTick++;
@@ -379,8 +377,6 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
 
     public static void clientTick(Level pLevel, BlockPos pPos, BlockState pState, InjectEPTBlockEntity pBlockEntity)
     {
-        if(pBlockEntity.isChipListDirty())
-            pBlockEntity.cleanUpChipList();
         if(pBlockEntity.inInject)
         {
             pBlockEntity.curTick++;
@@ -450,11 +446,10 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     @Override
     public void setItem(int pSlot, ItemStack pStack)
     {
-        if(pSlot == 2 && !this.level.isClientSide())
-        {
-            setChipListDirty(true);
-        }
+
         this.stacks[pSlot] =  pStack;
+        if(pSlot == 2)
+            cleanUpChipList();
         if (pStack.getCount() > this.getMaxStackSize()) {
             pStack.setCount(this.getMaxStackSize());
         }
