@@ -1,0 +1,39 @@
+{
+  "type": "ognmarts:ognm_world",
+  "config": {
+    "top_block":{
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 1,
+          "data": {
+            "Name": "ognmarts:aognm_l"
+          }
+        },
+        {
+          "weight": 3,
+          "data": {
+            "Name": "ognmarts:aognm_m"
+          }
+        }
+      ]
+    },
+    "bottom_block": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 1,
+          "data": {
+            "Name": "ognmarts:aognm_l"
+          }
+        },
+        {
+          "weight": 3,
+          "data": {
+            "Name": "ognmarts:aognm_m"
+          }
+        }
+      ]
+    }
+  }
+}

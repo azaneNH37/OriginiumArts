@@ -1,5 +1,6 @@
 package com.azane.ogna.block;
 
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.registry.ModBlock;
 import com.ibm.icu.impl.Pair;
 import net.minecraft.core.BlockPos;
@@ -54,6 +55,7 @@ public class ActiveOriginiumBlock extends Block
     public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston)
     {
         if(pLevel.isClientSide)return;
+        //DebugLogger.log("aognm on Place.");
         if(pState.getValue(ACTIVITY) == ORI)
         {
             activate(pState,pLevel,pPos);
@@ -67,9 +69,17 @@ public class ActiveOriginiumBlock extends Block
         }
     }
 
+
+
     @Override
     public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom)
     {
+        if(pState.getValue(ACTIVITY) == ORI)
+        {
+            activate(pState,pLevel,pPos);
+            return;
+        }
+        //DebugLogger.log("aognm on Tick.");
         int pDir = pState.getValue(DIRECTION);
         int pAng = pState.getValue(ANGLE);
         int pAxis = pState.getValue(BLOCKPOS_AXIS);
@@ -134,14 +144,14 @@ public class ActiveOriginiumBlock extends Block
                 .setValue(GROW,true)
                 .setValue(BLOCKPOS_AXIS, pAttachAxis.first)
                 .setValue(BLOCKPOS_AXIS_DIRECTION,pAttachAxis.second)
-            ,19);
+            ,3);
     }
     protected void expand(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom, int declineFloor,int declineCeil,boolean grow)
     {
         int pDecline = pRandom.nextInt(declineFloor,declineCeil);
         if(!pLevel.getBlockState(pPos).hasProperty(ACTIVITY))
         {
-            pLevel.setBlock(pPos,pState.setValue(ACTIVITY,max(pState.getValue(ACTIVITY)-pDecline,INERT)).setValue(GROW,grow),19);
+            pLevel.setBlock(pPos,pState.setValue(ACTIVITY,max(pState.getValue(ACTIVITY)-pDecline,INERT)).setValue(GROW,grow),3);
         }
     }
 }

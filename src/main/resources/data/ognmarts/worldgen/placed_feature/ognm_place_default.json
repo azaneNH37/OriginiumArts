@@ -1,0 +1,20 @@
+{
+  "feature": "ognmarts:ognm_default",
+  "placement": [
+    {
+      "type": "minecraft:count_on_every_layer",
+      "count": 1
+    },
+    {
+      "type": "rarity_filter",
+      "chance": 40
+    },
+    {
+      "type": "heightmap",
+      "heightmap":"MOTION_BLOCKING_NO_LEAVES"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}
