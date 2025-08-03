@@ -1,0 +1,8 @@
+{
+	"parent": "ognmarts:block/cube_crystal_base",
+	"textures": {
+		"light": "ognmarts:block/originium_active",
+		"shade": "ognmarts:block/originium_active_shade",
+		"highlight": "ognmarts:block/originium_active_highlight"
+	}
+}

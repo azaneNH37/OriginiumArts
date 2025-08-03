@@ -1,0 +1,31 @@
+{
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "#light",
+    "light": "originium:block/originium_active",
+    "shade": "originium:block/originium_active",
+    "highlight": "originium:block/originium_active_highlight"
+  },
+  "elements": [
+    {   "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#shade", "cullface": "down", "tintindex": 0 },
+        "up":    { "texture": "#light", "cullface": "up" },
+        "north": { "texture": "#shade", "cullface": "north","tintindex": 0 },
+        "south": { "texture": "#light", "cullface": "south" },
+        "west":  { "texture": "#shade", "cullface": "west","tintindex": 0 },
+        "east":  { "texture": "#light", "cullface": "east" }
+      }
+    },
+    {   "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#highlight", "cullface": "down"},
+        "north": { "texture": "#highlight", "cullface": "north" },
+        "west":  { "texture": "#highlight", "cullface": "west" }
+      }
+    }
+  ]
+}
