@@ -2,6 +2,7 @@ package com.azane.ogna.genable.entity;
 
 import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.data.GeckoAssetData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -51,6 +52,11 @@ public class BladeEffectDatabase implements IBladeEffect
 
     @SerializedName("transform")
     private BladeConfig config = BladeConfig.DEFAULT;
+
+    @SerializedName("fx")
+    @Getter
+    @Nullable
+    private FxData fxData;
 
     //TODO: allow user to temporarily change the config
     @Override

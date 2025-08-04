@@ -4,6 +4,7 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.skill.OgnaSkill;
 import com.azane.ogna.item.weapon.OgnaStaff;
+import com.azane.ogna.item.weapon.OgnaSword;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -15,13 +16,14 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
 public class ModCreativeTab
 {
-    public static final Set<RegistryObject<Item>> CREATIVE_TAB_ITEMS = new HashSet<>();
+    public static final Set<RegistryObject<Item>> CREATIVE_TAB_ITEMS = new LinkedHashSet<>();
 
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OriginiumArts.MOD_ID);
 
@@ -29,7 +31,7 @@ public class ModCreativeTab
         .title(Component.translatable("ogna.tab.azane"))
         .icon(() -> new ItemStack(Items.ENCHANTED_BOOK))
         .displayItems((parameters, output) -> output.acceptAll(
-            Stream.of(OgnaStaff.fillCreativeTab(),OgnaSkill.fillCreativeTab(),OgnaChip.fillCreativeTab(),fillCreativeTab())
+            Stream.of(OgnaStaff.fillCreativeTab(), OgnaSword.fillCreativeTab(),OgnaSkill.fillCreativeTab(),OgnaChip.fillCreativeTab(),fillCreativeTab())
                 .flatMap(List::stream).distinct().toList()
         )).build());
 

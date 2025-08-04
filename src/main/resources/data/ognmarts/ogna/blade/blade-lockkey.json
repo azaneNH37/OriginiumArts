@@ -15,5 +15,10 @@
   },
   "gecko_asset": {
     "all": "ognmarts:blade-lockkey"
+  },
+  "fx": {
+    "awake": {
+      "id": "ognmarts:roman"
+    }
   }
 }

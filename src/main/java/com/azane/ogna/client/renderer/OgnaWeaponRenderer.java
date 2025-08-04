@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 import static com.azane.ogna.client.lib.OffHandItemTransform.*;
 
@@ -26,6 +27,7 @@ public class OgnaWeaponRenderer<T extends OgnaWeapon> extends GeoItemRenderer<T>
     public OgnaWeaponRenderer()
     {
         super(new OgnaWeaponModel<>());
+        addRenderLayer(new AutoGlowingGeoLayer<>(this));
         minecraft = Minecraft.getInstance();
         itemRenderer = minecraft.getItemRenderer();
         modelManager = minecraft.getModelManager();

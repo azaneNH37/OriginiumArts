@@ -5,6 +5,7 @@ import com.azane.ogna.genable.entity.IBullet;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
+import com.azane.ogna.genable.item.weapon.ISwordDataBase;
 import com.azane.ogna.lib.GsonExtra;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,8 +33,10 @@ public interface IResourceProvider
     @Nullable IBullet getBullet(ResourceLocation id);
 
     Set<Map.Entry<ResourceLocation, IStaffDataBase>> getAllStaffs();
-
     @Nullable IStaffDataBase getStaff(ResourceLocation id);
+
+    Set<Map.Entry<ResourceLocation, ISwordDataBase>> getAllSwords();
+    @Nullable ISwordDataBase getSword(ResourceLocation id);
 
     Set<Map.Entry<ResourceLocation, ISkill>> getAllSkills();
     @Nullable ISkill getSkill(ResourceLocation id);

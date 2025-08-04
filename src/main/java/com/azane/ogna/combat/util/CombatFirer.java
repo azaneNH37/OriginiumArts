@@ -5,6 +5,7 @@ import com.azane.ogna.combat.chip.ChipTiming;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.DmgDataSet;
 import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.AtkEntityData;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.genable.item.skill.ISkill;
@@ -31,6 +32,8 @@ public final class CombatFirer
         AtkEntityData s_ae = skill == null ? null : skill.getAtkEntities();
         AtkEntityData.AtkUnit AEunit = s_ae == null ? w_ae.getAtkUnit(AEunitID) :
             s_ae.hasAtkUnit(AEunitID) ? s_ae.getAtkUnit(AEunitID) : w_ae.getAtkUnit(AEunitID);
+
+        DebugLogger.log("{},{}",AEunitID,AEunit.getId());
 
         DmgDataSet w_dd = weapon.getDefaultDatabase(stack).getOgnaWeaponData().getDmgDataSet();
         DmgDataSet s_dd = skill == null ? null : skill.getSkillData().getDmgDataSet();

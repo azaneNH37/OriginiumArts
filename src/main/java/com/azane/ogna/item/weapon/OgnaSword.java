@@ -3,9 +3,10 @@ package com.azane.ogna.item.weapon;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.client.renderer.OgnaWeaponRenderer;
 import com.azane.ogna.combat.util.CombatFirer;
-import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
-import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
+import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
+import com.azane.ogna.genable.item.weapon.ISwordDataBase;
+import com.azane.ogna.lib.NbtHelper;
 import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.resource.service.ServerDataService;
 import com.google.common.collect.ImmutableMap;
@@ -31,33 +32,35 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBase<IStaffDataBase>
+public class OgnaSword extends DefaultOgnaPolyWeapon implements IPolyItemDataBase<ISwordDataBase>
 {
     /**
      * gecko动画
      */
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("staff.idle");
-    private static final RawAnimation IDLE_SKILL = RawAnimation.begin().thenLoop("staff.idle.skill");
-    private static final RawAnimation ATTACK_NORMAL = RawAnimation.begin().thenPlay("staff.attack.normal");
-    private static final RawAnimation ATTACK_SKILL = RawAnimation.begin().thenPlay("staff.attack.skill");
-    private static final RawAnimation SKILL_START = RawAnimation.begin().thenPlay("staff.skill.start");
-    private static final RawAnimation SKILL_END = RawAnimation.begin().thenPlay("staff.skill.end");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("sword.idle");
+    private static final RawAnimation IDLE_SKILL = RawAnimation.begin().thenLoop("sword.idle.skill");
+    private static final RawAnimation ATTACK_NORMAL = RawAnimation.begin().thenPlay("sword.attack.normal");
+    private static final RawAnimation ATTACK_NORMAL_1 = RawAnimation.begin().thenPlay("sword.attack.normal.1");
+    private static final RawAnimation ATTACK_SKILL = RawAnimation.begin().thenPlay("sword.attack.skill");
+    private static final RawAnimation SKILL_START = RawAnimation.begin().thenPlay("sword.skill.start");
+    private static final RawAnimation SKILL_END = RawAnimation.begin().thenPlay("sword.skill.end");
 
     @Getter
     private final Map<Integer, String> animeHashMap = new ImmutableMap.Builder<Integer,String>()
-        .put(IDLE.hashCode(),"staff.idle")
-        .put(ATTACK_NORMAL.hashCode(),"staff.attack.normal")
-        .put(ATTACK_SKILL.hashCode(),"staff.attack.skill")
-        .put(IDLE_SKILL.hashCode(),"staff.idle.skill")
-        .put(SKILL_START.hashCode(),"staff.skill.start")
-        .put(SKILL_END.hashCode(),"staff.skill.end")
+        .put(IDLE.hashCode(),"sword.idle")
+        .put(ATTACK_NORMAL.hashCode(),"sword.attack.normal")
+        .put(ATTACK_NORMAL_1.hashCode(),"sword.attack.normal")
+        .put(ATTACK_SKILL.hashCode(),"sword.attack.skill")
+        .put(IDLE_SKILL.hashCode(),"sword.idle.skill")
+        .put(SKILL_START.hashCode(),"sword.skill.start")
+        .put(SKILL_END.hashCode(),"sword.skill.end")
         .build();
 
     @Getter
-    private final Class<IStaffDataBase> dataBaseType = IStaffDataBase.class;
+    private final Class<ISwordDataBase> dataBaseType = ISwordDataBase.class;
     //运行时根据mc机制特定Item类可以确保只有一个
     @Getter
-    private final Map<ResourceLocation, IStaffDataBase> databaseCache = new ConcurrentHashMap<>();
+    private final Map<ResourceLocation, ISwordDataBase> databaseCache = new ConcurrentHashMap<>();
 
     @Override
     public IDefaultOgnaWeaponDataBase getDefaultDatabase(ItemStack stack)
@@ -66,7 +69,7 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
     }
 
     @Override
-    public OgnaStaff getItem(){return this;}
+    public OgnaSword getItem(){return this;}
 
     @Override
     public boolean isDataBaseForStack(ItemStack itemStack)
@@ -91,6 +94,7 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
                     return event.setAndContinue(IDLE);
                 })
                 .triggerableAnim("attack.normal", ATTACK_NORMAL)
+                .triggerableAnim("attack.normal.1", ATTACK_NORMAL_1)
                 .triggerableAnim("attack.skill", ATTACK_SKILL)
                 .triggerableAnim("skill.start", SKILL_START)
                 .triggerableAnim("skill.end", SKILL_END)
@@ -102,7 +106,7 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
     {
         consumer.accept(new IClientItemExtensions()
         {
-            private OgnaWeaponRenderer<OgnaStaff> renderer;
+            private OgnaWeaponRenderer<OgnaSword> renderer;
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer()
             {
@@ -118,14 +122,14 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
     //TODO:这里可以发现创造模式下通过tab获取的所有数据库来源相同的itemStack共享一个uuid
     public static NonNullList<ItemStack> fillCreativeTab() {
         NonNullList<ItemStack> stacks = NonNullList.create();
-        ServerDataService.get().getAllStaffs().stream().sorted((r, i)->r.getKey().getPath().hashCode()).forEach(entry->{
+        ServerDataService.get().getAllSwords().stream().sorted((r, i)->r.getKey().getPath().hashCode()).forEach(entry->{
             stacks.add(entry.getValue().buildItemStack(1));
         });
         return stacks;
     }
 
 
-    public OgnaStaff() { super(); }
+    public OgnaSword() { super(); }
 
 
     @Override
@@ -156,16 +160,21 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
                 -cap.submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_CONSUME.get(), pPlayer, stack),
                 true,pPlayer,stack
             );
+
+            int curHit = NbtHelper.getOrCreate(stack.getOrCreateTag(),"ognaCurHit",0);
+            NbtHelper.put(stack.getOrCreateTag(), "ognaCurHit", (curHit + 1)%2);
+            String hitSuffix = curHit == 0 ? "" : ".%d".formatted(curHit);
+
             if(isInSkill)
                 triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack.skill");
             else
-                triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack.normal");
+                triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack.normal"+hitSuffix);
 
             if(!isInSkill || (cap.getSkillCap().getSkill() != null && !cap.getSkillCap().getSkill().onServerAttack(
                 serverLevel, pPlayer,
                 this, stack, attackType, chargeTime, true)))
             {
-                CombatFirer.fireDefault(serverLevel, pPlayer,this, cap, stack, "normal", "normal");
+                CombatFirer.fireDefault(serverLevel, pPlayer,this, cap, stack, "normal"+hitSuffix, "normal");
             }
         }
     }

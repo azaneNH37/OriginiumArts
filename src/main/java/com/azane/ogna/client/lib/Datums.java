@@ -9,10 +9,10 @@ package com.azane.ogna.client.lib;
 public enum Datums
 {
     none(0,0,0),
-    hand1(0D,-0.5D,-1D),
+    hand1(0D,-0.8D,-0.8D),
     central1(-0.5D,-0.5D,-1D),
     front1(-0.5D,-0.5D,-1.25D),
-    hand3(0D,-0.5D,-1D),
+    hand3(-0.1D,-0.8D,-0.8D),
     central3(-0.5D,-0.5D,-0.5D),
     front3(-0.5D,-0.5D,-1.5D);
 

@@ -1,5 +1,6 @@
 package com.azane.ogna.genable.entity;
 
+import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.data.GeckoAssetData;
 import com.azane.ogna.resource.helper.IresourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -31,6 +32,8 @@ public interface IBladeEffect extends IresourceLocation
 
     @Nullable
     GeckoAssetData getGeckoAsset();
+    @Nullable
+    FxData getFxData();
 
     /**
      * 获取特效的变换配置

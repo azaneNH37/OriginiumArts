@@ -5,12 +5,14 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.manager.BladeEffectAABBManager;
 import com.azane.ogna.lib.EdataSerializer;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModEntity;
 import com.azane.ogna.resource.service.CommonDataService;
+import com.azane.ogna.util.OgnaFxHelper;
 import com.lowdragmc.photon.client.fx.EntityEffect;
 import com.lowdragmc.photon.client.fx.FX;
 import com.lowdragmc.photon.client.fx.FXHelper;
@@ -128,9 +130,16 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         {
             if(age == getEntityData().get(DELAY))
             {
-                FX fx = FXHelper.getFX(Objects.requireNonNull(RlHelper.build(OriginiumArts.MOD_ID, "roman")));
-                var effect = new EntityEffect(fx, this.level(), this, EntityEffect.AutoRotate.FORWARD);
-                effect.start();
+                //FX fx = FXHelper.getFX(Objects.requireNonNull(RlHelper.build(OriginiumArts.MOD_ID, "roman")));
+                //var effect = new EntityEffect(fx, this.level(), this, EntityEffect.AutoRotate.FORWARD);
+                //effect.start();
+                OgnaFxHelper.extractFxUnit(getDataBase().getFxData(), FxData::getAwakeFx)
+                    .map(FxData.FxUnit::getId).map(FXHelper::getFX)
+                    .ifPresent(fx->{
+                        var effect = new EntityEffect(fx, this.level(), this, EntityEffect.AutoRotate.FORWARD);
+                        effect.setForcedDeath(true);
+                        effect.start();
+                    });
             }
         }
         else

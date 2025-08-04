@@ -7,6 +7,7 @@ import com.azane.ogna.genable.entity.IBullet;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
+import com.azane.ogna.genable.item.weapon.ISwordDataBase;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.resource.manager.DynamicDataManager;
 import com.azane.ogna.resource.manager.INetworkCacheReloadListener;
@@ -30,6 +31,7 @@ public abstract class CommonDataService implements IResourceProvider
     protected DynamicDataManager<IBladeEffect> bladeEffects;
     protected DynamicDataManager<IBullet> bullets;
     protected DyItemDataManager<IStaffDataBase> staffs;
+    protected DyItemDataManager<ISwordDataBase> swords;
     protected DyItemDataManager<ISkill> skills;
     protected DyItemDataManager<IChip> chips;
     //游戏内自存储的data
@@ -62,12 +64,16 @@ public abstract class CommonDataService implements IResourceProvider
     {
         return staffs.getAllDataEntries();
     }
-
     @Override
     public @Nullable IStaffDataBase getStaff(ResourceLocation id)
     {
         return staffs.getData(id);
     }
+
+    @Override
+    public Set<Map.Entry<ResourceLocation, ISwordDataBase>> getAllSwords() {return swords.getAllDataEntries();}
+    @Override
+    public @Nullable ISwordDataBase getSword(ResourceLocation id) {return swords.getData(id);}
 
     @Override
     public Set<Map.Entry<ResourceLocation, ISkill>> getAllSkills() {return skills.getAllDataEntries();}
@@ -89,6 +95,7 @@ public abstract class CommonDataService implements IResourceProvider
        //实例化全局数据
         bladeEffects = new DynamicDataManager<>(IBladeEffect.class,GSON,"ogna/blade","BladeEffects",JsonTypeManagers.modTypeManager,DataServiceInit.bladeEffectInit);
         staffs = new DyItemDataManager<>(IStaffDataBase.class,GSON,"ogna/staff","Staffs",JsonTypeManagers.modTypeManager,DataServiceInit.staffInit);
+        swords = new DyItemDataManager<>(ISwordDataBase.class,GSON,"ogna/sword","Swords",JsonTypeManagers.modTypeManager,DataServiceInit.swordInit);
         bullets = new DynamicDataManager<>(IBullet.class,GSON,"ogna/bullet","Bullets",JsonTypeManagers.modTypeManager,DataServiceInit.bulletInit);
         skills = new DyItemDataManager<>(ISkill.class,GSON,"ogna/skill","Skills",JsonTypeManagers.modTypeManager,DataServiceInit.skillInit);
         chips = new DyItemDataManager<>(IChip.class,GSON,"ogna/chip","Chips",JsonTypeManagers.modTypeManager,DataServiceInit.chipInit);
@@ -98,6 +105,7 @@ public abstract class CommonDataService implements IResourceProvider
         //注册C/S传递和reload加载
         register(bladeEffects, "blade_effects", builder);
         register(staffs, "staffs", builder);
+        register(swords, "swords", builder);
         register(bullets, "bullets", builder);
         register(skills, "skills", builder);
         register(chips, "chips", builder);

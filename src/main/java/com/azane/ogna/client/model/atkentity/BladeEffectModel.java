@@ -12,9 +12,6 @@ import java.util.Optional;
 
 public class BladeEffectModel extends DefaultedEntityGeoModel<BladeEffect>
 {
-    private ResourceLocation cachedTexture;
-    private ResourceLocation cachedModelResource;
-    private ResourceLocation cachedAnimation;
 
     public BladeEffectModel()
     {
@@ -29,24 +26,19 @@ public class BladeEffectModel extends DefaultedEntityGeoModel<BladeEffect>
     @Override
     public ResourceLocation getModelResource(BladeEffect animatable)
     {
-        if(cachedModelResource == null)
-            cachedModelResource = buildFormattedModelPath(Optional.ofNullable(animatable.getDataBase().getGeckoAsset()).map(GeckoAssetData::getModel).orElse(animatable.getDataBase().getId()));
-        return cachedModelResource;
+        return buildFormattedModelPath(Optional.ofNullable(animatable.getDataBase().getGeckoAsset()).map(GeckoAssetData::getModel).orElse(animatable.getDataBase().getId()));
     }
 
     @Override
     public ResourceLocation getTextureResource(BladeEffect animatable)
     {
-        if(cachedTexture == null)
-            cachedTexture = buildFormattedTexturePath(Optional.ofNullable(animatable.getDataBase().getGeckoAsset()).map(GeckoAssetData::getTexture).orElse(animatable.getDataBase().getId()));
-        return cachedTexture;
+        return buildFormattedTexturePath(Optional.ofNullable(animatable.getDataBase().getGeckoAsset()).map(GeckoAssetData::getTexture).orElse(animatable.getDataBase().getId()));
+
     }
 
     @Override
     public ResourceLocation getAnimationResource(BladeEffect animatable)
     {
-        if(cachedAnimation == null)
-            cachedAnimation = buildFormattedAnimationPath(Optional.ofNullable(animatable.getDataBase().getGeckoAsset()).map(GeckoAssetData::getAnimation).orElse(animatable.getDataBase().getId()));
-        return cachedAnimation;
+        return buildFormattedAnimationPath(Optional.ofNullable(animatable.getDataBase().getGeckoAsset()).map(GeckoAssetData::getAnimation).orElse(animatable.getDataBase().getId()));
     }
 }

@@ -91,7 +91,7 @@ public class BladeEffectAABBManager
 
         // 获取实体的旋转角度（度数）
         float entityYRot = entity.getYRot(); // 水平旋转（偏航角）
-        float entityXRot = 0;//entity.getXRot(); // 垂直旋转（俯仰角）
+        float entityXRot = entity.getXRot(); // 垂直旋转（俯仰角）
 
         // 转换为弧度
         double yawRad = Math.toRadians(entityYRot);
@@ -106,7 +106,7 @@ public class BladeEffectAABBManager
             -Math.sin(pitchRad),                     // Y分量（俯仰）
             Math.cos(yawRad) * Math.cos(pitchRad)    // Z分量
         ).normalize();
-         */
+        */
         //TODO:是否禁用俯仰角作为config选项
         Vec3 forward = new Vec3(
             -Math.sin(yawRad),  // X分量

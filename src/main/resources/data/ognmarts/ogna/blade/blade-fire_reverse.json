@@ -14,6 +14,7 @@
     "heightScale": 1.0
   },
   "gecko_asset": {
-    "all": "ognmarts:blade-fire"
+    "all": "ognmarts:blade-fire_reverse",
+    "texture": "ognmarts:blade-fire"
   }
 }
