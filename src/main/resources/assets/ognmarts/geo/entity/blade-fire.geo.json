@@ -1,0 +1,40 @@
+{
+	"format_version": "1.21.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 256,
+				"texture_height": 256,
+				"visible_bounds_width": 8,
+				"visible_bounds_height": 4,
+				"visible_bounds_offset": [0, 1, 0]
+			},
+			"bones": [
+				{
+					"name": "blade",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "display",
+					"parent": "blade",
+					"pivot": [0, 0, -22],
+					"cubes": [
+						{
+							"origin": [-24, 0, -28],
+							"size": [48, 0.2, 12],
+							"uv": {
+								"north": {"uv": [0, 0], "uv_size": [8, 0]},
+								"east": {"uv": [0, 0], "uv_size": [32, 0]},
+								"south": {"uv": [0, 0], "uv_size": [8, 0]},
+								"west": {"uv": [0, 0], "uv_size": [32, 0]},
+								"up": {"uv": [256, 89], "uv_size": [-256, 91], "uv_rotation": 180},
+								"down": {"uv": [256, 180], "uv_size": [-256, -91], "uv_rotation": 180}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

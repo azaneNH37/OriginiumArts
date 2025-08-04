@@ -1,0 +1,19 @@
+{
+  "life": 9,
+  "hitframe": [4],
+  "color": 0,
+  "transform": {
+    "distance": 1.2,
+    "length": 0.6,
+    "width": 8,
+    "height": 0.5,
+    "xRot": 0,
+    "yRot": 0,
+    "naturalScale": 1.0,
+    "crossScale": 1.0,
+    "heightScale": 1.0
+  },
+  "gecko_asset": {
+    "all": "ognmarts:blade-fire"
+  }
+}
