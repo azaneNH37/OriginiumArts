@@ -18,7 +18,7 @@
 			"animation_length": 0.3333,
 			"bones": {
 				"core": {
-					"position": [0, 2, 0]
+					"position": [0, 0, 0]
 				},
 				"standard": {
 					"rotation": [-87.39755, 49.38326, 3.54424],
@@ -40,7 +40,7 @@
 			"animation_length": 0.3333,
 			"bones": {
 				"core": {
-					"position": [0, 2, 0]
+					"position": [0, 0, 0]
 				},
 				"standard": {
 					"rotation": [-89.189, 58.09955, -176.42199],

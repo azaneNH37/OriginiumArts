@@ -91,7 +91,7 @@ public class BladeEffectAABBManager
 
         // 获取实体的旋转角度（度数）
         float entityYRot = entity.getYRot(); // 水平旋转（偏航角）
-        float entityXRot = entity.getXRot(); // 垂直旋转（俯仰角）
+        float entityXRot = 0;//entity.getXRot(); // 垂直旋转（俯仰角）
 
         // 转换为弧度
         double yawRad = Math.toRadians(entityYRot);

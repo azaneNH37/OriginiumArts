@@ -27,10 +27,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 import net.minecraft.world.level.ClipContext;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
@@ -40,6 +37,10 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSpawnData
 {
@@ -55,6 +56,8 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
 
     private int life;
     private Vec3 startPos;
+
+    private final Set<UUID> hitEntities = new HashSet<>();
 
     private CombatUnit combatUnit;
     private SelectorUnit selectorUnit;
@@ -74,6 +77,12 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
         this.startPos = this.position();
         this.combatUnit = combatUnit;
         this.selectorUnit = selectorUnit;
+    }
+
+    @Override
+    public AABB getBoundingBox()
+    {
+        return super.getBoundingBox();
     }
 
     @Override
@@ -125,7 +134,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
         // 实体碰撞检测
         EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
             this.level(), this, currentPos, nextPos,
-            this.getBoundingBox().expandTowards(deltaMovement).inflate(1.0D),
+            this.getBoundingBox().expandTowards(deltaMovement).inflate(64.0D),
             this::canHitEntity
         );
 
@@ -143,7 +152,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
 
         // 应用重力和阻力
         Vec3 movement = this.getDeltaMovement();
-        this.setDeltaMovement(movement.x * 0.99D, movement.y - 0.005D, movement.z * 0.99D);
+        this.setDeltaMovement(movement.x * 0.99D, movement.y - (dataBase.isGravity() ? 0.005D : 0D), movement.z * 0.99D);
 
         // 更新旋转
         this.updateRotation();
@@ -152,11 +161,14 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     @Override
     protected void onHitEntity(EntityHitResult result)
     {
-        DebugLogger.log("Bullet hit entity: " + result.getEntity().getName().getString());
+        if(hitEntities.contains(result.getEntity().getUUID()))
+            return;
+        hitEntities.add(result.getEntity().getUUID());
+        //DebugLogger.log("Bullet hit entity: " + result.getEntity().getName().getString());
         //TODO:网络包合并
         if(!this.level().isClientSide())
         {
-            OgnaFxHelper.extractFxUnit(getDataBase().getFxData(),FxData::getEndFx)
+            OgnaFxHelper.extractFxUnit(getDataBase().getFxData(),dataBase.isPenetrate() ? FxData::getHitFx : FxData::getEndFx)
                 .map(FxData.FxUnit::getId).ifPresent(rl->{
                     OgnmChannel.DEFAULT.sendToWithinRange(
                         new FxBlockEffectTriggerPacket(rl,result.getEntity().getOnPos().above(),false),
@@ -177,7 +189,8 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
                     .forEach(living -> combatUnit.onHitEntity((ServerLevel) this.level(), living, selectorUnit, dmgSource));
             }
         }
-        this.discard();
+        if(!dataBase.isPenetrate())
+            this.discard();
     }
 
     @Override

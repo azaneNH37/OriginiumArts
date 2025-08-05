@@ -15,6 +15,9 @@ public class FxData
     @Nullable
     @SerializedName("end")
     private FxUnit endFx;
+    @Nullable
+    @SerializedName("hit")
+    private FxUnit hitFx;
 
 
     @Getter

@@ -40,7 +40,7 @@
     "fallback": "normal",
     "map": {
       "normal": {
-        "id":"ognmarts:blade-fire"
+        "id":"ognmarts:bullet-fire"
       }
     }
   },
@@ -49,7 +49,7 @@
     "max_charge_time": 3000,
     "reload_time": 5000,
     "energy_max": 600,
-    "energy_consume": 15,
+    "energy_consume": 1,
     "chip_set_volume": 10,
     "dmg_dataset": {
       "fallback": "normal",

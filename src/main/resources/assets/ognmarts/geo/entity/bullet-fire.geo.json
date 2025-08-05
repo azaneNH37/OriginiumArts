@@ -1,0 +1,36 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 256,
+				"texture_height": 256,
+				"visible_bounds_width": 17,
+				"visible_bounds_height": 2,
+				"visible_bounds_offset": [0, 0, 0]
+			},
+			"bones": [
+				{
+					"name": "bullet",
+					"pivot": [0, 0.1, 0],
+					"rotation": [0, 0, -5],
+					"cubes": [
+						{
+							"origin": [-48, 0, -96],
+							"size": [96, 0.2, 192],
+							"uv": {
+								"north": {"uv": [0, 0], "uv_size": [24, 0.2]},
+								"east": {"uv": [0, 0], "uv_size": [12, 0.2]},
+								"south": {"uv": [0, 0], "uv_size": [24, 0.2]},
+								"west": {"uv": [0, 0], "uv_size": [12, 0.2]},
+								"up": {"uv": [194, 256], "uv_size": [-152, -256]},
+								"down": {"uv": [194, 256], "uv_size": [-152, -256]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

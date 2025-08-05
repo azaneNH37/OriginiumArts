@@ -1,0 +1,19 @@
+{
+  "life": 600,
+  "range": 196,
+  "speed": 2.5,
+  "gravity": false,
+  "penetrate": true,
+  "gecko_asset": {
+    "all": "ognmarts:bullet-fire",
+    "animation": "ognmarts:bullet-default"
+  },
+  "fx": {
+    "awake": {
+      "id": "ognmarts:trail_fire"
+    },
+    "hit": {
+      "id": "ognmarts:hit_fire"
+    }
+  }
+}

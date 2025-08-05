@@ -11,33 +11,34 @@ import lombok.Setter;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
+@Getter
 @JsonClassTypeBinder(fullName = "bullet",namespace = OriginiumArts.MOD_ID)
 public class BulletDatabase implements IBullet
 {
     @Expose(deserialize = false)
     @Setter
-    @Getter
     private ResourceLocation id;
 
     @SerializedName("life")
-    @Getter
     private int life = 10;
 
     @SerializedName("range")
-    @Getter
     private float range = 196.0f;
 
     @SerializedName("speed")
-    @Getter
     private float speed = 1.0f;
 
+    @SerializedName("gravity")
+    private boolean gravity = true;
+
+    @SerializedName("penetrate")
+    private boolean penetrate = false;
+
     @SerializedName("gecko_asset")
-    @Getter
     @Nullable
     private GeckoAssetData geckoAsset;
 
     @SerializedName("fx")
-    @Getter
     @Nullable
     private FxData fxData;
 }

@@ -11,6 +11,8 @@ public interface IBullet extends IresourceLocation
     int getLife();
     float getRange();
     float getSpeed();
+    boolean isGravity();
+    boolean isPenetrate();
     @Nullable
     GeckoAssetData getGeckoAsset();
     @Nullable
