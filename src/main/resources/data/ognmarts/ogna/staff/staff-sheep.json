@@ -1,38 +1,38 @@
 {
   "gecko_asset": {
-    "all": "ognmarts:sword-lwd"
+    "all": "ognmarts:staff-sheep"
   },
   "display_context": {
-    "type_icon": "ognmarts:guard",
-    "name": "ogna.genable.weapon.sword.lwd.name",
-    "code_name": "R111-AFT-X",
-    "color": "0xFF0000"
+    "type_icon": "ognmarts:caster",
+    "name": "ogna.genable.weapon.staff.sheep.name",
+    "code_name": "LN02-CCR-X",
+    "color": "#FF19B9"
   },
   "anime_datum": {
     "map": {
-      "sword.idle": {
+      "staff.idle": {
         "first": "hand1",
         "third": "hand3"
       },
-      "sword.idle.skill": {
+      "staff.idle.skill": {
         "first": "hand1",
         "third": "hand3"
       },
-      "sword.attack.normal": {
-        "first": "front1",
-        "third": "front3"
-      },
-      "sword.attack.skill": {
+      "staff.attack.normal": {
         "first": "hand1",
         "third": "hand3"
       },
-      "sword.skill.start": {
+      "staff.attack.skill": {
         "first": "hand1",
         "third": "hand3"
       },
-      "sword.skill.end": {
-        "first": "central1",
-        "third": "front3"
+      "staff.skill.start": {
+        "first": "hand1",
+        "third": "hand3"
+      },
+      "staff.skill.end": {
+        "first": "hand1",
+        "third": "hand3"
       }
     }
   },
@@ -40,44 +40,34 @@
     "fallback": "normal",
     "map": {
       "normal": {
-        "id":"ognmarts:blade-fire_reverse"
-      },
-      "normal.1": {
-        "id":"ognmarts:blade-fire"
+        "id":"ognmarts:bullet-fireball"
       }
     }
   },
   "weapon_data": {
-    "cooldown": 700,
+    "cooldown": 800,
     "max_charge_time": 3000,
     "reload_time": 5000,
     "energy_max": 600,
-    "energy_consume": 3,
-    "chip_set_volume": 20,
+    "energy_consume": 1,
+    "chip_set_volume": 10,
     "dmg_dataset": {
       "fallback": "normal",
       "map": {
         "normal": {
           "dmg_type": "ognmarts:ark_default",
           "dmg_category": "ARTS",
-          "selector": "AREA",
-          "range": 2.0
+          "selector": "SINGLE",
+          "range": 1.0
         }
       }
     },
     "attr_modifiers": [
       {
-        "attr": "ognmarts:weapon.attack.cd",
-        "id": "1c9eca28-8813-478d-9959-4a30226edc1d",
-        "bucket": "DIRECT_MUL",
-        "amount": -0.1,
-        "stack_size": 1
-      },
-      {
         "attr": "generic.attack_damage",
         "id": "a3e05a6c-6ece-4894-b930-5d61a76c87c4",
         "bucket": "TOTAL_ADD",
-        "amount": 1,
+        "amount": 4,
         "stack_size": 1
       }
     ]

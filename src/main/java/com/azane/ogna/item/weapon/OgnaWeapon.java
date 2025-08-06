@@ -36,7 +36,8 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected)
     {
-        tick(pLevel, (Player) pEntity, pStack);
+        if(pEntity instanceof Player)
+            tick(pLevel, (Player) pEntity, pStack);
     }
 
     //C/S同步触发

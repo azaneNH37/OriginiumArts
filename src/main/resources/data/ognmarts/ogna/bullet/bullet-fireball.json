@@ -1,0 +1,18 @@
+{
+  "life": 400,
+  "range": 196,
+  "speed": 1.75,
+  "gravity": true,
+  "gecko_asset": {
+    "all": "ognmarts:bullet-default",
+    "texture": "ognmarts:bullet-default_red"
+  },
+  "fx": {
+    "awake": {
+      "id": "ognmarts:fireball"
+    },
+    "end": {
+      "id": "ognmarts:hit_fire"
+    }
+  }
+}

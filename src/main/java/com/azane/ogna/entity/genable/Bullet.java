@@ -7,6 +7,7 @@ import com.azane.ogna.combat.util.SelectorType;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.entity.IBullet;
+import com.azane.ogna.genable.entity.ITargetable;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_client.FxBlockEffectTriggerPacket;
 import com.azane.ogna.registry.ModEntity;
@@ -21,6 +22,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -31,6 +33,7 @@ import net.minecraft.world.phys.*;
 import net.minecraft.world.level.ClipContext;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -42,7 +45,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSpawnData
+public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSpawnData, ITargetable
 {
     public static final EntityType<Bullet> TYPE = EntityType.Builder.<Bullet>of(Bullet::new, MobCategory.MISC).noSummon().noSave().fireImmune().sized(0.1F, 0.1F).clientTrackingRange(5).updateInterval(5).setShouldReceiveVelocityUpdates(false).build("bullet");
 
@@ -58,6 +61,11 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     private Vec3 startPos;
 
     private final Set<UUID> hitEntities = new HashSet<>();
+
+    private Vec3 targetPos;
+    private Entity targetEntity;
+    private final float minTrackingDistance = 0.2F;
+    private final float turnRate = 0.35F;
 
     private CombatUnit combatUnit;
     private SelectorUnit selectorUnit;
@@ -78,6 +86,12 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
         this.combatUnit = combatUnit;
         this.selectorUnit = selectorUnit;
     }
+    //TODO: 将运动信息收集至MoveUnit中
+    public Bullet(LivingEntity shooter, Level level,ResourceLocation dataBase,CombatUnit combatUnit,SelectorUnit selectorUnit,Entity targetEntity)
+    {
+        this(shooter, level, dataBase, combatUnit, selectorUnit);
+        this.targetEntity = targetEntity;
+    }
 
     @Override
     public AABB getBoundingBox()
@@ -87,6 +101,15 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
 
     @Override
     protected void defineSynchedData() {}
+
+    @Nullable
+    public Vec3 getActualTarget()
+    {
+        if (targetEntity != null && targetEntity.isAlive()) {
+            return targetEntity.position();
+        }
+        return targetPos;
+    }
 
     @Override
     public void tick() {
@@ -113,6 +136,8 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
             this.discard();
             return;
         }
+        //DebugLogger.log("side:{}entity:{}",this.level().isClientSide,targetEntity != null);
+        this.setDeltaMovement(updateDeltaMovement(this.getDeltaMovement(), this.position(), minTrackingDistance, turnRate));
 
         // 移动和碰撞检测
         Vec3 currentPos = this.position();
@@ -204,6 +229,15 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     {
         buffer.writeResourceLocation(dataBase.getId());
         buffer.writeBlockPos(BlockPos.containing(startPos));
+        if(targetEntity != null)
+        {
+            buffer.writeBoolean(true);
+            buffer.writeInt(targetEntity.getId());
+        }
+        else
+        {
+            buffer.writeBoolean(false);
+        }
     }
 
     @Override
@@ -212,6 +246,13 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
         ResourceLocation id = additionalData.readResourceLocation();
         dataBase = CommonDataService.get().getBullet(id);
         startPos = Vec3.atCenterOf(additionalData.readBlockPos());
+        if(additionalData.readBoolean())
+        {
+            int targetId = additionalData.readInt();
+            targetEntity = this.level().getEntity(targetId);
+            if(targetEntity == null || !targetEntity.isAlive())
+                targetEntity = null;
+        }
     }
 
     @Override

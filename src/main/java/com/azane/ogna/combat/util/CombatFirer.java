@@ -12,8 +12,10 @@ import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.util.AtkEntityHelper;
 import com.google.common.collect.ImmutableList;
+import lombok.AllArgsConstructor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
@@ -21,10 +23,17 @@ import java.util.Set;
 
 public final class CombatFirer
 {
-    public static void fire(AtkEntityHelper.AtkEntityConsumer consumer,
-                            ServerLevel level, ServerPlayer player,
-                            IOgnaWeapon weapon, IOgnaWeaponCap weaponCap,
-                            ItemStack stack,String AEunitID,String DDunitID,double baseVal)
+    @AllArgsConstructor(staticName = "of")
+    public static class UnitsSet
+    {
+        public final AtkEntityData.AtkUnit AEunit;
+        public final CombatUnit combatUnit;
+        public final SelectorUnit selectorUnit;
+    }
+
+    public static UnitsSet getUnitsSet(ServerLevel level, ServerPlayer player,
+                                       IOgnaWeapon weapon, IOgnaWeaponCap weaponCap,
+                                       ItemStack stack, String AEunitID, String DDunitID, double baseVal)
     {
         ISkill skill = weaponCap.getSkillCap().getSkill();
 
@@ -39,8 +48,8 @@ public final class CombatFirer
         DmgDataSet s_dd = skill == null ? null : skill.getSkillData().getDmgDataSet();
         DmgDataSet.DamageData DDunit = s_dd == null ? w_dd.getDamageData(DDunitID) :
             (w_dd.hasDamageData(DDunitID) && s_dd.hasDamageData(DDunitID)) ?
-            DmgDataSet.DamageData.combine(s_dd.getDamageData(DDunitID),w_dd.getDamageData(DDunitID)) :
-            s_dd.hasDamageData(DDunitID) ? s_dd.getDamageData(DDunitID) : w_dd.getDamageData(DDunitID);
+                DmgDataSet.DamageData.combine(s_dd.getDamageData(DDunitID),w_dd.getDamageData(DDunitID)) :
+                s_dd.hasDamageData(DDunitID) ? s_dd.getDamageData(DDunitID) : w_dd.getDamageData(DDunitID);
 
         ImmutableList.Builder<OnImpactEntity> builder = new ImmutableList.Builder<>();
         weaponCap.getChipSet().gather(ChipTiming.ON_HIT_ENTITY).forEach(chip -> builder.add(chip::onImpactEntity));
@@ -59,15 +68,25 @@ public final class CombatFirer
             DDunit.getRange(), DDunit.getHitCount(),
             en->true
         );
-        DebugLogger.log("type:{},range:{},hitCount:{}",DDunit.getSelectorType(), DDunit.getRange(), DDunit.getHitCount());
 
-        consumer.create(level, player, AEunit, combatUnit, selectorUnit);
+        return UnitsSet.of(AEunit, combatUnit, selectorUnit);
     }
 
-    public static void fireDefault(ServerLevel level, ServerPlayer player,
+
+    public static Entity fireDefault(ServerLevel level, ServerPlayer player,
                             IOgnaWeapon weapon, IOgnaWeaponCap weaponCap,
                             ItemStack stack, String AEunitID, String DDunitID)
     {
-        fire(AtkEntityHelper.DEFAULT, level, player, weapon, weaponCap, stack, AEunitID, DDunitID, player.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+        UnitsSet unitsSet = getUnitsSet(level, player, weapon, weaponCap, stack, AEunitID, DDunitID, player.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+        return AtkEntityHelper.createDefault(level, player, unitsSet.AEunit, unitsSet.combatUnit, unitsSet.selectorUnit);
+    }
+
+    public static Entity fireTargetBullet(ServerLevel level, ServerPlayer player,
+                                     IOgnaWeapon weapon, IOgnaWeaponCap weaponCap,
+                                     ItemStack stack, String AEunitID, String DDunitID,
+                                          Entity targetEntity)
+    {
+        UnitsSet unitsSet = getUnitsSet(level, player, weapon, weaponCap, stack, AEunitID, DDunitID, player.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+        return AtkEntityHelper.createTargetBullet(level, player, unitsSet.AEunit, unitsSet.combatUnit, unitsSet.selectorUnit, targetEntity);
     }
 }
