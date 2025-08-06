@@ -40,7 +40,7 @@
     "fallback": "normal",
     "map": {
       "normal": {
-        "id":"ognmarts:bullet-fire"
+        "id":"ognmarts:bullet-default"
       }
     }
   },

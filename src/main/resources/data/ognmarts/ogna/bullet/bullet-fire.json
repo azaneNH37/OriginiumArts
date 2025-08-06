@@ -1,7 +1,7 @@
 {
   "life": 600,
   "range": 196,
-  "speed": 2.5,
+  "speed": 5,
   "gravity": false,
   "penetrate": true,
   "gecko_asset": {

@@ -33,12 +33,14 @@ public final class CombatFirer
         AtkEntityData.AtkUnit AEunit = s_ae == null ? w_ae.getAtkUnit(AEunitID) :
             s_ae.hasAtkUnit(AEunitID) ? s_ae.getAtkUnit(AEunitID) : w_ae.getAtkUnit(AEunitID);
 
-        DebugLogger.log("{},{}",AEunitID,AEunit.getId());
+        //DebugLogger.log("{},{}",AEunitID,AEunit.getId());
 
         DmgDataSet w_dd = weapon.getDefaultDatabase(stack).getOgnaWeaponData().getDmgDataSet();
         DmgDataSet s_dd = skill == null ? null : skill.getSkillData().getDmgDataSet();
         DmgDataSet.DamageData DDunit = s_dd == null ? w_dd.getDamageData(DDunitID) :
-            DmgDataSet.DamageData.combine(s_dd.getDamageData(DDunitID),w_dd.getDamageData(DDunitID));
+            (w_dd.hasDamageData(DDunitID) && s_dd.hasDamageData(DDunitID)) ?
+            DmgDataSet.DamageData.combine(s_dd.getDamageData(DDunitID),w_dd.getDamageData(DDunitID)) :
+            s_dd.hasDamageData(DDunitID) ? s_dd.getDamageData(DDunitID) : w_dd.getDamageData(DDunitID);
 
         ImmutableList.Builder<OnImpactEntity> builder = new ImmutableList.Builder<>();
         weaponCap.getChipSet().gather(ChipTiming.ON_HIT_ENTITY).forEach(chip -> builder.add(chip::onImpactEntity));
@@ -57,6 +59,7 @@ public final class CombatFirer
             DDunit.getRange(), DDunit.getHitCount(),
             en->true
         );
+        DebugLogger.log("type:{},range:{},hitCount:{}",DDunit.getSelectorType(), DDunit.getRange(), DDunit.getHitCount());
 
         consumer.create(level, player, AEunit, combatUnit, selectorUnit);
     }

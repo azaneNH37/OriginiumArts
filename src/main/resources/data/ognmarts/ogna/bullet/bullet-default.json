@@ -1,6 +1,6 @@
 {
   "life": 120,
-  "speed": 1.5,
+  "speed": 3.5,
   "gecko_asset": {
     "all": "ognmarts:bullet-default"
   },

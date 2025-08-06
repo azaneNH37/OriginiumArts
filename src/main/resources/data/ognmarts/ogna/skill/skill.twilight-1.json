@@ -1,0 +1,51 @@
+{
+  "display_context": {
+    "name": "ogna.genable.skill.twilight.name",
+    "color": "#EE1111",
+    "type_icon": "ognmarts:skill_atk",
+    "icon": "ognmarts:twilight",
+    "model": "ognmarts:twilight"
+  },
+  "level": 1,
+  "base_data": {
+    "sp": 50,
+    "duration": 600,
+    "dmg_dataset": {
+      "fallback": "skill",
+      "map": {
+        "skill": {
+          "dmg_type": "ognmarts:ark_default",
+          "dmg_category": "ARTS",
+          "selector": "SINGLE",
+          "range": 0.0
+        }
+      }
+    },
+    "base_attr_modifiers": [
+      {
+        "attr": "generic.attack_damage",
+        "id": "3d6db817-c844-44ef-8291-fe0d7672415d",
+        "bucket": "TOTAL_ADD",
+        "amount": 2,
+        "stack_size": 1
+      }
+    ],
+    "skill_attr_modifiers": [
+      {
+        "attr": "generic.attack_damage",
+        "id": "22b8a85d-7bbd-4c4c-ad18-16a060e10fc7",
+        "bucket": "TOTAL_MUL",
+        "amount": 2,
+        "stack_size": 1
+      }
+    ]
+  },
+  "attack_entities": {
+    "fallback": "skill",
+    "map": {
+      "skill": {
+        "id":"ognmarts:bullet-fire"
+      }
+    }
+  }
+}
