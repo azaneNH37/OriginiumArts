@@ -2,6 +2,7 @@ package com.azane.ogna.entity.genable;
 
 import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
+import com.azane.ogna.combat.data.MoveUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.combat.util.SelectorType;
 import com.azane.ogna.debug.log.DebugLogger;
@@ -64,8 +65,8 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
 
     private Vec3 targetPos;
     private Entity targetEntity;
-    private final float minTrackingDistance = 0.2F;
-    private final float turnRate = 0.35F;
+    private float minTrackingDistance = 0.2F;
+    private float turnRate = 0.35F;
 
     private CombatUnit combatUnit;
     private SelectorUnit selectorUnit;
@@ -87,10 +88,10 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
         this.selectorUnit = selectorUnit;
     }
     //TODO: 将运动信息收集至MoveUnit中
-    public Bullet(LivingEntity shooter, Level level,ResourceLocation dataBase,CombatUnit combatUnit,SelectorUnit selectorUnit,Entity targetEntity)
+    public Bullet(LivingEntity shooter, Level level, ResourceLocation dataBase, CombatUnit combatUnit, SelectorUnit selectorUnit, MoveUnit moveUnit)
     {
         this(shooter, level, dataBase, combatUnit, selectorUnit);
-        this.targetEntity = targetEntity;
+        this.targetEntity = moveUnit.getTargetEntity();
     }
 
     @Override

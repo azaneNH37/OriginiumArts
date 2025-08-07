@@ -1,0 +1,84 @@
+{
+  "gecko_asset": {
+    "all": "ognmarts:sword-jc"
+  },
+  "display_context": {
+    "type_icon": "ognmarts:guard",
+    "name": "ogna.genable.weapon.sword.jc.name",
+    "code_name": "II01-LOR-X",
+    "color": "0xAA3300"
+  },
+  "anime_datum": {
+    "map": {
+      "sword.idle": {
+        "first": "hand1",
+        "third": "hand3"
+      },
+      "sword.idle.skill": {
+        "first": "hand1",
+        "third": "hand3"
+      },
+      "sword.attack.normal": {
+        "first": "front1",
+        "third": "front3"
+      },
+      "sword.attack.skill": {
+        "first": "front1",
+        "third": "front3"
+      },
+      "sword.skill.start": {
+        "first": "hand1",
+        "third": "hand3"
+      },
+      "sword.skill.end": {
+        "first": "central1",
+        "third": "front3"
+      }
+    }
+  },
+  "attack_entities": {
+    "fallback": "normal",
+    "map": {
+      "normal": {
+        "id":"ognmarts:bullet-potion_ball"
+      },
+      "normal.1": {
+        "id":"ognmarts:bullet-potion_ball"
+      }
+    }
+  },
+  "weapon_data": {
+    "cooldown": 700,
+    "max_charge_time": 3000,
+    "reload_time": 5000,
+    "energy_max": 600,
+    "energy_consume": 3,
+    "chip_set_volume": 20,
+    "dmg_dataset": {
+      "fallback": "normal",
+      "map": {
+        "normal": {
+          "dmg_type": "ognmarts:ark_default",
+          "dmg_category": "ARTS",
+          "selector": "SINGLE"
+        }
+      }
+    },
+    "attr_modifiers": [
+      {
+        "attr": "ognmarts:weapon.attack.cd",
+        "id": "1c9eca28-8813-478d-9959-4a30226edc1d",
+        "bucket": "DIRECT_MUL",
+        "amount": -0.1,
+        "stack_size": 1
+      },
+      {
+        "attr": "generic.attack_damage",
+        "id": "a3e05a6c-6ece-4894-b930-5d61a76c87c4",
+        "bucket": "TOTAL_ADD",
+        "amount": 1,
+        "stack_size": 1
+      }
+    ]
+  }
+}

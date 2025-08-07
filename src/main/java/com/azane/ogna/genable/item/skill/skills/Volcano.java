@@ -5,6 +5,7 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
+import com.azane.ogna.combat.data.MoveUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.debug.log.DebugLogger;
@@ -29,7 +30,6 @@ public class Volcano extends DefaultSkillDataBase
     @Override
     public void onSkillTick(Level level, Player player, IOgnaWeapon weapon, ItemStack stack, boolean isOpen)
     {
-        //super.onSkillTick(level, player, weapon, stack, isOpen);
         if(isOpen)
         {
             if(level instanceof ServerLevel serverLevel)
@@ -43,23 +43,11 @@ public class Volcano extends DefaultSkillDataBase
                     Collections.shuffle(entities);
                     for(int i=0;i<Math.min(2,entities.size());i++)
                     {
-                        CombatFirer.fireTargetBullet(serverLevel,serverPlayer,weapon,weapon.getWeaponCap(stack),stack,"skill","skill",entities.get(i));
+                        CombatFirer.fireTargetBullet(serverLevel,serverPlayer,weapon,weapon.getWeaponCap(stack),stack,"skill","skill",
+                            new MoveUnit.Builder().targetEntity(entities.get(i)).xRot(-45).yRot(serverLevel.random.nextInt(0,360)).build());
                     }
                 }
             }
         }
-    }
-
-    @Override
-    public boolean onServerAttack(ServerLevel level, ServerPlayer player, IOgnaWeapon weapon, ItemStack stack, AttackType attackType, long chargeTime, boolean isOpen)
-    {
-        super.onServerAttack(level, player, weapon, stack, attackType, chargeTime, isOpen);
-        return false;
-    }
-
-    @Override
-    public void onImpactEntity(ServerLevel level, LivingEntity entity, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource)
-    {
-        //entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,600,4,true,true));
     }
 }

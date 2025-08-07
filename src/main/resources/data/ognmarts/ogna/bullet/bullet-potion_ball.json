@@ -1,18 +1,15 @@
 {
   "life": 150,
   "range": 196,
-  "speed": 3.5,
+  "speed": 2.5,
   "gravity": true,
   "gecko_asset": {
     "all": "ognmarts:bullet-default",
-    "texture": "ognmarts:bullet-default_red"
+    "texture": "ognmarts:bullet-default_gold"
   },
   "fx": {
     "awake": {
-      "id": "ognmarts:fireball"
-    },
-    "end": {
-      "id": "ognmarts:hit_fire"
+      "id": "ognmarts:potion_ball"
     }
   }
 }

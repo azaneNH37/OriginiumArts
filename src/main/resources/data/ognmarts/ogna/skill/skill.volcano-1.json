@@ -38,7 +38,7 @@
     "fallback": "skill",
     "map": {
       "skill": {
-        "id":"ognmarts:bullet-fireball"
+        "id":"ognmarts:bullet-fireball_volcano"
       }
     }
   }

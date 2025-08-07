@@ -4,6 +4,7 @@ import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.combat.chip.ChipTiming;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.DmgDataSet;
+import com.azane.ogna.combat.data.MoveUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.AtkEntityData;
@@ -82,11 +83,11 @@ public final class CombatFirer
     }
 
     public static Entity fireTargetBullet(ServerLevel level, ServerPlayer player,
-                                     IOgnaWeapon weapon, IOgnaWeaponCap weaponCap,
-                                     ItemStack stack, String AEunitID, String DDunitID,
-                                          Entity targetEntity)
+                                          IOgnaWeapon weapon, IOgnaWeaponCap weaponCap,
+                                          ItemStack stack, String AEunitID, String DDunitID,
+                                          MoveUnit moveUnit)
     {
         UnitsSet unitsSet = getUnitsSet(level, player, weapon, weaponCap, stack, AEunitID, DDunitID, player.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
-        return AtkEntityHelper.createTargetBullet(level, player, unitsSet.AEunit, unitsSet.combatUnit, unitsSet.selectorUnit, targetEntity);
+        return AtkEntityHelper.createTargetBullet(level, player, unitsSet.AEunit, unitsSet.combatUnit, unitsSet.selectorUnit, moveUnit);
     }
 }

@@ -1,6 +1,7 @@
 package com.azane.ogna.util;
 
 import com.azane.ogna.combat.data.CombatUnit;
+import com.azane.ogna.combat.data.MoveUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.entity.genable.BladeEffect;
 import com.azane.ogna.entity.genable.Bullet;
@@ -41,7 +42,7 @@ public final class AtkEntityHelper
         return null;
     }
 
-    public static Entity createTargetBullet(ServerLevel level, ServerPlayer player, AtkEntityData.AtkUnit atkUnit, CombatUnit combatUnit, SelectorUnit selectorUnit,Entity target)
+    public static Entity createTargetBullet(ServerLevel level, ServerPlayer player, AtkEntityData.AtkUnit atkUnit, CombatUnit combatUnit, SelectorUnit selectorUnit, MoveUnit moveUnit)
     {
         if (atkUnit == null)
             return null;
@@ -50,8 +51,8 @@ public final class AtkEntityHelper
         IBullet bulletData = ServerDataService.get().getBullet(atkUnit.getId());
         if(bulletData != null)
         {
-            var bullet = new Bullet(player,level,atkUnit.getId(),combatUnit,selectorUnit,target);
-            bullet.shootFromRotation(player,-45,level.random.nextInt(0,360),0, bulletData.getSpeed(),0);
+            var bullet = new Bullet(player,level,atkUnit.getId(),combatUnit,selectorUnit,moveUnit);
+            bullet.shootFromRotation(player,(float) moveUnit.getXRot(),(float) moveUnit.getYRot(),0, bulletData.getSpeed(),0);
             level.addFreshEntity(bullet);
             return bullet;
         }
