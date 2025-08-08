@@ -11,6 +11,8 @@ import net.minecraft.world.damagesource.DamageType;
 public final class ArkDmgTypes
 {
     public static final ResourceKey<DamageType> DEFAULT = ResourceKey.create(Registries.DAMAGE_TYPE, RlHelper.build(OriginiumArts.MOD_ID,"ark_default"));
+    public static final ResourceKey<DamageType> DOT = ResourceKey.create(Registries.DAMAGE_TYPE, RlHelper.build(OriginiumArts.MOD_ID,"ark_dot"));
+
 
     public static Holder<DamageType> getHolder(ResourceKey<DamageType> type,boolean isClient)
     {

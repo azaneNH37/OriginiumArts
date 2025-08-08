@@ -2,11 +2,13 @@ package com.azane.ogna.registry;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.item.ArkMaterial;
+import com.azane.ogna.item.EnergyUnit;
 import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.skill.OgnaSkill;
 import com.azane.ogna.item.weapon.OgnaStaff;
 import com.azane.ogna.item.weapon.OgnaSword;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -26,6 +28,9 @@ public class ModItem
     public static final RegistryObject<Item> OGNM_SHARD = register("ognm_shard",()-> new ArkMaterial(5));
     public static final RegistryObject<Item> ORIROCK_CUBE = register("orirock_cube",()-> new ArkMaterial(2));
     public static final RegistryObject<Item> ORIRON = register("oriron",()-> new ArkMaterial(2));
+
+    public static final RegistryObject<Item> ENERGY_UNIT_SIMPLE = register("eu_simple",()->new EnergyUnit(10));
+    public static final RegistryObject<Item> ENERGY_UNIT_SIMPLE_EMPTY = register("eu_simple_empty",()->new EnergyUnit(0));
 
     public static RegistryObject<Item> register(String name, boolean isInCreativeTab,Supplier<? extends Item> supplier)
     {

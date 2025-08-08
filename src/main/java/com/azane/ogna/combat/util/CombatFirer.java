@@ -67,7 +67,7 @@ public final class CombatFirer
         SelectorUnit selectorUnit = SelectorUnit.of(
             DDunit.getSelectorType(),
             DDunit.getRange(), DDunit.getHitCount(),
-            en->true
+            SelectRule.NON_PLAYER.getFilter()
         );
 
         return UnitsSet.of(AEunit, combatUnit, selectorUnit);

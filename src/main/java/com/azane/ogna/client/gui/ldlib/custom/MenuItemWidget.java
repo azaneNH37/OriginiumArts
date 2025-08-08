@@ -99,7 +99,16 @@ public class MenuItemWidget extends WidgetGroup
             code.setText(data.getDisplayContext().getCodeName());
             displayContainer.setItem(index,data.buildItemStack(1));
             slot.setContainerSlot(displayContainer,index);
-        } else if (type.equals("skill")) {
+        }else if(type.equals("sword"))
+        {
+            var data = Objects.requireNonNull(CommonDataService.get().getSword(resrl)) ;
+            typeTexture = new ResourceTexture(data.getDisplayContext().getTypeIcon());
+            name.setText(data.getDisplayContext().getName());
+            name.getTextTexture().setColor(data.getDisplayContext().getColor());
+            code.setText(data.getDisplayContext().getCodeName());
+            displayContainer.setItem(index,data.buildItemStack(1));
+            slot.setContainerSlot(displayContainer,index);
+        }else if (type.equals("skill")) {
             var data = Objects.requireNonNull(CommonDataService.get().getSkill(resrl));
             typeTexture = new ResourceTexture(data.getDisplayContext().getTypeIcon());
             name.setText(data.getDisplayContext().getName());

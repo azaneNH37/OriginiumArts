@@ -9,7 +9,12 @@ import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.debug.log.DebugLogger;
+import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.item.chip.NonItemChip;
+import com.azane.ogna.network.OgnmChannel;
+import com.azane.ogna.network.to_client.FxBlockEffectTriggerPacket;
+import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
+import com.azane.ogna.util.OgnaFxHelper;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -35,6 +40,8 @@ public class InnerMobEffectChip extends NonItemChip
     private int duration = -1;
     @SerializedName("visible")
     private boolean visible = false;
+    @SerializedName("fx")
+    private FxData fxData;
 
     @Override
     public boolean canPlugIn(ChipSet chipSet, ChipArg arg) {return true;}
@@ -50,6 +57,18 @@ public class InnerMobEffectChip extends NonItemChip
         {
             DebugLogger.error("EfcEffectAdder: Effect %s not found, cannot apply to entity %s".formatted(rl, target.getStringUUID()));
             return;
+        }
+        if(fxData != null)
+        {
+            OgnaFxHelper.extractFxUnit(fxData,FxData::getHitFx)
+                .map(FxData.FxUnit::getId).ifPresent(rl->{
+                    OgnmChannel.DEFAULT.sendToWithinRange(
+                        new FxEntityEffectTriggerPacket(rl,target.getId(),false),
+                        level,
+                        target.getOnPos(),
+                        128
+                    );
+                });
         }
         target.addEffect(new MobEffectInstance(effect,duration,effect_level-1,false,visible,false));
     }

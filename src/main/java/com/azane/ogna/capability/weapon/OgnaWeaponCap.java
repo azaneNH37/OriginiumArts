@@ -4,10 +4,12 @@ import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.capability.skill.OgnaSkillCap;
 import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.combat.attr.AttrMatrix;
+import com.azane.ogna.combat.chip.ChipArg;
 import com.azane.ogna.combat.chip.ChipEnv;
 import com.azane.ogna.combat.chip.ChipSet;
 import com.azane.ogna.combat.data.AttrModifier;
 import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
+import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
 import com.azane.ogna.registry.ModAttribute;
@@ -46,6 +48,8 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         if(storedData == null)
         {
             baseData.getAttrModifiers().forEach(attrMap::acceptModifier);
+            //事实上，这里传空chipArg是符合预期的行为，因为此处的chip属性是跟武器data走的，不应在insert处因stack和所有者而异（期待回旋镖）
+            baseData.getInnerChips().stream().map(OgnaChip::getChip).forEach(i->this.chipSet.insertChip(i,ChipArg.EMPTY));
             currentEnergy = submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(), null, null);
         }
         else

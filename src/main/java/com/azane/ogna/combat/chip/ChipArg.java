@@ -5,6 +5,7 @@ import lombok.Getter;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNullableByDefault;
 
 @Getter
@@ -12,6 +13,10 @@ import javax.annotation.ParametersAreNullableByDefault;
 @ParametersAreNullableByDefault
 public class ChipArg
 {
+    public static final ChipArg EMPTY = ChipArg.of(null,null);
+
+    @Nullable
     private final LivingEntity entity;
+    @Nullable
     private final ItemStack weaponStack;
 }

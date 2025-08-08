@@ -4,6 +4,7 @@ import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.MoveUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.util.SelectRule;
 import com.azane.ogna.combat.util.SelectorType;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
@@ -208,10 +209,13 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
             if(selectorUnit.getType() == SelectorType.SINGLE)
             {
                 if(result.getEntity() instanceof LivingEntity living)
-                    combatUnit.onHitEntity((ServerLevel) this.level(), living, selectorUnit, dmgSource);
+                {
+                    if(selectorUnit.getFilter().test(living))
+                        combatUnit.onHitEntity((ServerLevel) this.level(), living, selectorUnit, dmgSource);
+                }
             }
             else {
-                selectorUnit.gatherMultiTargets((ServerLevel) this.level(),this.getBoundingBox(),(living)->true)
+                selectorUnit.gatherMultiTargets((ServerLevel) this.level(),this.getBoundingBox(), SelectRule.NULL.getFilter())
                     .forEach(living -> combatUnit.onHitEntity((ServerLevel) this.level(), living, selectorUnit, dmgSource));
             }
         }
@@ -221,7 +225,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
-        DebugLogger.log("Bullet hit block at: " + result.getBlockPos());
+        //DebugLogger.log("Bullet hit block at: " + result.getBlockPos());
         this.discard();
     }
 

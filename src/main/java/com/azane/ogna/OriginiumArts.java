@@ -44,6 +44,7 @@ public class OriginiumArts
         ModItem.ITEMS.register(modEventBus);
         ModCreativeTab.TABS.register(modEventBus);
         ModWorldGen.FEATURES.register(modEventBus);
+        ModEffect.EFFECTS.register(modEventBus);
         ModRecipe.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);

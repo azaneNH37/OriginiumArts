@@ -79,6 +79,9 @@
         "amount": 1,
         "stack_size": 1
       }
+    ],
+    "inner_chips": [
+      "ognmarts:chip.inner.effect-sand_potion"
     ]
   }
 }

@@ -32,6 +32,8 @@ public class OgnaWeaponData
     private double chipSetVolume = 100.0;
     @SerializedName("attr_modifiers")
     private List<AttrModifier> attrModifiers = new ArrayList<>();
+    @SerializedName("inner_chips")
+    private List<ResourceLocation> innerChips = new ArrayList<>();
     @SerializedName("dmg_dataset")
     private DmgDataSet dmgDataSet = new DmgDataSet();
 

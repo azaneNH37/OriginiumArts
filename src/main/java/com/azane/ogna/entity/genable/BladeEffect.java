@@ -130,9 +130,6 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         {
             if(age == getEntityData().get(DELAY))
             {
-                //FX fx = FXHelper.getFX(Objects.requireNonNull(RlHelper.build(OriginiumArts.MOD_ID, "roman")));
-                //var effect = new EntityEffect(fx, this.level(), this, EntityEffect.AutoRotate.FORWARD);
-                //effect.start();
                 OgnaFxHelper.extractFxUnit(getDataBase().getFxData(), FxData::getAwakeFx)
                     .map(FxData.FxUnit::getId).map(FXHelper::getFX)
                     .ifPresent(fx->{
@@ -144,7 +141,6 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         }
         else
         {
-            //DebugLogger.log("entitytick:{},delay:{},curtick:{}",this.tickCount,getEntityData().get(DELAY),age);
             if(age == getEntityData().get(DELAY))
             {
                 setInvisible(false);
@@ -173,7 +169,6 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
         if(this.level().isClientSide())
             return;
         var dmgSource = new ArkDamageSource(combatUnit,this,this.getOwner(),null);
-        float submitVal = dmgSource.submitSidedVal();
         selectorUnit.gatherMultiTargets((ServerLevel) this.level(),getOrCreateTransform().aabb(),(living)->living != getOwner())
                 .forEach(living -> combatUnit.onHitEntity((ServerLevel) level(),living,selectorUnit,dmgSource));
     }

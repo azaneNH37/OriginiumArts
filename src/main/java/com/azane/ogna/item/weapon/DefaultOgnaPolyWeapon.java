@@ -3,6 +3,7 @@ package com.azane.ogna.item.weapon;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.capability.weapon.OgnaWeaponCapProvider;
 import com.azane.ogna.client.lib.Datums;
+import com.azane.ogna.combat.util.EnergyConsumer;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.GeckoAssetData;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
@@ -13,6 +14,7 @@ import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -103,16 +105,17 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
     @Override
     public void onServerAttack(ItemStack stack, ServerPlayer player, AttackType attackType, long chargeTime)
     {
-        DebugLogger.log("Server attack");
+        //DebugLogger.log("Server attack");
     }
 
     @Override
     public void onServerReload(ItemStack stack, ServerPlayer player)
     {
-        DebugLogger.log("Server reload");
+        //DebugLogger.log("Server reload");
         IOgnaWeaponCap cap = getWeaponCap(stack);
-        cap.modifyCurrentEnergy(
-            cap.submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(),player,stack)- cap.getCurrentEnergy(),
+        double maxEnergy = cap.submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(),player,stack);
+        double gain = EnergyConsumer.convertItems(player,Mth.ceil(maxEnergy-cap.getCurrentEnergy()));
+        cap.modifyCurrentEnergy(Mth.clamp(gain,0,maxEnergy-cap.getCurrentEnergy()),
             true, player, stack);
     }
 }

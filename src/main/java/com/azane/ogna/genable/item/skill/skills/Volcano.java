@@ -8,6 +8,7 @@ import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.MoveUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.combat.util.CombatFirer;
+import com.azane.ogna.combat.util.SelectRule;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.entity.ITargetable;
 import com.azane.ogna.genable.item.skill.DefaultSkillDataBase;
@@ -39,7 +40,7 @@ public class Volcano extends DefaultSkillDataBase
                 double RD = skillCap.getRD();
                 if(((int)RD) % 6 == 0)
                 {
-                    List<LivingEntity> entities = serverLevel.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24),entity -> !(entity instanceof  Player));
+                    List<LivingEntity> entities = serverLevel.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24), SelectRule.NON_PLAYER.getFilter());
                     Collections.shuffle(entities);
                     for(int i=0;i<Math.min(2,entities.size());i++)
                     {

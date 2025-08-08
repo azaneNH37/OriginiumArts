@@ -1,5 +1,6 @@
 package com.azane.ogna.client.gui.ldlib.custom;
 
+import com.azane.ogna.client.lib.OffHandItemTransform;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.LDLRegister;
 import com.lowdragmc.lowdraglib.gui.widget.ImageWidget;
@@ -45,6 +46,7 @@ public class TriDImageWidget extends ImageWidget
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         PoseStack posestack = RenderSystem.getModelViewStack();
+        //OffHandItemTransform.popDownPoseStack(posestack,0);
         posestack.pushPose();
         //posestack.translate(400, 400, 200);
         posestack.translate(this.getPositionX(), this.getPositionY(), 0.0D);
@@ -59,7 +61,7 @@ public class TriDImageWidget extends ImageWidget
         MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
         Lighting.setupForFlatItems();
 
-        Minecraft.getInstance().getItemRenderer().renderStatic(itemSupplier.get(), ItemDisplayContext.FIXED, 0xf000f0, OverlayTexture.NO_OVERLAY, tmpPose, bufferSource, null, 0);
+        Minecraft.getInstance().getItemRenderer().renderStatic(itemSupplier.get(), ItemDisplayContext.GROUND, 0xf000f0, OverlayTexture.NO_OVERLAY, tmpPose, bufferSource, null, 0);
 
         bufferSource.endBatch();
         RenderSystem.enableDepthTest();

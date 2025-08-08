@@ -1,0 +1,11 @@
+{
+  "effectID": "ognmarts:sand_potion",
+  "level": 1,
+  "duration": 63,
+  "visible": false,
+  "fx": {
+    "hit": {
+      "id": "ognmarts:sand_poison"
+    }
+  }
+}

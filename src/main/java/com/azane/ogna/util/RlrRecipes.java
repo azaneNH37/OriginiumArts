@@ -35,6 +35,14 @@ public final class RlrRecipes
             id -> ServerDataService.get().getStaff(id) != null
             )
         );
+        builder.put("sword", RecipeMapping.of(
+                (id,amt)->
+                    Optional.ofNullable(ServerDataService.get().getSword(id)).
+                        map(i->i.buildItemStack(amt)).
+                        orElseThrow(()->new IllegalArgumentException("Sword Database not found: " + id)),
+                id -> ServerDataService.get().getSword(id) != null
+            )
+        );
         builder.put("skill", RecipeMapping.of(
             (id,amt)->
                 Optional.ofNullable(ServerDataService.get().getSkill(id)).

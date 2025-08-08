@@ -1,0 +1,34 @@
+{
+  "type": "ognmarts:rlr",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:diamond"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item":"minecraft:iron_ingot"
+      },
+      "count": 3
+    },
+    {
+      "ingredient": {
+        "item":"minecraft:gold_ingot"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item":"minecraft:copper_ingot"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "type": "sword",
+    "id": "ognmarts:sword-jc",
+    "count": 1
+  }
+}

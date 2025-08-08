@@ -218,7 +218,7 @@ public class AttackInputHandler
         // 设置客户端冷却
         long cooldown = (long) weaponCap.submitAttrVal(ModAttribute.WEAPON_ATTACK_CD.get(), player, weapon,
             weaponCap.getBaseAttrVal(ModAttribute.WEAPON_ATTACK_CD.get(), weapon));
-        DebugLogger.log("{}",cooldown);
+        //DebugLogger.log("{}",cooldown);
         stateManager.setAttackCooldown(playerId, cooldown);
 
         // 发送攻击包到服务端

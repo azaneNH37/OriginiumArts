@@ -7,13 +7,16 @@ import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.skill.ISkill;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 
@@ -112,6 +115,9 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
         ItemStack stack = IGenItem.super.templateBuildItemStack(tag, count);
         if(stack == null)
             return null;
+        //TODO:太神秘了（
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        GeoItem.getOrAssignId(stack,server.getLevel(Level.OVERWORLD));
         this.getOrCreateStackUUID(stack);
         return stack;
     }

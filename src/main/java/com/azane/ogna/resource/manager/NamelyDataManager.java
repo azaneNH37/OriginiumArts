@@ -36,7 +36,7 @@ public class NamelyDataManager<T> extends CommonDataManager<T>
     @Override
     protected @NotNull Map<ResourceLocation, JsonElement> prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler)
     {
-        DebugLogger.error("!!!Preparing NamelyDataManager for {} with filter: {}", getName(), fileNameFilter);
+        //DebugLogger.error("!!!Preparing NamelyDataManager for {} with filter: {}", getName(), fileNameFilter);
         Map<ResourceLocation,JsonElement> tmp = ResourceScanner.scanDirectory(pResourceManager, getFileToIdConverter(), getGson(), fileNameFilter);
         if(forceApply)
         {

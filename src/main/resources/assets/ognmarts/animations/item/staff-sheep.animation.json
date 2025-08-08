@@ -7,7 +7,7 @@
 			"bones": {
 				"standard": {
 					"rotation": [0, 90, 0],
-					"position": [0, -31, 0],
+					"position": [0, -5, 0],
 					"scale": 0.4
 				},
 				"core": {
@@ -33,7 +33,7 @@
 			"bones": {
 				"standard": {
 					"rotation": [0, 90, 0],
-					"position": [0, -31, 0],
+					"position": [0, -5, 0],
 					"scale": 0.4
 				},
 				"core": {
@@ -65,7 +65,7 @@
 			"bones": {
 				"standard": {
 					"rotation": [0, 90, 0],
-					"position": [0, -31, 0],
+					"position": [0, -5, 0],
 					"scale": 0.4
 				},
 				"core": {
@@ -98,7 +98,7 @@
 			"bones": {
 				"standard": {
 					"rotation": [0, 90, 0],
-					"position": [0, -31, 0],
+					"position": [0, -5, 0],
 					"scale": 0.4
 				},
 				"core": {
@@ -124,7 +124,7 @@
 			"bones": {
 				"standard": {
 					"rotation": [0, 90, 0],
-					"position": [0, -31, 0],
+					"position": [0, -5, 0],
 					"scale": 0.4
 				},
 				"core": {
