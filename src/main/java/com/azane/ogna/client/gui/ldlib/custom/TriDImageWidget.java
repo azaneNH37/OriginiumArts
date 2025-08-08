@@ -1,7 +1,9 @@
 package com.azane.ogna.client.gui.ldlib.custom;
 
-import com.azane.ogna.client.lib.OffHandItemTransform;
-import com.azane.ogna.debug.log.DebugLogger;
+import com.azane.ogna.genable.data.TriDDisplayData;
+import com.azane.ogna.item.OgnaChip;
+import com.azane.ogna.item.skill.OgnaSkill;
+import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.LDLRegister;
 import com.lowdragmc.lowdraglib.gui.widget.ImageWidget;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -39,6 +41,7 @@ public class TriDImageWidget extends ImageWidget
             super.drawInBackground(graphics, mouseX, mouseY, partialTicks);
             return;
         }
+        TriDDisplayData triddd = getTriDDisplayData(itemSupplier.get());
         //DebugLogger.logReduced("item_gui_ren","Rendering 3D item gui for item: " + itemSupplier.get().getDescriptionId());
         Minecraft.getInstance().textureManager.getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
@@ -49,10 +52,11 @@ public class TriDImageWidget extends ImageWidget
         //OffHandItemTransform.popDownPoseStack(posestack,0);
         posestack.pushPose();
         //posestack.translate(400, 400, 200);
-        posestack.translate(this.getPositionX(), this.getPositionY(), 0.0D);
+        posestack.translate(this.getPositionX()+triddd.getOffset()[0], this.getPositionY()+triddd.getOffset()[1], triddd.getOffset()[2]);
         posestack.scale(1.0F, -1.0F, 1.0F);
         posestack.scale(25.0F, 25.0F, 1.0F);
-        float rotationPeriod = 8f;
+        posestack.scale(triddd.getScale(),triddd.getScale(),1.0F);
+        float rotationPeriod = triddd.getRotationPeriod();
         float rot = (System.currentTimeMillis() % (int) (rotationPeriod * 1000)) * (360f / (rotationPeriod * 1000));
         //posestack.mulPose(Axis.XP.rotationDegrees(rotPitch));
         posestack.mulPose(Axis.YP.rotationDegrees(rot));
@@ -68,5 +72,19 @@ public class TriDImageWidget extends ImageWidget
         Lighting.setupFor3DItems();
         posestack.popPose();
         RenderSystem.applyModelViewMatrix();
+    }
+
+    public TriDDisplayData getTriDDisplayData(ItemStack stack)
+    {
+        if(IOgnaWeapon.isWeapon(stack))
+        {
+            IOgnaWeapon weapon = (IOgnaWeapon) stack.getItem();
+            return weapon.getDefaultDatabase(stack).getDisplayContext().getTriDDisplayData();
+        } else if (OgnaSkill.isSkill(stack)) {
+            return OgnaSkill.getSkill(stack).getDisplayContext().getTriDDisplayData();
+        } else if (OgnaChip.isChip(stack)) {
+            return OgnaChip.getChip(stack).getDisplayContext().getTriDDisplayData();
+        }
+        return new TriDDisplayData();
     }
 }

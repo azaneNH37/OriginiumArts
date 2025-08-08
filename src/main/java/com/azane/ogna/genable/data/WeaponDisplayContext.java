@@ -21,6 +21,9 @@ public class WeaponDisplayContext
     @JsonAdapter(HexColorTypeAdapter.class)
     @Getter
     private int color;
+    @SerializedName("3d")
+    @Getter
+    private TriDDisplayData triDDisplayData = new TriDDisplayData();
 
     public ResourceLocation getTypeIcon()
     {

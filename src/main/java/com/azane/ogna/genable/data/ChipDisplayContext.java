@@ -20,6 +20,9 @@ public class ChipDisplayContext
     private int color;
     @SerializedName("model")
     private ResourceLocation model = RlHelper.EMPTY;
+    @SerializedName("3d")
+    @Getter
+    private TriDDisplayData triDDisplayData = new TriDDisplayData(6f,3f,new float[]{0f,10f,0f});
 
     public ResourceLocation getModel()
     {

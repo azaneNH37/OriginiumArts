@@ -5,6 +5,8 @@ import com.azane.ogna.client.renderer.ExtraModelItemRenderer;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.genable.item.chip.IChip;
+import com.azane.ogna.genable.item.skill.ISkill;
+import com.azane.ogna.item.skill.OgnaSkill;
 import com.azane.ogna.resource.service.CommonDataService;
 import com.azane.ogna.resource.service.ServerDataService;
 import lombok.Getter;
@@ -60,6 +62,13 @@ public class OgnaChip extends Item implements IGenItem, IPolyItemDataBase<IChip>
     public static IChip getChip(ResourceLocation rl)
     {
         return CommonDataService.get().getChip(rl);
+    }
+
+    public static IChip getChip(ItemStack stack)
+    {
+        if(!isChip(stack)) return null;
+        OgnaChip chipItem = (OgnaChip) stack.getItem();
+        return chipItem.getDataBaseForStack(stack);
     }
 
     public static ResourceLocation getChipId(ItemStack stack)

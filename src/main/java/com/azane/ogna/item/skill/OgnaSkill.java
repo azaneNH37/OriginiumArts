@@ -2,11 +2,9 @@ package com.azane.ogna.item.skill;
 
 import com.azane.ogna.client.lib.IExtraModel;
 import com.azane.ogna.client.renderer.ExtraModelItemRenderer;
-import com.azane.ogna.client.renderer.OgnaWeaponRenderer;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.genable.item.skill.ISkill;
-import com.azane.ogna.item.weapon.OgnaStaff;
 import com.azane.ogna.resource.service.CommonDataService;
 import com.azane.ogna.resource.service.ServerDataService;
 import lombok.Getter;
@@ -18,7 +16,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-import java.awt.*;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,6 +63,13 @@ public class OgnaSkill extends Item implements IGenItem, IPolyItemDataBase<ISkil
         OgnaSkill skillItem = (OgnaSkill) stack.getItem();
         ISkill skill = skillItem.getDataBaseForStack(stack);
         return skill.getId();
+    }
+
+    public static ISkill getSkill(ItemStack stack)
+    {
+        if(!isSkill(stack)) return null;
+        OgnaSkill skillItem = (OgnaSkill) stack.getItem();
+        return skillItem.getDataBaseForStack(stack);
     }
 
     public static ItemStack buildSkillStack(ResourceLocation skillId)

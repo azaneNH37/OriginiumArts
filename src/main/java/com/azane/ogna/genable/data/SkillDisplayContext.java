@@ -22,6 +22,9 @@ public class SkillDisplayContext
     private ResourceLocation icon;
     @SerializedName("model")
     private ResourceLocation model;
+    @SerializedName("3d")
+    @Getter
+    private TriDDisplayData triDDisplayData = new TriDDisplayData(6f,4f,new float[]{0f,10f,0f});
 
     public ResourceLocation getIcon()
     {
