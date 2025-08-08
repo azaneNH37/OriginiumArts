@@ -18,7 +18,13 @@
   "ogna.genable.weapon.missing.name": "<WEAPON MISSING>",
   "ogna.genable.skill.missing.name": "<SKILL MISSING>",
   "ogna.genable.weapon.staff.lockkey.name": "“锁与匙”",
+  "ogna.genable.weapon.staff.sheep.name": "\"错过的声音\"",
+  "ogna.genable.weapon.sword.lwd.name": "莱万汀",
+  "ogna.genable.weapon.sword.jc.name": "沙蚀",
   "ogna.genable.skill.key_of_chronology.name": "序时之匙",
+  "ogna.genable.skill.twilight.name": "黄昏",
+  "ogna.genable.skill.volcano.name": "火山",
+  "ogna.genable.skill.destreza.name": "至高之术",
   "ogna.genable.chip.atk.1.name": "攻击强化模块 I",
   "ogna.genable.chip.consume.1.name": "节能模块 I",
   "ogna.genable.chip.store.1.name": "储能模块 I"

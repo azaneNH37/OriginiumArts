@@ -19,7 +19,13 @@
   "ogna.genable.weapon.missing.name": "<WEAPON MISSING>",
   "ogna.genable.skill.missing.name": "<SKILL MISSING>",
   "ogna.genable.weapon.staff.lockkey.name": "\"Lock and Key\"",
+  "ogna.genable.weapon.staff.sheep.name": "\"Missed Sounds\"",
+  "ogna.genable.weapon.sword.lwd.name": "Laevatain",
+  "ogna.genable.weapon.sword.jc.name": "Sand Corrosion",
   "ogna.genable.skill.key_of_chronology.name": "Key of Chronology",
+  "ogna.genable.skill.twilight.name": "Twilight",
+  "ogna.genable.skill.volcano.name": "Volcano",
+  "ogna.genable.skill.destreza.name": "Destreza",
 
   "ogna.genable.chip.atk.1.name": "Attack UP Module I",
   "ogna.genable.chip.consume.1.name": "Energy-Save Module I",
