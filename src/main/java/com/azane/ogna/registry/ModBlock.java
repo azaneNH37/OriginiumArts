@@ -1,10 +1,7 @@
 package com.azane.ogna.registry;
 
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.block.ActiveOriginiumBlock;
-import com.azane.ogna.block.CraftOCCBlock;
-import com.azane.ogna.block.InactiveOriginiumBlock;
-import com.azane.ogna.block.InjectEPTBlock;
+import com.azane.ogna.block.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -20,6 +17,7 @@ public class ModBlock
 
     public static final ItemBlock CRAFT_OCC = registerBlockItem("craft_occ", CraftOCCBlock::new);
     public static final ItemBlock INJECT_EPT = registerBlockItem("inject_ept", InjectEPTBlock::new);
+    public static final ItemBlock ENERGY_EH = registerBlockItem("energy_eh", EnergyEHBlock::new);
 
     public static final ItemBlock AOGNM_L = registerBlockItem("aognm_l", ()->new ActiveOriginiumBlock(31,0.2D));
     public static final ItemBlock AOGNM_M = registerBlockItem("aognm_m", ()->new ActiveOriginiumBlock(15,0.12D));

@@ -1,4 +1,4 @@
-package com.azane.ogna.util;
+package com.azane.ogna.craft.rlr;
 
 import com.azane.ogna.resource.service.ServerDataService;
 import com.google.common.collect.ImmutableMap;

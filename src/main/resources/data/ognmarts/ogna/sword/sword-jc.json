@@ -53,7 +53,7 @@
     "reload_time": 5000,
     "energy_max": 600,
     "energy_consume": 3,
-    "chip_set_volume": 20,
+    "chip_set_volume": 60,
     "dmg_dataset": {
       "fallback": "normal",
       "map": {

@@ -1,5 +1,7 @@
-package com.azane.ogna.craft;
+package com.azane.ogna.craft.rlr;
 
+import com.azane.ogna.craft.RecipeIngredient;
+import com.azane.ogna.craft.RecipeResult;
 import com.azane.ogna.resource.service.IResourceProvider;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

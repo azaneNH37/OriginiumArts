@@ -2,6 +2,7 @@ package com.azane.ogna.registry;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.block.entity.CraftOCCBlockEntity;
+import com.azane.ogna.block.entity.EnergyEHBlockEntity;
 import com.azane.ogna.block.entity.InjectEPTBlockEntity;
 import com.mojang.datafixers.DSL;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,6 +27,14 @@ public class ModBlockEntity
             BlockEntityType.Builder.of(
                 InjectEPTBlockEntity::new,
                 ModBlock.INJECT_EPT.block.get()
+            ).build(DSL.remainderType())
+        );
+
+    public static final RegistryObject<BlockEntityType<EnergyEHBlockEntity>> ENERGY_EH_ENTITY =
+        BLOCK_ENTITIES.register("energy_eh", () ->
+            BlockEntityType.Builder.of(
+                EnergyEHBlockEntity::new,
+                ModBlock.ENERGY_EH.block.get()
             ).build(DSL.remainderType())
         );
 }

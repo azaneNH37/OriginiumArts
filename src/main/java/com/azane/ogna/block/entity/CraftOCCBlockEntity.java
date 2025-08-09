@@ -4,11 +4,10 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.custom.MaterialWidget;
 import com.azane.ogna.client.gui.ldlib.custom.MaterialWidgetGroup;
 import com.azane.ogna.client.gui.ldlib.custom.MenuItemWidget;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.inventory.MenuItemDisplay;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
-import com.azane.ogna.craft.CraftHelper;
-import com.azane.ogna.craft.RlResultRecipe;
+import com.azane.ogna.craft.rlr.RlrCraftHelper;
+import com.azane.ogna.craft.rlr.RlResultRecipe;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlockEntity;
 import com.azane.ogna.registry.ModRecipe;
@@ -111,7 +110,7 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
         var lis = group.getWidgetsById(MaterialWidgetGroup.CHILD_ID);
         for(int i=0;i<Math.min(recipe.getRlrIngredients().size(),lis.size());i++)
         {
-            int amt = CraftHelper.getIngredientCount(player,recipe.getRlrIngredients().get(i));
+            int amt = RlrCraftHelper.getIngredientCount(player,recipe.getRlrIngredients().get(i));
             ((MaterialWidget)lis.get(i)).injectIngredient(recipe.getRlrIngredients().get(i),amt);
         }
     }
@@ -133,10 +132,10 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
     {
         var mtrGroup = (MaterialWidgetGroup)root.getFirstWidgetById("mtr.group");
         target.setOnPressCallback(cd->{
-            if(!CraftHelper.canCraft(player,recipe))
+            if(!RlrCraftHelper.canCraft(player,recipe))
                 return;
             if(!cd.isRemote)
-                CraftHelper.executeCraft(player,recipe);
+                RlrCraftHelper.executeCraft(player,recipe);
             refreshMtrGroup(mtrGroup,recipe, player);
         });
     }

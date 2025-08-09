@@ -1,4 +1,4 @@
-package com.azane.ogna.craft;
+package com.azane.ogna.craft.rlr;
 
 import net.minecraft.world.item.crafting.RecipeType;
 

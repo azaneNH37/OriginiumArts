@@ -1,7 +1,8 @@
-package com.azane.ogna.craft;
+package com.azane.ogna.craft.rlr;
 
+import com.azane.ogna.craft.RecipeIngredient;
+import com.azane.ogna.craft.RecipeResult;
 import lombok.Getter;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -49,7 +50,7 @@ public class RlResultRecipe implements Recipe<Container> {
 
     // 执行合成
     public boolean craft(Player player) {
-        return CraftHelper.executeCraft(player, this);
+        return RlrCraftHelper.executeCraft(player, this);
     }
 
 }

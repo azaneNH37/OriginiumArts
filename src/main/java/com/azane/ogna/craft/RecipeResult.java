@@ -1,6 +1,6 @@
 package com.azane.ogna.craft;
 
-import com.azane.ogna.util.RlrRecipes;
+import com.azane.ogna.craft.rlr.RlrRecipes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;

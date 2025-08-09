@@ -1,10 +1,12 @@
-package com.azane.ogna.craft;
+package com.azane.ogna.craft.rlr;
 
+import com.azane.ogna.craft.RecipeIngredient;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class CraftHelper {
+public class RlrCraftHelper
+{
 
     // 检查玩家是否有足够的原料
     public static boolean canCraft(Player player, RlResultRecipe recipe) {
