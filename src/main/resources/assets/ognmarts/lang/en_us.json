@@ -14,6 +14,10 @@
   "ogna.gui.inject.skill.slot.weapon": "Arts Unit Slot",
   "ogna.gui.inject.skill.slot.skill": "Skill Slot",
   "ogna.gui.inject.chip.slot.chip": "Module Slot",
+  "ogna.gui.energy.title": "En■ro■y Hu■ (■■)",
+  "ogna.gui.energy.energy": "■■■■■■■■■ Energy: %s / %s (OE)",
+  "ogna.gui.energy.in": "Input Slot",
+  "ogna.gui.energy.out": "Output Slot",
 
   "ogna.genable.chip.missing.name": "<Module MISSING>",
   "ogna.genable.weapon.missing.name": "<WEAPON MISSING>",

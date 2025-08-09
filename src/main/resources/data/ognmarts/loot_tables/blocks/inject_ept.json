@@ -1,0 +1,49 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ognmarts:inject_ept",
+          "functions": [
+            {
+              "function": "copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "stacks",
+                  "target": "stacks",
+                  "op": "replace"
+                },
+                {
+                  "source": "inInject",
+                  "target": "inInject",
+                  "op": "replace"
+                },
+                {
+                  "source": "curOp",
+                  "target": "curOp",
+                  "op": "replace"
+                },
+                {
+                  "source": "curTick",
+                  "target": "curTick",
+                  "op": "replace"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ognmarts:inject_ept"
+}

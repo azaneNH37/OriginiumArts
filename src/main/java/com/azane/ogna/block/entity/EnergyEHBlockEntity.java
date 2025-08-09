@@ -4,6 +4,8 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
 import com.azane.ogna.craft.oe.OECRecipe;
 import com.azane.ogna.craft.oe.OEGRecipe;
+import com.azane.ogna.debug.log.DebugLogger;
+import com.azane.ogna.lib.NumStrHelper;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlockEntity;
 import com.azane.ogna.registry.ModRecipe;
@@ -23,7 +25,10 @@ import com.lowdragmc.lowdraglib.syncdata.blockentity.IAutoPersistBlockEntity;
 import com.lowdragmc.lowdraglib.syncdata.field.FieldManagedStorage;
 import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 import lombok.Getter;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -36,6 +41,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.azane.ogna.lib.RegexHelper.*;
 
@@ -57,9 +63,13 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
 
     // Getter方法供UI使用
     @Getter
-    @DropSaved @DescSynced @Persisted
+    @DropSaved
+    @DescSynced
+    @Persisted
     private double energy;
-    @DropSaved @DescSynced @Persisted
+    @DropSaved
+    @DescSynced
+    @Persisted
     private ItemStack[] stacks = new ItemStack[2];
 
     // 工作状态
@@ -77,6 +87,9 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
     private OEGRecipe cachedOEGRecipe;
     private OECRecipe cachedOECRecipe;
     private ItemStack lastInputStack = ItemStack.EMPTY;
+
+    private ProgressWidget energyBar;
+    private void refreshEnergyBar() {energyBar.setHoverTooltips(Component.translatable("ogna.gui.energy.energy", NumStrHelper.FORMAT2.format(energy), NumStrHelper.FORMAT2.format(MAX_ENERGY)).withStyle(ChatFormatting.GOLD));}
 
     public enum WorkMode {
         IDLE,       // 空闲
@@ -108,12 +121,16 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
 
         var inSlot = UiHelper.getAsNonnull(SlotWidget.class,startWith("in"),ui.widgets);
         var outSlot = UiHelper.getAsNonnull(SlotWidget.class,startWith("out"),ui.widgets);
-        var energyBar = UiHelper.getAsNonnull(ProgressWidget.class,startWith("energy"),ui.widgets);
+        energyBar = UiHelper.getAsNonnull(ProgressWidget.class,startWith("energy"),ui.widgets);
         var progressBar = UiHelper.getAsNonnull(ProgressWidget.class,startWith("progress"),ui.widgets);
 
         inSlot.setContainerSlot(this,0);
         outSlot.setContainerSlot(this,1);
-        energyBar.setProgressSupplier(()-> energy / MAX_ENERGY);
+        energyBar.setDynamicHoverTips(p->Component.translatable("ogna.gui.energy.energy", NumStrHelper.FORMAT2.format(energy), NumStrHelper.FORMAT2.format(MAX_ENERGY)).getString());
+        energyBar.setProgressSupplier(()-> {
+            //refreshEnergyBar();
+            return energy / MAX_ENERGY;
+        });
         progressBar.setProgressSupplier(()-> maxProcessTime > 0 ? (double)processTime / maxProcessTime : 0.0);
 
         return ui;
@@ -208,6 +225,7 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
             // 完成发电过程
             inputStack.shrink(recipe.getIngredient().getCount());
             energy = Math.min(energy + recipe.getEnergyOutput(), MAX_ENERGY);
+            //refreshEnergyBar();
 
             processTime = 0;
             maxProcessTime = 0;
@@ -236,6 +254,7 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
             // 完成制造过程
             inputStack.shrink(recipe.getIngredient().getCount());
             energy -= recipe.getEnergyCost();
+            //refreshEnergyBar();
 
             ItemStack result = recipe.getResult().copy();
             if (outputStack.isEmpty()) {
@@ -345,4 +364,12 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
         setChanged();
     }
     // ==== Container methods end =====
+
+
+    @Override
+    public void loadManagedPersistentData(CompoundTag tag)
+    {
+        IAutoPersistBlockEntity.super.loadManagedPersistentData(tag);
+        DebugLogger.log(tag.getAsString());
+    }
 }

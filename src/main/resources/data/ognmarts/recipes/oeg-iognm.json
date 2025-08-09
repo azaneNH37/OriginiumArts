@@ -1,0 +1,9 @@
+{
+  "type": "ognmarts:oeg",
+  "ingredient": {
+    "item": "ognmarts:iognm",
+    "count": 1
+  },
+  "energy_output": 80.0,
+  "processing_time": 15
+}

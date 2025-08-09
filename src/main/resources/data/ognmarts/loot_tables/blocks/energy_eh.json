@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ognmarts:energy_eh",
+          "functions": [
+            {
+              "function": "copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "stacks",
+                  "target": "stacks",
+                  "op": "replace"
+                },
+                {
+                  "source": "energy",
+                  "target": "energy",
+                  "op": "replace"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ognmarts:energy_eh"
+}

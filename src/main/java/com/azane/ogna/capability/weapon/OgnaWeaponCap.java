@@ -71,13 +71,13 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     @Override
     public boolean canAttack(ItemStack stack, Player player, AttackType attackType)
     {
-        return baseData.isCanAttack() && baseData.getConsumption() <= getCurrentEnergy();
+        return baseData.isCanAttack() && submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_CONSUME.get(),player,stack) <= getCurrentEnergy();
     }
 
     @Override
     public boolean canReload(ItemStack stack, Player player)
     {
-        return baseData.isCanReload() && baseData.getMaxEnergy() > getCurrentEnergy();
+        return baseData.isCanReload() && submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(),player,stack) > getCurrentEnergy();
     }
 
     @Override

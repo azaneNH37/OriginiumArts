@@ -1,0 +1,13 @@
+{
+  "type": "ognmarts:oec",
+  "ingredient": {
+    "tag": "forge:ingots/iron",
+    "count": 3
+  },
+  "result": {
+    "item": "ognmarts:oriron",
+    "count": 1
+  },
+  "energy_cost": 60.0,
+  "processing_time": 20
+}

@@ -6,11 +6,14 @@ import java.util.Locale;
 
 public final class NumStrHelper
 {
-    public static NumberFormat FORMAT = CompactNumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT);
+    public static NumberFormat FORMAT1 = CompactNumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT);
+    public static NumberFormat FORMAT2 = CompactNumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT);
 
     static {
-        FORMAT.setMinimumFractionDigits(1);
-        FORMAT.setMaximumFractionDigits(1);
+        FORMAT1.setMinimumFractionDigits(1);
+        FORMAT1.setMaximumFractionDigits(1);
+        FORMAT2.setMinimumFractionDigits(2);
+        FORMAT2.setMaximumFractionDigits(2);
     }
 
     public static String raw(long num)
@@ -19,6 +22,6 @@ public final class NumStrHelper
     }
     public static String format(long num)
     {
-        return FORMAT.format(num);
+        return FORMAT1.format(num);
     }
 }

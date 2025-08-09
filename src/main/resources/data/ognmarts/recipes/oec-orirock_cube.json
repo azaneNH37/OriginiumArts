@@ -1,0 +1,13 @@
+{
+  "type": "ognmarts:oec",
+  "ingredient": {
+    "tag": "forge:stone",
+    "count": 16
+  },
+  "result": {
+    "item": "ognmarts:orirock_cube",
+    "count": 6
+  },
+  "energy_cost": 90.0,
+  "processing_time": 30
+}

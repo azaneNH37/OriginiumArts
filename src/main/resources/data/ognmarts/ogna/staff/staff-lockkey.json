@@ -58,7 +58,7 @@
           "dmg_type": "ognmarts:ark_default",
           "dmg_category": "ARTS",
           "selector": "AREA",
-          "range": 2.0
+          "range": 4.0
         }
       }
     },

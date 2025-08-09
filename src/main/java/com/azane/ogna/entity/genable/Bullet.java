@@ -161,7 +161,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
         // 实体碰撞检测
         EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
             this.level(), this, currentPos, nextPos,
-            this.getBoundingBox().expandTowards(deltaMovement).inflate(64.0D),
+            this.getBoundingBox().expandTowards(deltaMovement).inflate(3.0D),
             this::canHitEntity
         );
 

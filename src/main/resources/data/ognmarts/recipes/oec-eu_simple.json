@@ -1,0 +1,13 @@
+{
+  "type": "ognmarts:oec",
+  "ingredient": {
+    "item": "ognmarts:eu_simple_empty",
+    "count": 1
+  },
+  "result": {
+    "item": "ognmarts:eu_simple",
+    "count": 1
+  },
+  "energy_cost": 10.0,
+  "processing_time": 1
+}

@@ -1,9 +1,9 @@
 {
   "type": "ognmarts:oeg",
   "ingredient": {
-    "item": "minecraft:coal",
+    "item": "ognmarts:ognm_shard",
     "count": 1
   },
-  "energy_output": 1000.0,
-  "processing_time": 10
+  "energy_output": 15.0,
+  "processing_time": 3
 }
