@@ -2,12 +2,15 @@ package com.azane.ogna.item.weapon;
 
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.capability.weapon.OgnaWeaponCapProvider;
+import com.azane.ogna.client.gameplay.ReloadState;
 import com.azane.ogna.client.lib.Datums;
 import com.azane.ogna.combat.util.EnergyConsumer;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.GeckoAssetData;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.lib.RlHelper;
+import com.azane.ogna.network.OgnmChannel;
+import com.azane.ogna.network.to_client.SyncReloadStatePacket;
 import com.azane.ogna.registry.ModCapability;
 import com.azane.ogna.registry.ModAttribute;
 import lombok.Getter;
@@ -114,8 +117,13 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
         //DebugLogger.log("Server reload");
         IOgnaWeaponCap cap = getWeaponCap(stack);
         double maxEnergy = cap.submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(),player,stack);
-        double gain = EnergyConsumer.convertItems(player,Mth.ceil(maxEnergy-cap.getCurrentEnergy()));
-        cap.modifyCurrentEnergy(Mth.clamp(gain,0,maxEnergy-cap.getCurrentEnergy()),
+        int supposeGain = Mth.ceil(maxEnergy-cap.getCurrentEnergy());
+        double gain = EnergyConsumer.convertItems(player,supposeGain);
+        cap.modifyCurrentEnergy(Mth.clamp(gain,0,supposeGain),
             true, player, stack);
+        if(gain<=supposeGain-1)
+            OgnmChannel.DEFAULT.sendTo(new SyncReloadStatePacket(ReloadState.OUT_OF_ENERGY),player);
+        else
+            OgnmChannel.DEFAULT.sendTo(new SyncReloadStatePacket(ReloadState.COMPLETE),player);
     }
 }

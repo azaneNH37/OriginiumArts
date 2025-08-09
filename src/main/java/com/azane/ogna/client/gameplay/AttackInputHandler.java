@@ -2,6 +2,7 @@ package com.azane.ogna.client.gameplay;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
+import com.azane.ogna.client.gui.hud.OgnaHuds;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
@@ -239,7 +240,7 @@ public class AttackInputHandler
 
         // 设置重装状态
         stateManager.startReloading(playerId, reloadTime, weaponUUID);
-
+        OgnaHuds.RELOAD_STATUS_HUD.refreshReloadState(ReloadState.RELOADING, reloadTime);
         // 发送重装包到服务端
         sendReloadPacket(player, weaponUUID);
         // 异步处理客户端重装特效
@@ -257,6 +258,7 @@ public class AttackInputHandler
                 // 发送重装完成包到服务端
                 sendReloadCompletePacket(player, weaponUUID);
             }
+            else OgnaHuds.RELOAD_STATUS_HUD.refreshReloadState(ReloadState.WEAPON_MISMATCH,2000);
         });
     }
 

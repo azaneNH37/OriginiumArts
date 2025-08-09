@@ -27,6 +27,7 @@ public class OgnmChannel extends BasePacketHandler
         registerServerToClient(FxBlockEffectTriggerPacket.class,FxBlockEffectTriggerPacket::new);
         registerServerToClient(SyncWeaponCapPacket.class,SyncWeaponCapPacket::new);
         registerServerToClient(SyncEPTWeaponStackCapPacket.class,SyncEPTWeaponStackCapPacket::new);
+        registerServerToClient(SyncReloadStatePacket.class,SyncReloadStatePacket::new);
 
         registerClientToServer(InputAttackPacket.class,InputAttackPacket::new);
         registerClientToServer(InputReloadPacket.class,InputReloadPacket::new);

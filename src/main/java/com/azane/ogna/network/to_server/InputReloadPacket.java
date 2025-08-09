@@ -1,7 +1,10 @@
 package com.azane.ogna.network.to_server;
 
+import com.azane.ogna.client.gameplay.ReloadState;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.network.IOgnmPacket;
+import com.azane.ogna.network.OgnmChannel;
+import com.azane.ogna.network.to_client.SyncReloadStatePacket;
 import lombok.Getter;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -60,7 +63,10 @@ public class InputReloadPacket implements IOgnmPacket
                 {
                     weapon.onServerReload(mainHand,player);
                 }
+                else OgnmChannel.DEFAULT.sendTo(new SyncReloadStatePacket(ReloadState.RELOAD_IGNORED),player);
+                return;
             }
         }
+        OgnmChannel.DEFAULT.sendTo(new SyncReloadStatePacket(ReloadState.WEAPON_MISMATCH),player);
     }
 }

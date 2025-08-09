@@ -42,7 +42,7 @@ public class SkillHud extends OgnaHud
         if(mainHandItem.isEmpty() || !IOgnaWeapon.isWeapon(mainHandItem))
             return;
 
-        //你封装了个什么（
+        //TODO:你封装了个什么（
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
