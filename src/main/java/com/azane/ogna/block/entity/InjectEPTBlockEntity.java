@@ -75,6 +75,7 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     //===== GeckoLib start ======
     @Getter
     private final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
+    private boolean isOpen;
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers)
     {
@@ -147,11 +148,19 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     }
 
     @Override
-    public ModularUI createUI(Player player) {return new ModularUI(doCreateUI(player),this,player);}
+    public ModularUI createUI(Player player)
+    {
+        var mui = new ModularUI(doCreateUI(player),this,player);
+        isOpen = true;
+        mui.registerCloseListener(()->isOpen = false);
+        return mui;
+    }
 
     public void onPlayerUse(Player player)
     {
         if (player instanceof ServerPlayer serverPlayer) {
+            if(isOpen)
+                return;
             BlockEntityUIFactory.INSTANCE.openUI(this, serverPlayer);
         }
     }

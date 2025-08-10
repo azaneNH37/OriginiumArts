@@ -64,7 +64,7 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
     //===== GeckoLib start ======
     @Getter
     private final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
-    public boolean isOpen;
+    private boolean isOpen;
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers)
     {

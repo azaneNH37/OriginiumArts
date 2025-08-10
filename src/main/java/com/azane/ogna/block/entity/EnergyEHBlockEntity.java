@@ -9,6 +9,7 @@ import com.azane.ogna.lib.NumStrHelper;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlockEntity;
 import com.azane.ogna.registry.ModRecipe;
+import com.azane.ogna.util.GeoAnimations;
 import com.lowdragmc.lowdraglib.gui.factory.BlockEntityUIFactory;
 import com.lowdragmc.lowdraglib.gui.modular.IUIHolder;
 import com.lowdragmc.lowdraglib.gui.modular.ModularUI;
@@ -38,6 +39,12 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -45,7 +52,7 @@ import java.util.stream.Collectors;
 
 import static com.azane.ogna.lib.RegexHelper.*;
 
-public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged
+public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged, GeoBlockEntity
 {
     //===== LDLIB start ======
     protected static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(EnergyEHBlockEntity.class);
@@ -58,6 +65,22 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
     @Override
     public void onChanged() {setChanged();}
     //===== LDLIB end =======
+
+    //===== GeckoLib start ======
+    @Getter
+    private final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
+    private boolean isOpen;
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers)
+    {
+        controllers.add(new AnimationController<>(this,"misc", state -> {
+            if(isOpen)
+                return state.setAndContinue(GeoAnimations.MISC_WORK);
+            else
+                return state.setAndContinue(GeoAnimations.MISC_IDLE);
+        }));
+    }
+    //===== GeckoLib end =======
 
     public static final double MAX_ENERGY = 1e4;
 
@@ -105,11 +128,19 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
     }
 
     @Override
-    public ModularUI createUI(Player player) {return new ModularUI(doCreateUI(player),this,player);}
+    public ModularUI createUI(Player player)
+    {
+        var mui = new ModularUI(doCreateUI(player),this,player);
+        isOpen = true;
+        mui.registerCloseListener(()->isOpen = false);
+        return mui;
+    }
 
     public void onPlayerUse(Player player)
     {
         if (player instanceof ServerPlayer serverPlayer) {
+            if(isOpen)
+                return;
             BlockEntityUIFactory.INSTANCE.openUI(this, serverPlayer);
         }
     }
