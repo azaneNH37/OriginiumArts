@@ -1,7 +1,8 @@
 {
   "display_context": {
     "name": "ogna.genable.chip.consume.1.name",
-    "color": "0x00FFFF",
+    "description": "ogna.genable.chip.consume.1.desp",
+    "color": "#B2C7D9",
     "model": "ognmarts:consume.1"
   },
   "base_data": {

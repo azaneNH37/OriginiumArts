@@ -1,4 +1,18 @@
 {
+  "block.ognmarts.craft_occ": "Origin Core Compiler (OCC)",
+  "block.ognmarts.inject_ept": "Etching Protocol Terminal (EPT)",
+  "block.ognmarts.energy_eh": "En■ro■y Hu■ (■■)",
+  "block.ognmarts.iognm": "Inert Originium Ore",
+  "block.ognmarts.aognm_l": "Large Active Originium Crystal Embryo",
+  "block.ognmarts.aognm_m": "Medium Active Originium Crystal Embryo",
+  "block.ognmarts.aognm_s": "Small Active Originium Crystal Embryo",
+
+  "item.ognmarts.ognm_shard": "Originium Shard",
+  "item.ognmarts.orirock_cube": "Orirock Cube",
+  "item.ognmarts.oriron": "Oriron",
+  "item.ognmarts.eu_simple": "Simple OriEnergy Unit",
+  "item.ognmarts.eu_simple_empty": "Simple OriEnergy Unit (Empty)",
+
   "ogna.gui.craft.title": "Origin Core Compiler (OCC)",
   "ogna.gui.craft.button": "Compile",
   "ogna.gui.craft.display.item.slot": "Pre-Compiled Item",
@@ -22,16 +36,27 @@
   "ogna.genable.chip.missing.name": "<Module MISSING>",
   "ogna.genable.weapon.missing.name": "<WEAPON MISSING>",
   "ogna.genable.skill.missing.name": "<SKILL MISSING>",
-  "ogna.genable.weapon.staff.lockkey.name": "\"Lock and Key\"",
+  "ogna.genable.weapon.staff.lockkey.name": "\"Black Lock and White Key\"",
+  "ogna.genable.weapon.staff.lockkey.desp": "Until one day, footsteps echoed throughout, as three Sankta walked into the underground palace.",
   "ogna.genable.weapon.staff.sheep.name": "\"Missed Sounds\"",
+  "ogna.genable.weapon.staff.sheep.desp": "\"We never know if this goodbye might be forever, and we can't know how to say goodbye to you under such circumstances.\"",
   "ogna.genable.weapon.sword.lwd.name": "Laevatain",
+  "ogna.genable.weapon.sword.lwd.desp": "She knew it was a seething, scorching sort, easy to irritate, hated cold things the way one might hate the sound of nails on a chalkboard.\nIt was why she'd always loved ice cream, and all cold refreshments alike.",
   "ogna.genable.weapon.sword.jc.name": "Sand Corrosion",
+  "ogna.genable.weapon.sword.jc.desp": "\"Just a mop, nothing to be afraid of.\"\n\"No, that mop always has a pungent smell of disinfectant, extremely unpleasant. Even the water droplets it flings out are corrosive.\"",
   "ogna.genable.skill.key_of_chronology.name": "Key of Chronology",
+  "ogna.genable.skill.key_of_chronology.desp": "Hm? I thought I missed a few, but I guess that's a job well done.",
   "ogna.genable.skill.twilight.name": "Twilight",
+  "ogna.genable.skill.twilight.desp": "Laevatain!",
   "ogna.genable.skill.volcano.name": "Volcano",
+  "ogna.genable.skill.volcano.desp": "Watch out for fires.",
   "ogna.genable.skill.destreza.name": "Destreza",
+  "ogna.genable.skill.destreza.desp": "Don't blink, this is the Destreza of Iberia!",
 
   "ogna.genable.chip.atk.1.name": "Attack UP Module I",
+  "ogna.genable.chip.atk.1.desp": "Retired Lab Toy. Pries a gap in the Originium core—hold it too long and your hand goes numb like grabbing a live wire.",
   "ogna.genable.chip.consume.1.name": "Energy-Save Module I",
-  "ogna.genable.chip.store.1.name": "Energy-Storage Module I"
+  "ogna.genable.chip.consume.1.desp": "Intern's Power-Saving Plan. The Originium core dozes off and leaks dregs. Lasts like a rusty pocket watch—literally.",
+  "ogna.genable.chip.store.1.name": "Energy-Storage Module I",
+  "ogna.genable.chip.store.1.desp": "Old Medical PSU Conversion. Charges slow, leaks fast. Like a leaky can of energy."
 }

@@ -5,8 +5,13 @@
   "display_context": {
     "type_icon": "ognmarts:guard",
     "name": "ogna.genable.weapon.sword.lwd.name",
+    "description": "ogna.genable.weapon.sword.lwd.desp",
     "code_name": "R111-AFT-X",
-    "color": "0xFF0000"
+    "color": "#FF4605",
+    "3d": {
+      "scale": 1.7,
+      "offset": [0,15,0]
+    }
   },
   "anime_datum": {
     "map": {

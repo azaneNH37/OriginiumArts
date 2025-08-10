@@ -5,8 +5,13 @@
   "display_context": {
     "type_icon": "ognmarts:guard",
     "name": "ogna.genable.weapon.sword.jc.name",
+    "description": "ogna.genable.weapon.sword.jc.desp",
     "code_name": "II01-LOR-X",
-    "color": "0xAA3300"
+    "color": "#FAE118",
+    "3d": {
+      "scale": 1.7,
+      "offset": [0,15,0]
+    }
   },
   "anime_datum": {
     "map": {

@@ -5,7 +5,7 @@ import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.combat.data.skill.OgnaSkillData;
 import com.azane.ogna.genable.data.AtkEntityData;
-import com.azane.ogna.genable.data.SkillDisplayContext;
+import com.azane.ogna.genable.data.display.SkillDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.item.weapon.IOgnaWeapon;

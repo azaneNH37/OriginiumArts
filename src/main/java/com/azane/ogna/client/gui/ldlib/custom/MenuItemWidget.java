@@ -2,6 +2,8 @@ package com.azane.ogna.client.gui.ldlib.custom;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
+import com.azane.ogna.genable.data.display.IDisplayContext;
+import com.azane.ogna.lib.ColorHelper;
 import com.azane.ogna.lib.RegexHelper;
 import com.azane.ogna.craft.rlr.RlResultRecipe;
 import com.azane.ogna.lib.RlHelper;
@@ -15,6 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +35,8 @@ public class MenuItemWidget extends WidgetGroup
     @Setter
     @Getter
     private IGuiTexture typeTexture;
+
+    private String desp = "<MISSING>";
 
     public MenuItemWidget()
     {
@@ -90,41 +95,38 @@ public class MenuItemWidget extends WidgetGroup
         var slot = UiHelper.getAsNonnull(SlotWidget.class, RegexHelper.startWith("item"),this.widgets);
         var name = UiHelper.getAsNonnull(TextTextureWidget.class, RegexHelper.startWith("name"), this.widgets);
         var code = UiHelper.getAsNonnull(TextTextureWidget.class, RegexHelper.startWith("code_name"), this.widgets);
-        if (type.equals("staff"))
+        IDisplayContext iDisplayContext = IDisplayContext.EMPTY;
+        ItemStack itemStack = ItemStack.EMPTY;
+        switch (type)
         {
-            var data = Objects.requireNonNull(CommonDataService.get().getStaff(resrl)) ;
-            typeTexture = new ResourceTexture(data.getDisplayContext().getTypeIcon());
-            name.setText(data.getDisplayContext().getName());
-            name.getTextTexture().setColor(data.getDisplayContext().getColor());
-            code.setText(data.getDisplayContext().getCodeName());
-            displayContainer.setItem(index,data.buildItemStack(1));
-            slot.setContainerSlot(displayContainer,index);
-        }else if(type.equals("sword"))
-        {
-            var data = Objects.requireNonNull(CommonDataService.get().getSword(resrl)) ;
-            typeTexture = new ResourceTexture(data.getDisplayContext().getTypeIcon());
-            name.setText(data.getDisplayContext().getName());
-            name.getTextTexture().setColor(data.getDisplayContext().getColor());
-            code.setText(data.getDisplayContext().getCodeName());
-            displayContainer.setItem(index,data.buildItemStack(1));
-            slot.setContainerSlot(displayContainer,index);
-        }else if (type.equals("skill")) {
-            var data = Objects.requireNonNull(CommonDataService.get().getSkill(resrl));
-            typeTexture = new ResourceTexture(data.getDisplayContext().getTypeIcon());
-            name.setText(data.getDisplayContext().getName());
-            name.getTextTexture().setColor(data.getDisplayContext().getColor());
-            code.setText("");
-            displayContainer.setItem(index,data.buildItemStack(1));
-            slot.setContainerSlot(displayContainer,index);
-        } else if (type.equals("chip")) {
-            var data = Objects.requireNonNull(CommonDataService.get().getChip(resrl));
-            typeTexture = new ResourceTexture(RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/type_icon/chip.png"));
-            name.setText(data.getDisplayContext().getName());
-            name.getTextTexture().setColor(data.getDisplayContext().getColor());
-            code.setText("");
-            displayContainer.setItem(index,data.buildItemStack(1));
-            slot.setContainerSlot(displayContainer,index);
+            case "staff" -> {
+                var res = Objects.requireNonNull(CommonDataService.get().getStaff(resrl));
+                iDisplayContext = res.getDisplayContext();
+                itemStack = res.buildItemStack(1);
+            }
+            case "sword" -> {
+                var res = Objects.requireNonNull(CommonDataService.get().getSword(resrl));
+                iDisplayContext = res.getDisplayContext();
+                itemStack = res.buildItemStack(1);
+            }
+            case "skill" -> {
+                var res = Objects.requireNonNull(CommonDataService.get().getSkill(resrl));
+                iDisplayContext = res.getDisplayContext();
+                itemStack = res.buildItemStack(1);
+            }
+            case "chip" -> {
+                var res = Objects.requireNonNull(CommonDataService.get().getChip(resrl));
+                iDisplayContext = res.getDisplayContext();
+                itemStack = res.buildItemStack(1);
+            }
         }
+        typeTexture = new ResourceTexture(iDisplayContext.getTypeIcon());
+        desp = iDisplayContext.getDescription();
+        name.setText(iDisplayContext.getName());
+        name.getTextTexture().setColor(iDisplayContext.getColor());
+        code.setText(iDisplayContext.getCodeName());
+        displayContainer.setItem(index,itemStack);
+        slot.setContainerSlot(displayContainer,index);
         return true;
     }
 
@@ -135,6 +137,7 @@ public class MenuItemWidget extends WidgetGroup
         var slot = UiHelper.getAsNonnull(SlotWidget.class, endWith("slot"), displayList);
         var typeIcon = UiHelper.getAsNonnull(ImageWidget.class, endWith("type"), displayList);
         var name = UiHelper.getAsNonnull(TextTextureWidget.class, endWith("name"), displayList);
+        var textDesp = UiHelper.getAsNonnull(TextTextureWidget.class, endWith("desp"), displayList);
 
         slot.setContainerSlot(displayContainer,index);
         modelView.setItemSupplier(slot::getItem);
@@ -142,5 +145,7 @@ public class MenuItemWidget extends WidgetGroup
         var menu_name = UiHelper.getAsNonnull(TextTextureWidget.class, RegexHelper.startWith("name"), this.widgets);
         name.setText(menu_name.getLastComponent());
         name.getTextTexture().setColor(menu_name.getTextTexture().color);
+        textDesp.setText(desp);
+        textDesp.getTextTexture().setColor(ColorHelper.getBrighter(name.getTextTexture().color,1.05f));
     }
 }

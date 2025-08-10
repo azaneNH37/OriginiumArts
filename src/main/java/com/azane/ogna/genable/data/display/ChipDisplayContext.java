@@ -1,5 +1,7 @@
-package com.azane.ogna.genable.data;
+package com.azane.ogna.genable.data.display;
 
+import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.genable.data.TriDDisplayData;
 import com.azane.ogna.lib.HexColorTypeAdapter;
 import com.azane.ogna.lib.RlHelper;
 import com.google.gson.annotations.JsonAdapter;
@@ -7,13 +9,21 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 
-public class ChipDisplayContext
+public class ChipDisplayContext implements IDisplayContext
 {
     public static final ChipDisplayContext EMPTY = new ChipDisplayContext();
 
+    @Getter
+    private final ResourceLocation typeIcon = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/type_icon/chip.png");
+    @Getter
+    private final String codeName = "";
+
     @SerializedName("name")
     @Getter
-    private String name = "ogna.genable.skill.missing.name";
+    private String name = "ogna.genable.chip.missing.name";
+    @SerializedName("description")
+    @Getter
+    private String description = "ogna.genable.chip.missing.name";
     @SerializedName("color")
     @Getter
     @JsonAdapter(HexColorTypeAdapter.class)

@@ -1,6 +1,7 @@
 {
   "display_context": {
     "name": "ogna.genable.skill.key_of_chronology.name",
+    "description": "ogna.genable.skill.key_of_chronology.desp",
     "color": "#04FFE2",
     "type_icon": "ognmarts:skill_atk",
     "icon": "ognmarts:key_of_chronology",

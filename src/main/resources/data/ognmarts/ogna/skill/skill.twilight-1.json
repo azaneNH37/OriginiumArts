@@ -1,7 +1,8 @@
 {
   "display_context": {
     "name": "ogna.genable.skill.twilight.name",
-    "color": "#EE1111",
+    "description": "ogna.genable.skill.twilight.desp",
+    "color": "#E01313",
     "type_icon": "ognmarts:skill_atk",
     "icon": "ognmarts:twilight",
     "model": "ognmarts:twilight"

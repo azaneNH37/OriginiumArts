@@ -6,7 +6,7 @@ import com.azane.ogna.combat.chip.ChipTiming;
 import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
-import com.azane.ogna.genable.data.ChipDisplayContext;
+import com.azane.ogna.genable.data.display.ChipDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;
 import com.azane.ogna.resource.helper.IresourceLocation;
 import net.minecraft.server.level.ServerLevel;

@@ -4,7 +4,7 @@ import com.azane.ogna.combat.chip.ChipArg;
 import com.azane.ogna.combat.chip.ChipSet;
 import com.azane.ogna.combat.data.ChipData;
 import com.azane.ogna.debug.log.DebugLogger;
-import com.azane.ogna.genable.data.ChipDisplayContext;
+import com.azane.ogna.genable.data.display.ChipDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.registry.ModItem;

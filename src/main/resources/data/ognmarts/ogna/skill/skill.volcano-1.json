@@ -1,7 +1,8 @@
 {
   "display_context": {
     "name": "ogna.genable.skill.volcano.name",
-    "color": "#EE1111",
+    "description": "ogna.genable.skill.volcano.desp",
+    "color": "#ED6E6E",
     "type_icon": "ognmarts:skill_atk",
     "icon": "ognmarts:volcano",
     "model": "ognmarts:volcano"

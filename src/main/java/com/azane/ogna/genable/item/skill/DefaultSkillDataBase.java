@@ -9,7 +9,7 @@ import com.azane.ogna.combat.data.skill.OgnaSkillData;
 import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.AtkEntityData;
-import com.azane.ogna.genable.data.SkillDisplayContext;
+import com.azane.ogna.genable.data.display.SkillDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.item.weapon.AttackType;

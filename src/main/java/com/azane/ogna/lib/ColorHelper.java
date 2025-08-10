@@ -72,4 +72,17 @@ public final class ColorHelper
         // 将RGB值组合成十进制整数
         return (255 << 24) | (r << 16) | (g << 8) | b;
     }
+
+    public static int getBrighter(int color, float factor)
+    {
+        int r = (color >> 16) & 0xFF;
+        int g = (color >> 8) & 0xFF;
+        int b = color & 0xFF;
+
+        r = Math.min(255, (int) (r * factor));
+        g = Math.min(255, (int) (g * factor));
+        b = Math.min(255, (int) (b * factor));
+
+        return (255 << 24) | (r << 16) | (g << 8) | b;
+    }
 }

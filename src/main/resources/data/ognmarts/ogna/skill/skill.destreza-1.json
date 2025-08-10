@@ -1,7 +1,8 @@
 {
   "display_context": {
     "name": "ogna.genable.skill.destreza.name",
-    "color": "0xC2B280",
+    "description": "ogna.genable.skill.destreza.desp",
+    "color": "#FAE118",
     "type_icon": "ognmarts:skill_atk",
     "icon": "ognmarts:destreza",
     "model": "ognmarts:destreza"

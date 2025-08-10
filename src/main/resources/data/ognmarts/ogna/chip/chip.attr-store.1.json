@@ -1,7 +1,8 @@
 {
   "display_context": {
     "name": "ogna.genable.chip.store.1.name",
-    "color": "0xFFFFFF",
+    "description": "ogna.genable.chip.store.1.desp",
+    "color": "#B8D9B6",
     "model": "ognmarts:store.1"
   },
   "base_data": {

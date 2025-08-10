@@ -5,6 +5,7 @@
   "display_context": {
     "type_icon": "ognmarts:caster",
     "name": "ogna.genable.weapon.staff.lockkey.name",
+    "description": "ogna.genable.weapon.staff.lockkey.desp",
     "code_name": "LT77-SPC-Y",
     "color": 3735528
   },
