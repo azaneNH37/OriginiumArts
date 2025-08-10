@@ -1,7 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "ognmarts:block/craft_occ"
-    }
+    "": { "model": "ognmarts:block/craft_occ" }
   }
 }

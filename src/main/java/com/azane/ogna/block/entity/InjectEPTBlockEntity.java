@@ -15,6 +15,7 @@ import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_client.SyncEPTWeaponStackCapPacket;
 import com.azane.ogna.registry.ModBlockEntity;
+import com.azane.ogna.util.GeoAnimations;
 import com.lowdragmc.lowdraglib.gui.factory.BlockEntityUIFactory;
 import com.lowdragmc.lowdraglib.gui.modular.IUIHolder;
 import com.lowdragmc.lowdraglib.gui.modular.ModularUI;
@@ -43,6 +44,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -50,7 +57,7 @@ import java.util.regex.Pattern;
 
 import static com.azane.ogna.lib.RegexHelper.*;
 
-public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged
+public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged, GeoBlockEntity
 {
     //===== LDLIB start ======
     //记得改MANAGED_FIELD_HOLDER的classType
@@ -64,6 +71,16 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     @Override
     public void onChanged() {setChanged();}
     //===== LDLIB end =======
+
+    //===== GeckoLib start ======
+    @Getter
+    private final AnimatableInstanceCache animatableInstanceCache = GeckoLibUtil.createInstanceCache(this);
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers)
+    {
+        controllers.add(new AnimationController<>(this,"misc", state -> state.setAndContinue(GeoAnimations.MISC_WORK)));
+    }
+    //===== GeckoLib end =======
 
     public static final Pattern TAB_GROUP_PT = startWith("tab.");
     public static final Pattern SKILL_GROUP_PT = startWith("skill.");

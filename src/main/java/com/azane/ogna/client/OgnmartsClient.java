@@ -5,6 +5,9 @@ import com.azane.ogna.client.gameplay.AttackInputHandler;
 import com.azane.ogna.client.lib.OffHandItemTransform;
 import com.azane.ogna.client.renderer.atkentity.BladeEffectRenderer;
 import com.azane.ogna.client.renderer.atkentity.BulletRenderer;
+import com.azane.ogna.client.renderer.block.CraftOCCRenderer;
+import com.azane.ogna.client.renderer.block.InjectEPTRenderer;
+import com.azane.ogna.registry.ModBlockEntity;
 import com.azane.ogna.registry.ModEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -37,5 +40,7 @@ public class OgnmartsClient
     {
         event.registerEntityRenderer(ModEntity.BLADE_EFFECT.get(), BladeEffectRenderer::new);
         event.registerEntityRenderer(ModEntity.BULLET.get(), BulletRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntity.CRAFT_OCC_ENTITY.get(), CraftOCCRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntity.INJECT_EPT_ENTITY.get(), InjectEPTRenderer::new);
     }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ognmarts:item/staff-sheep.gui"
+    "layer0": "ognmarts:item/sword-jc.gui"
   }
 }
