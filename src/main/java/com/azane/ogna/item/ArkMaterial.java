@@ -2,6 +2,7 @@ package com.azane.ogna.item;
 
 import com.azane.ogna.lib.ColorHelper;
 import lombok.Getter;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.Item;
@@ -36,5 +37,6 @@ public class ArkMaterial extends Item
     {
         pTooltipComponents.clear();
         pTooltipComponents.add(Component.translatable(getDescriptionId(pStack)).withStyle(ColorHelper.getRarityColor(rarity)));
+        pTooltipComponents.add(Component.translatable(getDescriptionId(pStack)+".desp").withStyle(ChatFormatting.DARK_GRAY,ChatFormatting.ITALIC));
     }
 }
