@@ -1,6 +1,7 @@
 package com.azane.ogna.world.effect;
 
 import com.azane.ogna.combat.util.ArkDmgTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -29,6 +30,13 @@ public class SandPotionEffect extends MobEffect
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier)
     {
-        return pDuration % (20 - pAmplifier*5) == 0;
+        return pDuration % Math.max(20 - pAmplifier*5,5) == 0;
+    }
+
+    @Override
+    public Component getDisplayName()
+    {
+        return Component.translatable("ogna.genable.chip.inner.sand_poison.name")
+            .append(" ("+Component.translatable("ogna.genable.chip.inner.sand_poison.content").getString()+")");
     }
 }

@@ -13,12 +13,17 @@ import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -57,6 +62,15 @@ public class OgnaChip extends Item implements IGenItem, IPolyItemDataBase<IChip>
     public String getDescriptionId(ItemStack pStack)
     {
         return getDataBaseForStack(pStack).getDisplayContext().getName();
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced)
+    {
+        pTooltipComponents.clear();
+        IChip chip = getDataBaseForStack(pStack);
+        chip.appendHoverText(pStack, pTooltipComponents, pIsAdvanced);
+        pTooltipComponents.add(Component.empty());
     }
 
     public static IChip getChip(ResourceLocation rl)

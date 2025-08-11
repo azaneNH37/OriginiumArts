@@ -39,6 +39,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.items.IItemHandler;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -395,12 +396,4 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
         setChanged();
     }
     // ==== Container methods end =====
-
-
-    @Override
-    public void loadManagedPersistentData(CompoundTag tag)
-    {
-        IAutoPersistBlockEntity.super.loadManagedPersistentData(tag);
-        DebugLogger.log(tag.getAsString());
-    }
 }

@@ -8,6 +8,7 @@ import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.genable.data.display.ChipDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;
+import com.azane.ogna.lib.IComponentDisplay;
 import com.azane.ogna.resource.helper.IresourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * 一个旨在实现模块化在实体，Ogna武器引入时点类效果修正的接口。
  */
-public interface IChip extends IresourceLocation, IGenItemDatabase
+public interface IChip extends IresourceLocation, IGenItemDatabase, IComponentDisplay
 {
     default ChipDisplayContext getDisplayContext() {return ChipDisplayContext.EMPTY;}
 

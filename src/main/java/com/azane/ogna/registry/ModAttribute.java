@@ -24,6 +24,6 @@ public class ModAttribute
 
     public static RegistryObject<Attribute> registerRange(String name,double defaultVal,double minVal,double maxVal)
     {
-        return ATTRIBUTES.register(name, () -> new RangedAttribute("attribute.name." + name, defaultVal, minVal, maxVal));
+        return ATTRIBUTES.register(name, () -> new RangedAttribute("attribute.name." +OriginiumArts.MOD_ID+"."+ name, defaultVal, minVal, maxVal));
     }
 }

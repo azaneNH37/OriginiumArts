@@ -9,6 +9,7 @@ import com.azane.ogna.genable.data.display.SkillDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
+import com.azane.ogna.lib.IComponentDisplay;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,7 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public interface ISkill extends IGenItemDatabase
+public interface ISkill extends IGenItemDatabase, IComponentDisplay
 {
     SkillDisplayContext getDisplayContext();
 

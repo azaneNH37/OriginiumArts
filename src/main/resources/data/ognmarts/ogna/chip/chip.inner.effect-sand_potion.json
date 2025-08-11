@@ -1,4 +1,7 @@
 {
+  "display_context": {
+    "name": "ogna.genable.chip.inner.sand_poison.name"
+  },
   "effectID": "ognmarts:sand_potion",
   "level": 1,
   "duration": 63,

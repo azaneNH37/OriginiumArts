@@ -6,10 +6,11 @@ import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
 import com.azane.ogna.genable.data.AtkEntityData;
 import com.azane.ogna.genable.data.display.WeaponDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;
+import com.azane.ogna.lib.IComponentDisplay;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.jetbrains.annotations.Nullable;
 
-public interface IDefaultOgnaWeaponDataBase extends IGenItemDatabase
+public interface IDefaultOgnaWeaponDataBase extends IGenItemDatabase, IComponentDisplay
 {
     @Nullable
     GeckoAssetData getGeckoAsset();

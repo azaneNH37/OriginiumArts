@@ -27,7 +27,7 @@ public class ChipDisplayContext implements IDisplayContext
     @SerializedName("color")
     @Getter
     @JsonAdapter(HexColorTypeAdapter.class)
-    private int color;
+    private int color = 0xFFFFFF;
     @SerializedName("model")
     private ResourceLocation model = RlHelper.EMPTY;
     @SerializedName("3d")

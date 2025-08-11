@@ -9,9 +9,13 @@ import com.azane.ogna.combat.chip.ChipTiming;
 import com.azane.ogna.combat.data.AttrModifier;
 import com.azane.ogna.genable.item.chip.ItemChip;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
+import com.azane.ogna.lib.IComponentDisplay;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,5 +61,12 @@ public class AttrChip extends ItemChip
                 modifiers.forEach(weapon.getWeaponCap(arg.getWeaponStack())::removeModifier);
             }
         }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag)
+    {
+        super.appendHoverText(stack, tooltip, flag);
+        modifiers.forEach(attrModifier -> attrModifier.appendHoverText(stack, tooltip, flag));
     }
 }
