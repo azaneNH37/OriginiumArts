@@ -26,9 +26,8 @@ import com.lowdragmc.lowdraglib.syncdata.blockentity.IAutoPersistBlockEntity;
 import com.lowdragmc.lowdraglib.syncdata.field.FieldManagedStorage;
 import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 import lombok.Getter;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -39,21 +38,25 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.azane.ogna.lib.RegexHelper.*;
 
-public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged, GeoBlockEntity
+public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged, GeoBlockEntity
 {
     //===== LDLIB start ======
     protected static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(EnergyEHBlockEntity.class);
@@ -113,7 +116,6 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
     private ItemStack lastInputStack = ItemStack.EMPTY;
 
     private ProgressWidget energyBar;
-    private void refreshEnergyBar() {energyBar.setHoverTooltips(Component.translatable("ogna.gui.energy.energy", NumStrHelper.FORMAT2.format(energy), NumStrHelper.FORMAT2.format(MAX_ENERGY)).withStyle(ChatFormatting.GOLD));}
 
     public enum WorkMode {
         IDLE,       // 空闲
@@ -124,7 +126,6 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
     public EnergyEHBlockEntity(BlockPos pPos, BlockState pBlockState)
     {
         super(ModBlockEntity.ENERGY_EH_ENTITY.get(), pPos, pBlockState);
-        // 初始化物品堆栈
         Arrays.fill(stacks, ItemStack.EMPTY);
     }
 
@@ -156,13 +157,10 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
         energyBar = UiHelper.getAsNonnull(ProgressWidget.class,startWith("energy"),ui.widgets);
         var progressBar = UiHelper.getAsNonnull(ProgressWidget.class,startWith("progress"),ui.widgets);
 
-        inSlot.setContainerSlot(this,0);
-        outSlot.setContainerSlot(this,1);
+        inSlot.setContainerSlot(container,0);
+        outSlot.setContainerSlot(container,1);
         energyBar.setDynamicHoverTips(p->Component.translatable("ogna.gui.energy.energy", NumStrHelper.FORMAT2.format(energy), NumStrHelper.FORMAT2.format(MAX_ENERGY)).getString());
-        energyBar.setProgressSupplier(()-> {
-            //refreshEnergyBar();
-            return energy / MAX_ENERGY;
-        });
+        energyBar.setProgressSupplier(()-> energy / MAX_ENERGY);
         progressBar.setProgressSupplier(()-> maxProcessTime > 0 ? (double)processTime / maxProcessTime : 0.0);
 
         return ui;
@@ -342,58 +340,145 @@ public class EnergyEHBlockEntity extends BlockEntity implements Container,IUIHol
     }
 
     //===== Container methods =====
-    @Override
-    public int getContainerSize() {return stacks.length;}
-
-    @Override
-    public boolean isEmpty()
+    public final Container container = new Container()
     {
-        for(ItemStack itemstack : stacks)
-            if (!itemstack.isEmpty())
-                return false;
-        return true;
-    }
-
-    @Override
-    public ItemStack getItem(int pSlot) {
-        return pSlot >= 0 && pSlot < stacks.length ? stacks[pSlot] : ItemStack.EMPTY;
-    }
-
-    @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {
-        ItemStack result = ContainerHelper.removeItem(Arrays.asList(this.stacks), pSlot, pAmount);
-        if (!result.isEmpty()) {
-            setChanged();
+        @Override
+        public int getContainerSize() {return stacks.length;}
+        @Override
+        public boolean isEmpty()
+        {
+            for(ItemStack itemstack : stacks)
+                if (!itemstack.isEmpty())
+                    return false;
+            return true;
         }
-        return result;
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int pSlot) {
-        return ContainerHelper.takeItem(Arrays.asList(this.stacks), pSlot);
-    }
-
-    @Override
-    public void setItem(int pSlot, ItemStack pStack)
-    {
-        if (pSlot >= 0 && pSlot < stacks.length) {
-            this.stacks[pSlot] = pStack;
-            if (pStack.getCount() > this.getMaxStackSize()) {
-                pStack.setCount(this.getMaxStackSize());
+        @Override
+        public ItemStack getItem(int pSlot) {
+            return pSlot >= 0 && pSlot < stacks.length ? stacks[pSlot] : ItemStack.EMPTY;
+        }
+        @Override
+        public ItemStack removeItem(int pSlot, int pAmount) {
+            ItemStack result = ContainerHelper.removeItem(Arrays.asList(stacks), pSlot, pAmount);
+            if (!result.isEmpty()) {
+                setChanged();
             }
+            return result;
+        }
+        @Override
+        public ItemStack removeItemNoUpdate(int pSlot) {
+            return ContainerHelper.takeItem(Arrays.asList(stacks), pSlot);
+        }
+        @Override
+        public void setItem(int pSlot, ItemStack pStack)
+        {
+            if (pSlot >= 0 && pSlot < stacks.length) {
+                stacks[pSlot] = pStack;
+                if (pStack.getCount() > this.getMaxStackSize()) {
+                    pStack.setCount(this.getMaxStackSize());
+                }
+                setChanged();
+            }
+        }
+        @Override
+        public void setChanged() {EnergyEHBlockEntity.this.setChanged();}
+        @Override
+        public boolean stillValid(Player pPlayer) {
+            return pPlayer.distanceToSqr(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5) <= 64.0;
+        }
+        @Override
+        public void clearContent() {
+            Arrays.fill(stacks, ItemStack.EMPTY);
             setChanged();
         }
-    }
+    };
 
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return pPlayer.distanceToSqr(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5) <= 64.0;
-    }
-
-    @Override
-    public void clearContent() {
-        Arrays.fill(this.stacks, ItemStack.EMPTY);
-        setChanged();
-    }
     // ==== Container methods end =====
+
+    // ==== Forge ItemHandler methods ====
+    //TODO:等把ldlib的自动持久化修了一切都会好起来的
+    private final IItemHandler itemHandler = new IItemHandler()
+    {
+        @Override
+        public int getSlots() {return 2;}
+        @Override
+        public @NotNull ItemStack getStackInSlot(int slot) {return stacks[slot];}
+        @Override
+        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate)
+        {
+            DebugLogger.log("slot:{}, stack:{},simulate:{}", slot, stack,simulate);
+            if(slot == 1)
+                return stack;
+            if (stack.isEmpty())
+                return ItemStack.EMPTY;
+            ItemStack existing = stacks[slot];
+            int limit = getSlotLimit(slot);
+            if (!existing.isEmpty())
+            {
+                if (!ItemHandlerHelper.canItemStacksStack(stack, existing))
+                    return stack;
+                limit -= existing.getCount();
+            }
+            if (limit <= 0)
+                return stack;
+            boolean reachedLimit = stack.getCount() > limit;
+            if (!simulate)
+            {
+                if (existing.isEmpty())
+                    stacks[slot] = reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack;
+                else
+                    existing.grow(reachedLimit ? limit : stack.getCount());
+                setChanged();
+            }
+            return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount()- limit) : ItemStack.EMPTY;
+        }
+
+        @Override
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate)
+        {
+            if(slot == 0)
+                return ItemStack.EMPTY;
+            ItemStack existing = stacks[slot];
+            if (existing.isEmpty())
+                return ItemStack.EMPTY;
+            int toExtract = Math.min(amount, existing.getMaxStackSize());
+            if (existing.getCount() <= toExtract)
+            {
+                if (!simulate)
+                {
+                    stacks[slot] = ItemStack.EMPTY;
+                    setChanged();
+                    return existing;
+                }
+                else
+                    return existing.copy();
+            }
+            else
+            {
+                if (!simulate)
+                {
+                    stacks[slot] = ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract);
+                    setChanged();
+                }
+                return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
+            }
+        }
+        @Override
+        public int getSlotLimit(int slot) {return Math.min(stacks[slot].getMaxStackSize(), 64);}
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {return true;}
+    };
+    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
+            return handler.cast();
+        }
+        return super.getCapability(cap, side);
+    }
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        handler.invalidate();
+    }
+    // ==== Forge ItemHandler methods end ====
 }
