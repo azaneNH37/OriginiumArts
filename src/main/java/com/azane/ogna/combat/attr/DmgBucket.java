@@ -8,6 +8,9 @@ import net.minecraft.network.chat.Component;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 @AllArgsConstructor
 @Getter
 public enum DmgBucket

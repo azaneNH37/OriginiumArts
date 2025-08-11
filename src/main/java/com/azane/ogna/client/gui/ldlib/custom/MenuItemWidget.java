@@ -24,6 +24,9 @@ import java.util.Objects;
 
 import static com.azane.ogna.lib.RegexHelper.endWith;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 @LDLRegister(name = "menu.item",group = "widget.custom")
 public class MenuItemWidget extends WidgetGroup
 {

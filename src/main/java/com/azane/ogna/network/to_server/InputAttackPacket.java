@@ -11,6 +11,9 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
 
+/**
+ * @author azaneNH37 (2025-07-22)
+ */
 @Getter
 public class InputAttackPacket implements IOgnmPacket
 {

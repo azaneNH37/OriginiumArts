@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author azaneNH37 (2025-07-24)
+ */
 public class AtkEntityData
 {
     @SerializedName("fallback")

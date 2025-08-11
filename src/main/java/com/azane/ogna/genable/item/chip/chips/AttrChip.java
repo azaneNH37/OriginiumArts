@@ -20,6 +20,9 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 @JsonClassTypeBinder(fullName = "chip.attr",namespace = OriginiumArts.MOD_ID)

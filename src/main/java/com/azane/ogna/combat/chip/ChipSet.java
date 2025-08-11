@@ -22,6 +22,9 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
+/**
+ * @author azaneNH37 (2025-08-02)
+ */
 public class ChipSet implements INBTSerializable<CompoundTag>
 {
     public static final ChipSet FALLBACK = new ChipSet(ChipEnv.FALLBACK);

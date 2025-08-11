@@ -11,6 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
+/**
+ * @author azaneNH37 (2025-07-28)
+ */
 public class OgnaWeaponCapProvider implements ICapabilitySerializable<CompoundTag>
 {
     private final OgnaWeaponCap capability;

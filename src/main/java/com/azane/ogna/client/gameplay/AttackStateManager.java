@@ -6,6 +6,9 @@ import net.minecraft.world.entity.player.Player;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author azaneNH37 (2025-07-20)
+ */
 public class AttackStateManager
 {
     private static final AttackStateManager INSTANCE = new AttackStateManager();

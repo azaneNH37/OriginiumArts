@@ -22,6 +22,9 @@ import software.bernie.geckolib.animatable.GeoItem;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, IDynamicAssetItem, IGenItem,IOgnaWeapon
 {
     public OgnaWeapon(Properties pProperties)

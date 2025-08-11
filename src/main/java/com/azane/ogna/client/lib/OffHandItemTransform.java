@@ -16,6 +16,9 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * @author azaneNH37 (2025-07-18)
+ */
 public final class OffHandItemTransform
 {
     public static final Consumer<PoseStack> RAW_BASIS = poseStack -> {

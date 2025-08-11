@@ -12,6 +12,9 @@ import net.minecraft.world.phys.Vec2;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-07-22)
+ */
 public class AttackStateHud extends OgnaHud
 {
     public static final ResourceLocation TARGET = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/astate_target.png");

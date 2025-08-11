@@ -27,6 +27,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Set;
 
 //TODO: 注意C/S端数据同步！
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public class OgnaWeaponCap implements IOgnaWeaponCap
 {
     //不需要持久化，因为每次加载时都会刷进来

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 
 /**
  * 只是一个临时的解决方案，丑陋
+ * @author azaneNH37 (2025-08-11)
  */
 public class SandPotionEffect extends MobEffect
 {

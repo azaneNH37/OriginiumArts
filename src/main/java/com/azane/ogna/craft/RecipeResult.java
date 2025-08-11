@@ -6,6 +6,9 @@ import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 @Getter
 @AllArgsConstructor
 public class RecipeResult {

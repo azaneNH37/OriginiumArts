@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
+/**
+ * @author azaneNH37 (2025-08-03)
+ */
 public class BlockPosAxisHelper
 {
     public enum CrossAxis{

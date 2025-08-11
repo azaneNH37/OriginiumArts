@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 
 /**
  * 抄板子记得改这个，防mod间tag键冲突
+ * @author azaneNH37 (2025-08-11)
  */
 @AllArgsConstructor
 public enum ModGenIdentifier

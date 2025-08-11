@@ -5,6 +5,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
+/**
+ * @author azaneNH37 (2025-07-28)
+ */
 @Getter
 public class RecipeIngredient
 {

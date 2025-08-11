@@ -21,6 +21,8 @@ import java.util.function.Consumer;
  * 服务端侧数据管理器<br>
  * 该类型的数据管理器用于服务端数据加载并向客户端同步
  * @param <T> 数据类型
+ * @author tacz
+ * @author azaneNH37 (2025-07-13)
  */
 public class CommonDataManager<T> extends JsonDataManager<T> implements INetworkCacheReloadListener
 {

@@ -25,6 +25,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 @LDLRegister(name = "image.tri",group = "widget.custom")
 public class TriDImageWidget extends ImageWidget
 {

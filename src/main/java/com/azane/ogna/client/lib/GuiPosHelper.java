@@ -2,6 +2,9 @@ package com.azane.ogna.client.lib;
 
 import net.minecraft.world.phys.Vec2;
 
+/**
+ * @author azaneNH37 (2025-07-22)
+ */
 public class GuiPosHelper
 {
     public static Vec2 toLeftTop(Vec2 centre,Vec2 size)

@@ -5,6 +5,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
 
+/**
+ * @author azaneNH37 (2025-06-05)
+ */
 public class ClientDataService extends CommonDataService
 {
     //当且仅当需要接收包时调用

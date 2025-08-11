@@ -2,6 +2,9 @@ package com.azane.ogna.client.gui.hud;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class OgnaHuds
 {
     public static final AttackStateHud ATTACK_STATE = new AttackStateHud();

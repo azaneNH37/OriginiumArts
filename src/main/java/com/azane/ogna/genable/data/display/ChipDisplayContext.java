@@ -9,6 +9,9 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public class ChipDisplayContext implements IDisplayContext
 {
     public static final ChipDisplayContext EMPTY = new ChipDisplayContext();

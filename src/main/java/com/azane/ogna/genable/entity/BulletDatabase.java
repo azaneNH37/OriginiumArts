@@ -11,6 +11,9 @@ import lombok.Setter;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @author azaneNH37 (2025-08-06)
+ */
 @Getter
 @JsonClassTypeBinder(fullName = "bullet",namespace = OriginiumArts.MOD_ID)
 public class BulletDatabase implements IBullet

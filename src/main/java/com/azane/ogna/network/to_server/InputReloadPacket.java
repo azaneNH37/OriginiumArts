@@ -13,6 +13,9 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 @Getter
 public class InputReloadPacket implements IOgnmPacket
 {

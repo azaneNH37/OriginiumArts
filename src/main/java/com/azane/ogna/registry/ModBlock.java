@@ -16,6 +16,9 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class ModBlock
 {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, OriginiumArts.MOD_ID);

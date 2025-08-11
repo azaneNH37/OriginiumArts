@@ -3,6 +3,9 @@ package com.azane.ogna.resource.helper;
 import com.azane.ogna.lib.RlHelper;
 import net.minecraft.resources.ResourceLocation;
 
+/**
+ * @author azaneNH37 (2025-07-13)
+ */
 public final class ExtractHelper
 {
     public static String extractPureName(ResourceLocation id)

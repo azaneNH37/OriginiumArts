@@ -14,6 +14,7 @@ import java.util.function.Predicate;
 /**
  * 刀光实体AABB管理器
  * 负责根据配置参数创建和管理刀光实体的碰撞箱
+ * @author azaneNH37 (2025-08-06)
  */
 public class BladeEffectAABBManager
 {

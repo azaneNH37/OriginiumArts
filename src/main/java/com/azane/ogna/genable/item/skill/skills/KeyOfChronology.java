@@ -11,6 +11,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 
+/**
+ * @author azaneNH37 (2025-07-29)
+ */
 @JsonClassTypeBinder(fullName = "skill.key_of_chronology", namespace = OriginiumArts.MOD_ID)
 public class KeyOfChronology extends DefaultSkillDataBase
 {

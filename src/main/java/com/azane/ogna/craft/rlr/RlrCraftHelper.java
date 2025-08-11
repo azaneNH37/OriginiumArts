@@ -5,6 +5,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public class RlrCraftHelper
 {
 

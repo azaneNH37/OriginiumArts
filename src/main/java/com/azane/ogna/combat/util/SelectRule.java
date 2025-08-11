@@ -7,6 +7,9 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.function.Predicate;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 @Getter
 @AllArgsConstructor
 public enum SelectRule

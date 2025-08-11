@@ -23,6 +23,9 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 //TODO:需要C/S隔离测试
+/**
+ * @author azaneNH37 (2025-08-01)
+ */
 @ParametersAreNonnullByDefault
 public class UiHelper
 {

@@ -7,6 +7,9 @@ import com.azane.ogna.network.to_server.InputAttackPacket;
 import com.azane.ogna.network.to_server.InputReloadPacket;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class OgnmChannel extends BasePacketHandler
 {
     public static final OgnmChannel DEFAULT = new OgnmChannel();

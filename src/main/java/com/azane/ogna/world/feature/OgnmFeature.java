@@ -12,6 +12,9 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 
+/**
+ * @author azaneNH37 (2025-08-03)
+ */
 public class OgnmFeature extends Feature<OgnmFeature.Config>
 {
     public OgnmFeature() {super(Config.CODEC);}

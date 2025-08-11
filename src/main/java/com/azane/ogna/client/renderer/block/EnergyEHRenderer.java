@@ -14,6 +14,9 @@ import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public class EnergyEHRenderer extends GeoBlockRenderer<EnergyEHBlockEntity>
 {
     public EnergyEHRenderer(BlockEntityRendererProvider.Context context)

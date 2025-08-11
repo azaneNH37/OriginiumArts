@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 属性单位类，用于存储单个属性的值，包含{@link AttrMatrix}和所有被记录的modifier
+ * @author azaneNH37 (2025-07-19)
  */
 @NoArgsConstructor
 public class AttrUnit implements INBTSerializable<CompoundTag>

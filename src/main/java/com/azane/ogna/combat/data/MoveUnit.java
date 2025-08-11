@@ -5,6 +5,9 @@ import lombok.Getter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
+/**
+ * @author azaneNH37 (2025-08-07)
+ */
 @AllArgsConstructor
 @Getter
 public class MoveUnit

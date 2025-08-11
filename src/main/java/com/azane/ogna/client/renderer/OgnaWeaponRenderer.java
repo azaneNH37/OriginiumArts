@@ -18,6 +18,9 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 import static com.azane.ogna.client.lib.OffHandItemTransform.*;
 
+/**
+ * @author azaneNH37 (2025-08-04)
+ */
 public class OgnaWeaponRenderer<T extends OgnaWeapon> extends GeoItemRenderer<T>
 {
     private final Minecraft minecraft;

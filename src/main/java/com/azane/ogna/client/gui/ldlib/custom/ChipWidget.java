@@ -26,6 +26,9 @@ import static com.azane.ogna.client.gui.ldlib.custom.MenuItemWidget.BUTTON_HOVER
 import static com.azane.ogna.client.gui.ldlib.custom.MenuItemWidget.MENU_BG;
 import static com.azane.ogna.lib.RegexHelper.*;
 
+/**
+ * @author azaneNH37 (2025-08-02)
+ */
 @LDLRegister(name = "chip",group = "widget.custom")
 public class ChipWidget extends WidgetGroup
 {

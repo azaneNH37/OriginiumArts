@@ -4,6 +4,9 @@ import com.azane.ogna.resource.helper.IresourceLocation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * @author azaneNH37 (2025-06-06)
+ */
 public interface IGenItemDatabase extends IresourceLocation
 {
     void registerDataBase();

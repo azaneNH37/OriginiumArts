@@ -4,6 +4,9 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.resource.manager.JsonDataTypeManager;
 import lombok.Getter;
 
+/**
+ * @author azaneNH37 (2025-06-05)
+ */
 public class JsonTypeManagers
 {
     //此处添加需要建立的jsonTypeManager

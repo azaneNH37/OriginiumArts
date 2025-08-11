@@ -8,6 +8,9 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-07-24)
+ */
 @Getter
 public class OgnaSkillData
 {

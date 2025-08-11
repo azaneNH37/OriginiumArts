@@ -12,6 +12,9 @@ import java.util.List;
 
 import static com.azane.ogna.client.lib.GuiPosHelper.*;
 
+/**
+ * @author azaneNH37 (2025-07-22)
+ */
 @OnlyIn(Dist.CLIENT)
 @AllArgsConstructor
 public abstract class OgnaHud

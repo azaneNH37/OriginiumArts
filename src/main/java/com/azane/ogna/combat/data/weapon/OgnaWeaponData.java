@@ -11,6 +11,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 @Getter
 public class OgnaWeaponData
 {

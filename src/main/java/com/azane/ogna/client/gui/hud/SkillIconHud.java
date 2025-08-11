@@ -12,6 +12,9 @@ import net.minecraft.world.phys.Vec2;
 
 import java.util.Collections;
 
+/**
+ * @author azaneNH37 (2025-07-24)
+ */
 public class SkillIconHud extends OgnaHud
 {
     private static final ResourceLocation BACK = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/skill/back.png");

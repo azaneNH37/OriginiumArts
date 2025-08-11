@@ -12,6 +12,9 @@ import org.apache.logging.log4j.MarkerManager;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public interface IPolyItemDataBase<T extends IresourceLocation>
 {
     Marker POLY_ITEM_DATABASE = MarkerManager.getMarker(ModGenIdentifier.getId()+".PolyItemDatabase");

@@ -15,6 +15,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 @Mod(OriginiumArts.MOD_ID)
 public class OriginiumArts
 {

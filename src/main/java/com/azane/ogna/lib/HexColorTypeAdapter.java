@@ -6,6 +6,9 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.TypeAdapter;
 import java.io.IOException;
 
+/**
+ * @author azaneNH37 (2025-08-01)
+ */
 public class HexColorTypeAdapter extends TypeAdapter<Integer> {
 
     @Override

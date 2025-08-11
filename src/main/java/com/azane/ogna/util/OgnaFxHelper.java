@@ -18,6 +18,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * @author azaneNH37 (2025-07-22)
+ */
 public final class OgnaFxHelper
 {
     public static Optional<FxData.FxUnit> extractFxUnit(@Nullable FxData fxData, Function<FxData, FxData.FxUnit> mapper)

@@ -15,6 +15,9 @@ import net.minecraft.world.phys.Vec2;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class WeaponHud extends OgnaHud
 {
     private static final ResourceLocation BACKGROUND = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/weapon.png");

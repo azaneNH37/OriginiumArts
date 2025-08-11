@@ -4,6 +4,9 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.annotations.Expose;
 
+/**
+ * @author azaneNH37 (2025-07-13)
+ */
 public final class GsonExtra
 {
     public static final ExclusionStrategy EXPOSE_FILTER_serialize = new ExclusionStrategy()

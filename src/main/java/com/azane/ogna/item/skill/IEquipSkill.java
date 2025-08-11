@@ -8,6 +8,9 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 
 
+/**
+ * @author azaneNH37 (2025-08-01)
+ */
 public interface IEquipSkill
 {
     boolean hasSkill(ItemStack stack);

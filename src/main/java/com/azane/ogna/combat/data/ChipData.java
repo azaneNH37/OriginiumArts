@@ -3,6 +3,9 @@ package com.azane.ogna.combat.data;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 
+/**
+ * @author azaneNH37 (2025-08-02)
+ */
 @Getter
 public class ChipData
 {

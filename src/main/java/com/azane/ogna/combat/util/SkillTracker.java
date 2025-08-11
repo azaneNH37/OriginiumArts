@@ -4,6 +4,9 @@ import com.azane.ogna.item.weapon.IOgnaWeapon;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * @author azaneNH37 (2025-07-23)
+ */
 public final class SkillTracker
 {
     public static void handleMainHandChange(Player player, ItemStack lastMainHand, ItemStack curMainHand)

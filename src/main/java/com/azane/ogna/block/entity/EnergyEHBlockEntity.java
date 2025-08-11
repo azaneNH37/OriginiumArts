@@ -56,6 +56,9 @@ import java.util.Optional;
 
 import static com.azane.ogna.lib.RegexHelper.*;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged, GeoBlockEntity
 {
     //===== LDLIB start ======

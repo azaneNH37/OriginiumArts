@@ -4,6 +4,9 @@ import java.text.CompactNumberFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public final class NumStrHelper
 {
     public static NumberFormat FORMAT1 = CompactNumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT);

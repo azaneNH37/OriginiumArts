@@ -10,6 +10,9 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 import java.util.Optional;
 
+/**
+ * @author azaneNH37 (2025-08-04)
+ */
 public class BladeEffectModel extends DefaultedEntityGeoModel<BladeEffect>
 {
 

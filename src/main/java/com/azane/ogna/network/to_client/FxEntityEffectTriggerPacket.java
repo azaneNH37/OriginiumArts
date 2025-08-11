@@ -8,6 +8,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
 
+/**
+ * @author azaneNH37 (2025-07-17)
+ */
 @Getter
 @AllArgsConstructor
 public class FxEntityEffectTriggerPacket implements IOgnmPacket

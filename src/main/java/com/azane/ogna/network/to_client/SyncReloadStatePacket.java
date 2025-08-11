@@ -7,6 +7,9 @@ import lombok.Getter;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 @Getter
 public class SyncReloadStatePacket implements IOgnmPacket
 {

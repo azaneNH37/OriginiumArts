@@ -14,6 +14,9 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.Objects;
 
+/**
+ * @author azaneNH37 (2025-07-20)
+ */
 public class RegistryAccessHelper
 {
     public static RegistryAccess serverRegistryAccess()

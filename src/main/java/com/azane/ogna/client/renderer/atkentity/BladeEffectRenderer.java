@@ -16,6 +16,9 @@ import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
+/**
+ * @author azaneNH37 (2025-07-13)
+ */
 public class BladeEffectRenderer extends GeoEntityRenderer<BladeEffect>
 {
     public BladeEffectRenderer(EntityRendererProvider.Context renderManager)

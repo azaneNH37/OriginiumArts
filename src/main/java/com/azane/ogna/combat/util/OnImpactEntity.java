@@ -6,6 +6,9 @@ import com.azane.ogna.combat.data.SelectorUnit;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
+/**
+ * @author azaneNH37 (2025-07-24)
+ */
 @FunctionalInterface
 public interface OnImpactEntity
 {

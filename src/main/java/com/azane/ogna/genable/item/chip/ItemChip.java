@@ -23,6 +23,9 @@ import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public abstract class ItemChip implements IChip
 {
     @Getter

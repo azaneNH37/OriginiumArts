@@ -32,6 +32,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+/**
+ * @author azaneNH37 (2025-08-04)
+ */
 public class OgnaSword extends DefaultOgnaPolyWeapon implements IPolyItemDataBase<ISwordDataBase>
 {
     /**

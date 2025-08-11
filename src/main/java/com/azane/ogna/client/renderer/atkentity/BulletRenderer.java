@@ -1,23 +1,21 @@
 package com.azane.ogna.client.renderer.atkentity;
 
-import com.azane.ogna.OgnaConfig;
 import com.azane.ogna.client.model.atkentity.BulletModel;
-import com.azane.ogna.entity.genable.BladeEffect;
 import com.azane.ogna.entity.genable.Bullet;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.AABB;
-import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
+/**
+ * @author azaneNH37 (2025-07-17)
+ */
 public class BulletRenderer extends GeoEntityRenderer<Bullet>
 {
     public BulletRenderer(EntityRendererProvider.Context renderManager)

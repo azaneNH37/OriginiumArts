@@ -47,6 +47,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSpawnData, ITargetable
 {
     public static final EntityType<Bullet> TYPE = EntityType.Builder.<Bullet>of(Bullet::new, MobCategory.MISC).noSummon().noSave().fireImmune().sized(0.1F, 0.1F).clientTrackingRange(5).updateInterval(5).setShouldReceiveVelocityUpdates(false).build("bullet");

@@ -7,6 +7,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author azaneNH37 (2025-06-14)
+ */
 public class AsyncHandler
 {
     @Getter

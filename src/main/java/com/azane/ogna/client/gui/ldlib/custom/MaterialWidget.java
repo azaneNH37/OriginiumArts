@@ -14,6 +14,9 @@ import lombok.Setter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
+/**
+ * @author azaneNH37 (2025-07-29)
+ */
 @LDLRegister(name = "material", group = "widget.custom")
 public class MaterialWidget extends WidgetGroup
 {

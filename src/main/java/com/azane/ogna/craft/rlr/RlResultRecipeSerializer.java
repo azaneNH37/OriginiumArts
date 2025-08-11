@@ -15,6 +15,9 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public class RlResultRecipeSerializer implements RecipeSerializer<RlResultRecipe> {
     public static final RlResultRecipeSerializer INSTANCE = new RlResultRecipeSerializer();
 

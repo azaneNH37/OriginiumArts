@@ -9,6 +9,9 @@ import net.minecraftforge.client.event.RenderGuiEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/**
+ * @author azaneNH37 (2025-07-20)
+ */
 @Mod.EventBusSubscriber(modid = OriginiumArts.MOD_ID,value = Dist.CLIENT)
 public class HudListener
 {

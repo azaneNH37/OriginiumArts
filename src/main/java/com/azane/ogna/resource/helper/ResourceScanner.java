@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+/**
+ * @author tacz
+ * @author azaneNH37 (2025-06-06)
+ */
 public final class ResourceScanner
 {
     private static final Logger LocalLogger = OriginiumArts.LOGGER;

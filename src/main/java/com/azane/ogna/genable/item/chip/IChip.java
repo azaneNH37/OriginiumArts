@@ -16,7 +16,8 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.List;
 
 /**
- * 一个旨在实现模块化在实体，Ogna武器引入时点类效果修正的接口。
+ *  一个旨在实现模块化在实体，Ogna武器引入时点类效果修正的接口。
+ * @author azaneNH37 (2025-08-11)
  */
 public interface IChip extends IresourceLocation, IGenItemDatabase, IComponentDisplay
 {

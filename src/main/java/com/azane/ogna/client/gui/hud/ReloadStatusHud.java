@@ -11,6 +11,9 @@ import net.minecraft.world.phys.Vec2;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class ReloadStatusHud extends OgnaHud
 {
     public static final ResourceLocation RELOADING = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/reload/reloading.png");

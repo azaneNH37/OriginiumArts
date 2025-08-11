@@ -13,6 +13,9 @@ import java.util.function.Consumer;
  * 引入了对复合类型的支持，须搭配JsonClassTypeBinder和{@link JsonDataTypeManager}使用
  * @param <T> 一个接口或者是基类
  */
+/**
+ * @author azaneNH37 (2025-07-13)
+ */
 public class DynamicDataManager<T> extends CommonDataManager<T>
 {
     public final JsonDataTypeManager manager;

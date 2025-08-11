@@ -9,6 +9,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+/**
+ * @author azaneNH37 (2025-07-20)
+ */
 public class ArkDamageSource extends DamageSource
 {
     private final CombatUnit unit;

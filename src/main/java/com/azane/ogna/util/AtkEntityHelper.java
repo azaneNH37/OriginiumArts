@@ -14,6 +14,9 @@ import net.minecraft.world.entity.Entity;
 
 import java.util.Objects;
 
+/**
+ * @author azaneNH37 (2025-08-07)
+ */
 public final class AtkEntityHelper
 {
 

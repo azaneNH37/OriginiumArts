@@ -2,6 +2,9 @@ package com.azane.ogna.debug.log;
 
 import lombok.Getter;
 
+/**
+ * @author azaneNH37 (2025-06-01)
+ */
 @Getter
 public enum LogLv
 {

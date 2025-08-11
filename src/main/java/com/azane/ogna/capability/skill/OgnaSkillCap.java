@@ -22,6 +22,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
+/**
+ * @author azaneNH37 (2025-08-02)
+ */
 public class OgnaSkillCap implements ISkillCap
 {
     private IOgnaWeaponCap weaponCap;

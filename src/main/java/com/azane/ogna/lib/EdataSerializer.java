@@ -5,6 +5,9 @@ import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.world.phys.AABB;
 
+/**
+ * @author azaneNH37 (2025-05-21)
+ */
 public final class EdataSerializer
 {
     public static final EntityDataSerializer<AABB> AA_BB = new EntityDataSerializer<AABB>()

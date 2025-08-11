@@ -9,6 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 
+/**
+ * @author azaneNH37 (2025-07-22)
+ */
 public class OgnaWeaponModel<T extends OgnaWeapon> extends DefaultedItemGeoModel<T>
 {
     @Nullable

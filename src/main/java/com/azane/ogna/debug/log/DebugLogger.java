@@ -24,6 +24,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author azaneNH37 (2025-06-05)
+ */
 public class DebugLogger
 {
     private static final String modId = OriginiumArts.MOD_ID;

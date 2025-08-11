@@ -15,6 +15,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author tacz
+ * @author azaneNH37 (2025-08-04)
+ */
 public interface IResourceProvider
 {
     Gson GSON = new GsonBuilder()

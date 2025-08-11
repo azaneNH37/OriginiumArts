@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
  * 注意区分 IOgnaWeaponCap 和 IOgnaWeapon<br>
  * IOgnaWeaponCap 是武器的能力接口，包含能量、冷却等数据<br>
  * IOgnaWeapon 是武器的功能接口，包含攻击、重装等逻辑
+ * @author azaneNH37 (2025-08-01)
  */
 public interface IOgnaWeapon extends IuuidStack, IEquipSkill
 {

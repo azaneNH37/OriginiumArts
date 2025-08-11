@@ -7,6 +7,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Optional;
 
+/**
+ * @author azaneNH37 (2025-06-05)
+ */
 public final class ParserHelper
 {
     public static <T> T parseJsonStatic(Gson gson, JsonElement element, Class<T> targetClass)

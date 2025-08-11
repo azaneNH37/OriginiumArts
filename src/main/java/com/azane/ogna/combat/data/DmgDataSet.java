@@ -17,6 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author azaneNH37 (2025-08-02)
+ */
 @NoArgsConstructor
 public class DmgDataSet
 {

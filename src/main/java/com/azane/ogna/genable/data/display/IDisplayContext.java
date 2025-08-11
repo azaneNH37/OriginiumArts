@@ -4,6 +4,9 @@ import com.azane.ogna.genable.data.TriDDisplayData;
 import com.azane.ogna.lib.RlHelper;
 import net.minecraft.resources.ResourceLocation;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public interface IDisplayContext
 {
     IDisplayContext EMPTY = new IDisplayContext()

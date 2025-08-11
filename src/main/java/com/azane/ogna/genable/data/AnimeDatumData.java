@@ -7,6 +7,9 @@ import net.minecraft.world.item.ItemDisplayContext;
 
 import java.util.Map;
 
+/**
+ * @author azaneNH37 (2025-07-18)
+ */
 @Getter
 public class AnimeDatumData
 {

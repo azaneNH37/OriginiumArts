@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * @author azaneNH37 (2025-07-20)
+ */
 @AllArgsConstructor(staticName = "of")
 @Getter
 public class SelectorUnit

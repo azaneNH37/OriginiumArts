@@ -14,6 +14,9 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 @Getter
 public class OEGRecipe implements Recipe<Container>
 {

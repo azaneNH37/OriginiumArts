@@ -18,6 +18,7 @@ import java.util.UUID;
 
 /**
  * OGNA持久化属性修改器类，用于存储属性的修改信息
+ * @author azaneNH37 (2025-08-11)
  */
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor

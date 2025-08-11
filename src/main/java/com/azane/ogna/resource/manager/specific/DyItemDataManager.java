@@ -17,6 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * @author azaneNH37 (2025-07-13)
+ */
 public class DyItemDataManager<T extends IGenItemDatabase> extends DynamicDataManager<T>
 {
     public DyItemDataManager(Class<T> dataClass, Gson pGson, String directory, String marker, JsonDataTypeManager manager, Consumer<JsonDataManager<T>> onDataMapInit)

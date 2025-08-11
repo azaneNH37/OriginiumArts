@@ -27,6 +27,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public class InjectEPTBlockItem extends BlockItem implements GeoItem
 {
     //===== GeckoLib start ======

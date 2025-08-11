@@ -28,6 +28,8 @@ import java.util.function.Consumer;
  * 通用数据管理器<br>
  * 从资源包/数据包中读取json文件并解析为数据
  * @param <T> 数据类型
+ * @author tacz
+ * @author azaneNH37 (2025-07-13)
  */
 public class JsonDataManager<T> extends SimplePreparableReloadListener<Map<ResourceLocation, JsonElement>>
 {

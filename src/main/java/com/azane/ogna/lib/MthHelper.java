@@ -2,6 +2,9 @@ package com.azane.ogna.lib;
 
 import net.minecraft.world.phys.Vec3;
 
+/**
+ * @author azaneNH37 (2025-08-07)
+ */
 public final class MthHelper
 {
     /**

@@ -4,6 +4,9 @@ import net.minecraft.world.phys.Vec3;
 
 import static com.azane.ogna.lib.MthHelper.slerp;
 
+/**
+ * @author azaneNH37 (2025-08-07)
+ */
 public interface ITargetable
 {
     Vec3 getActualTarget();

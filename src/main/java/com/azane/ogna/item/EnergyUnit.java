@@ -14,6 +14,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public class EnergyUnit extends Item
 {
     public final int energyValue;

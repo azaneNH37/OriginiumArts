@@ -28,6 +28,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 //TODO:为什么！不写！wiki！
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public class CraftOCCBlockItem extends BlockItem implements GeoItem
 {
     //===== GeckoLib start ======

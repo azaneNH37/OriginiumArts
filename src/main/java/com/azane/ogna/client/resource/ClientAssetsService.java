@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+/**
+ * @author azaneNH37 (2025-07-29)
+ */
 @OnlyIn(Dist.CLIENT)
 public enum ClientAssetsService
 {

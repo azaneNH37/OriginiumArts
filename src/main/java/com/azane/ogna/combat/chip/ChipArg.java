@@ -8,6 +8,9 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNullableByDefault;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 @Getter
 @AllArgsConstructor(staticName = "of")
 @ParametersAreNullableByDefault

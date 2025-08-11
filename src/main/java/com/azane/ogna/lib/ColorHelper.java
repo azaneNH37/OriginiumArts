@@ -2,6 +2,9 @@ package com.azane.ogna.lib;
 
 import net.minecraft.ChatFormatting;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public final class ColorHelper
 {
     public static ChatFormatting getRarityColor(int rarity)

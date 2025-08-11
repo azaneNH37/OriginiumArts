@@ -57,6 +57,9 @@ import java.util.regex.Pattern;
 
 import static com.azane.ogna.lib.RegexHelper.*;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged, GeoBlockEntity
 {
     //===== LDLIB start ======

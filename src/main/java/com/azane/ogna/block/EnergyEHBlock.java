@@ -25,6 +25,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class EnergyEHBlock extends BaseEntityBlock
 {
     public EnergyEHBlock()

@@ -47,6 +47,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azane.ogna.lib.RegexHelper.*;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged, GeoBlockEntity
 {
     //===== LDLIB start ======

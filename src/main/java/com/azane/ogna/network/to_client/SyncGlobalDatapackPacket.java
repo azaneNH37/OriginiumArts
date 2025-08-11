@@ -9,6 +9,9 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.Map;
 
+/**
+ * @author azaneNH37 (2025-06-05)
+ */
 @Getter
 public class SyncGlobalDatapackPacket implements IOgnmPacket
 {

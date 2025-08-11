@@ -7,6 +7,9 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 
+/**
+ * @author azaneNH37 (2025-07-13)
+ */
 public final class LevelHelper
 {
     public static int getGroundHightAtFullChunk(Level level, BlockPos pos,Heightmap.Types type)

@@ -8,6 +8,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public final class ArkDmgTypes
 {
     public static final ResourceKey<DamageType> DEFAULT = ResourceKey.create(Registries.DAMAGE_TYPE, RlHelper.build(OriginiumArts.MOD_ID,"ark_default"));

@@ -18,6 +18,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azane.ogna.resource.helper.ExtractHelper.extractTypePrefix;
 
+/**
+ * @author azaneNH37 (2025-07-13)
+ */
 public class JsonDataTypeManager
 {
     private static final Logger LocalLogger = OriginiumArts.LOGGER;

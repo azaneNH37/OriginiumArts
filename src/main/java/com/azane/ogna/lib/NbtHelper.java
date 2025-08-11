@@ -6,6 +6,9 @@ import net.minecraft.nbt.*;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+/**
+ * @author azaneNH37 (2025-08-04)
+ */
 public class NbtHelper
 {
 

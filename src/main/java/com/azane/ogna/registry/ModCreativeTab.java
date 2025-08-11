@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+/**
+ * @author azaneNH37 (2025-08-04)
+ */
 public class ModCreativeTab
 {
     public static final Set<RegistryObject<Item>> CREATIVE_TAB_ITEMS = new LinkedHashSet<>();

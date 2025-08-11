@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * What the holy f**king shit does Forge want f**king to do in single version 1.20.1 ????
+ * @author azaneNH37 (2025-07-13)
  */
 public final class RlHelper
 {

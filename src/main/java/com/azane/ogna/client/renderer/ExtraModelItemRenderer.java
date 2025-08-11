@@ -11,6 +11,9 @@ import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * @author azaneNH37 (2025-07-29)
+ */
 public class ExtraModelItemRenderer extends BlockEntityWithoutLevelRenderer
 {
     private final Minecraft minecraft;

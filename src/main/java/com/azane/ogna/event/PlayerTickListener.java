@@ -10,6 +10,9 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.WeakHashMap;
 
+/**
+ * @author azaneNH37 (2025-08-01)
+ */
 @Mod.EventBusSubscriber
 public class PlayerTickListener
 {

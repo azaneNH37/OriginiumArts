@@ -36,6 +36,9 @@ import org.checkerframework.checker.units.qual.C;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 @Getter
 @JsonClassTypeBinder(fullName = "skill.default",simpleName = "sk.d",namespace = OriginiumArts.MOD_ID)
 public class DefaultSkillDataBase implements ISkill

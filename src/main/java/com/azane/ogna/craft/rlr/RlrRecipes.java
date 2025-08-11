@@ -11,6 +11,9 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public final class RlrRecipes
 {
     private RlrRecipes(){}

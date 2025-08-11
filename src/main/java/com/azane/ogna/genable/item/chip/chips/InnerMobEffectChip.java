@@ -32,6 +32,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 @JsonClassTypeBinder(fullName = "chip.inner.effect",namespace = OriginiumArts.MOD_ID)

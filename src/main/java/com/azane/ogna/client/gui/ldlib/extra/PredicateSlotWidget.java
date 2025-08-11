@@ -9,6 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+/**
+ * @author azaneNH37 (2025-08-01)
+ */
 @LDLRegister(name = "item_slot_predicate", group = "widget.container")
 public class PredicateSlotWidget extends SlotWidget
 {

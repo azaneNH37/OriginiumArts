@@ -13,6 +13,9 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public class RlResultRecipe implements Recipe<Container> {
     private final ResourceLocation id;
     // Getters

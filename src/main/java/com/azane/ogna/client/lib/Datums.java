@@ -5,6 +5,7 @@ package com.azane.ogna.client.lib;
  * 很明显现在的translate是基于玩家体型所做的硬编码变换 很可能会遇到渲染问题当itemStack所属实体的模型与玩家模型差距过大<br>
  * 目前使用的标准朝向为Blockbench中geckolib插件中模型N向提示对应实际游戏中玩家前方，基准点使用(0,0,0)点
  * TODO:计划引入与碰撞箱相关的动态绘制偏移 和基于标准基准点的自定义修正
+ * @author azaneNH37 (2025-08-04)
  */
 public enum Datums
 {

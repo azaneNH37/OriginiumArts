@@ -5,6 +5,9 @@ import net.minecraft.world.phys.Vec2;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-07-22)
+ */
 public class WindowHud extends OgnaHud
 {
     public static final Vec2 SIZE = new Vec2(1280f, 720f);

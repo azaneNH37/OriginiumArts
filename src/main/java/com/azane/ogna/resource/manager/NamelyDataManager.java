@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public class NamelyDataManager<T> extends CommonDataManager<T>
 {
     private final Predicate<ResourceLocation> fileNameFilter;

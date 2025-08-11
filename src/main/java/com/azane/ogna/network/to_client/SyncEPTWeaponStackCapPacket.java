@@ -13,6 +13,9 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
 
+/**
+ * @author azaneNH37 (2025-08-02)
+ */
 @Getter
 @AllArgsConstructor
 public class SyncEPTWeaponStackCapPacket implements IOgnmPacket

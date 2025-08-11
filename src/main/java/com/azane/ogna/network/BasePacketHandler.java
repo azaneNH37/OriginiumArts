@@ -14,6 +14,10 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * @author mekanism
+ * @author azaneNH37 (2025-07-17)
+ */
 public abstract class BasePacketHandler
 {
 

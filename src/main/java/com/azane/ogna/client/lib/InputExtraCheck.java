@@ -4,6 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+/**
+ * @author azaneNH37 (2025-06-14)
+ */
 @OnlyIn(Dist.CLIENT)
 public final class InputExtraCheck
 {

@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * 一个仅用于存储显示物品的container，不进行任何数据同步和持久化存储
+ * @author azaneNH37 (2025-07-31)
  */
 public class MenuItemDisplay implements Container
 {

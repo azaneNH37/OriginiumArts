@@ -9,10 +9,11 @@ import java.util.UUID;
  * Interface for items that can have a UUID stack.
  * This is used to identify stacks uniquely, especially in multiplayer scenarios.
  * <br><b>Notice that the item should stack to 1, but I have no ideas how to check it explicitly</b>
+ * @author azaneNH37 (2025-08-11)
  */
 public interface IuuidStack
 {
-    String STACK_UUID_KEY = ModGenIdentifier.getId()+".stack_uuid";
+    String STACK_UUID_KEY = ModGenIdentifier.getId() + ".stack_uuid";
 
     /**
      * 为武器生成或获取UUID

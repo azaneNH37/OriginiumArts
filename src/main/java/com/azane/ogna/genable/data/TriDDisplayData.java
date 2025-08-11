@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 public class TriDDisplayData

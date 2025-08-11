@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author azaneNH37 (2025-08-02)
+ */
 @NoArgsConstructor
 public class AttrMap implements INBTSerializable<CompoundTag>
 {

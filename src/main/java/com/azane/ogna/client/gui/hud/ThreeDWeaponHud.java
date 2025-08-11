@@ -17,6 +17,9 @@ import net.minecraft.world.phys.Vec2;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-07-29)
+ */
 public class ThreeDWeaponHud extends OgnaHud
 {
     public ThreeDWeaponHud()

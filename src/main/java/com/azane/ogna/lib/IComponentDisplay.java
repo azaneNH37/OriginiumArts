@@ -6,6 +6,9 @@ import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-07-13)
+ */
 public interface IComponentDisplay
 {
     void appendHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag);

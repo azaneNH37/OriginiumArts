@@ -18,6 +18,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public interface ISkill extends IGenItemDatabase, IComponentDisplay
 {
     SkillDisplayContext getDisplayContext();

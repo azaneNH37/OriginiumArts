@@ -5,6 +5,10 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
+/**
+ * @author mekanism
+ * @author azaneNH37 (2025-06-14)
+ */
 public interface IOgnmPacket {
 
     void encode(FriendlyByteBuf buffer);

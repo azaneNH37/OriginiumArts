@@ -10,6 +10,9 @@ import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public interface IGenItem
 {
     Marker GEN_ITEM_MARKER = MarkerManager.getMarker(ModGenIdentifier.getId()+".GenItemTemplate");

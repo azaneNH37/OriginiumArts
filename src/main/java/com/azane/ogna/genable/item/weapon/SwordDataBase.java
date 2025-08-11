@@ -9,6 +9,9 @@ import com.azane.ogna.registry.ModItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * @author azaneNH37 (2025-08-04)
+ */
 @JsonClassTypeBinder(fullName = "sword", simpleName = "sword", namespace = OriginiumArts.MOD_ID)
 public class SwordDataBase extends DefaultWeaponDataBase implements ISwordDataBase
 {

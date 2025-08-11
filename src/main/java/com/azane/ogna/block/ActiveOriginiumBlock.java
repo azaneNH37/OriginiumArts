@@ -21,6 +21,9 @@ import static com.azane.ogna.lib.BlockPosAxisHelper.*;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+/**
+ * @author azaneNH37 (2025-08-03)
+ */
 public class ActiveOriginiumBlock extends Block
 {
     public static final int ORI = 32;

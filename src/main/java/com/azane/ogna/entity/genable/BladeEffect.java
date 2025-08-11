@@ -42,6 +42,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
 {
     public static final EntityType<BladeEffect> TYPE = EntityType.Builder.of(BladeEffect::new, MobCategory.MISC).noSummon().noSave().fireImmune().sized(0.1F, 0.1F).clientTrackingRange(5).updateInterval(5).setShouldReceiveVelocityUpdates(false).build("blade_effect");

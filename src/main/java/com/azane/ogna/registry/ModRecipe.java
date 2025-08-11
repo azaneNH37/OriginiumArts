@@ -13,6 +13,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public class ModRecipe
 {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =

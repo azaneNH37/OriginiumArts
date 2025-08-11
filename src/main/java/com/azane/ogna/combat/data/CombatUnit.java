@@ -13,6 +13,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-07-24)
+ */
 @AllArgsConstructor(staticName = "of")
 @Getter
 public class CombatUnit

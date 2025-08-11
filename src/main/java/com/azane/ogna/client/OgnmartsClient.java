@@ -18,6 +18,9 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 @Mod.EventBusSubscriber(modid = OriginiumArts.MOD_ID,value = Dist.CLIENT,bus=Mod.EventBusSubscriber.Bus.MOD)
 public class OgnmartsClient
 {

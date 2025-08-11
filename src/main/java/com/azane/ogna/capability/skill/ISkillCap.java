@@ -15,6 +15,7 @@ import java.util.Set;
 
 /**
  * 含义为贴附在武器上的一个Skill，所以其应当在skill修改时被重新初始化
+ * @author azaneNH37 (2025-07-25)
  */
 public interface ISkillCap extends INBTSerializable<CompoundTag>
 {

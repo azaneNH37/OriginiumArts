@@ -9,6 +9,9 @@ import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class InjectEPTRenderer extends GeoBlockRenderer<InjectEPTBlockEntity>
 {
     public InjectEPTRenderer(BlockEntityRendererProvider.Context context)

@@ -8,6 +8,9 @@ import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class CraftOCCRenderer extends GeoBlockRenderer<CraftOCCBlockEntity>
 {
     public CraftOCCRenderer(BlockEntityRendererProvider.Context context)

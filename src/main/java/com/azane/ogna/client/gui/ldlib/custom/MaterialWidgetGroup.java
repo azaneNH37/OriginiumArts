@@ -13,6 +13,9 @@ import com.lowdragmc.lowdraglib.gui.widget.DraggableScrollableWidgetGroup;
 import com.lowdragmc.lowdraglib.gui.widget.layout.Layout;
 import lombok.Getter;
 
+/**
+ * @author azaneNH37 (2025-07-29)
+ */
 @LDLRegister(name = "material.group", group = "widget.custom")
 public class MaterialWidgetGroup extends DraggableScrollableWidgetGroup
 {

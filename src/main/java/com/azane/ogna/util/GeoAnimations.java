@@ -2,8 +2,10 @@ package com.azane.ogna.util;
 
 import software.bernie.geckolib.core.animation.RawAnimation;
 
+
 /**
  * 逐渐尝试统一动画命名
+ * @author azaneNH37 (2025-08-10)
  */
 public class GeoAnimations
 {

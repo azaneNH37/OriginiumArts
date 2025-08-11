@@ -15,6 +15,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * @author azaneNH37 (2025-08-06)
+ */
 @JsonClassTypeBinder(fullName = "skill.twilight", namespace = OriginiumArts.MOD_ID)
 public class Twilight extends DefaultSkillDataBase
 {

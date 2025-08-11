@@ -11,6 +11,9 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 import static net.minecraft.util.FastColor.ARGB32.*;
 
+/**
+ * @author azaneNH37 (2025-07-13)
+ */
 public class ColorLayer<T extends IColorable & GeoAnimatable> extends GeoRenderLayer<T>
 {
     public ColorLayer(GeoRenderer<T> entityRendererIn)

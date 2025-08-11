@@ -22,6 +22,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.Set;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 public final class CombatFirer
 {
     @AllArgsConstructor(staticName = "of")

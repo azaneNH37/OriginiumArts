@@ -32,6 +32,9 @@ import java.util.UUID;
 
 import static com.azane.ogna.client.lib.InputExtraCheck.isInGame;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = OriginiumArts.MOD_ID, value = Dist.CLIENT)
 public class AttackInputHandler

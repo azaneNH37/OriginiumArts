@@ -22,6 +22,10 @@ import java.util.Objects;
 import java.util.Set;
 
 
+/**
+ * @author tacz
+ * @author azaneNH37 (2025-08-04)
+ */
 public abstract class CommonDataService implements IResourceProvider
 {
     protected Map<ResourceLocation,INetworkCacheReloadListener> listeners = new HashMap<>();

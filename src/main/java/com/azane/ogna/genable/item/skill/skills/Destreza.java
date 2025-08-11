@@ -27,6 +27,9 @@ import net.minecraft.world.level.Level;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-08-09)
+ */
 @JsonClassTypeBinder(fullName = "skill.destreza", namespace = OriginiumArts.MOD_ID)
 public class Destreza extends DefaultSkillDataBase
 {

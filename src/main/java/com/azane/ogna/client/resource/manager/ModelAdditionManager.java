@@ -6,6 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
+/**
+ * @author azaneNH37 (2025-06-06)
+ */
 @Getter
 public class ModelAdditionManager
 {

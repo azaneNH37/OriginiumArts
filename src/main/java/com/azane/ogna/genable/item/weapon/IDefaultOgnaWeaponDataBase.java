@@ -10,6 +10,9 @@ import com.azane.ogna.lib.IComponentDisplay;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public interface IDefaultOgnaWeaponDataBase extends IGenItemDatabase, IComponentDisplay
 {
     @Nullable

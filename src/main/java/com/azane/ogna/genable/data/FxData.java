@@ -6,6 +6,9 @@ import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @author azaneNH37 (2025-08-06)
+ */
 @Getter
 public class FxData
 {

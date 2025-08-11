@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 
+/**
+ * @author azaneNH37 (2025-08-10)
+ */
 public class WeaponDisplayContext implements IDisplayContext
 {
     @SerializedName("name")

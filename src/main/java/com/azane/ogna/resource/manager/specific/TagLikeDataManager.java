@@ -12,6 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Consumer;
 
+/**
+ * @author azaneNH37 (2025-07-13)
+ */
 public class TagLikeDataManager<T extends ITagLike<U>,U> extends CommonDataManager<T>
 {
     @Getter

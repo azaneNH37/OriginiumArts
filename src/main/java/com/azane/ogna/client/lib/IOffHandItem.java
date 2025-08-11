@@ -3,6 +3,9 @@ package com.azane.ogna.client.lib;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * @author azaneNH37 (2025-06-06)
+ */
 public interface IOffHandItem
 {
     /**

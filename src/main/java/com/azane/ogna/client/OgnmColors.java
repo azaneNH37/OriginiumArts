@@ -13,6 +13,9 @@ import net.minecraftforge.fml.common.Mod;
 import static com.azane.ogna.lib.RegistryAccessHelper.buildBiomeKey;
 import static com.azane.ogna.lib.RegistryAccessHelper.clientBiomeRegistry;
 
+/**
+ * @author azaneNH37 (2025-08-03)
+ */
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = OriginiumArts.MOD_ID,value = Dist.CLIENT,bus=Mod.EventBusSubscriber.Bus.MOD)
 public class OgnmColors

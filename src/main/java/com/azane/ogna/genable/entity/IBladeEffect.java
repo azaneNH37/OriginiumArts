@@ -11,6 +11,9 @@ import java.util.function.Predicate;
 
 import static com.azane.ogna.genable.manager.BladeEffectAABBManager.*;
 
+/**
+ * @author azaneNH37 (2025-08-04)
+ */
 public interface IBladeEffect extends IresourceLocation
 {
     /**

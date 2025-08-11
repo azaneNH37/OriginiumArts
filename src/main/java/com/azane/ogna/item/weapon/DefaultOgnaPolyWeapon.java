@@ -33,6 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
 public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
 {
     public static final String DEFAULT_CONTROLLER = "default";
