@@ -119,6 +119,7 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
         IDefaultOgnaWeaponDataBase weaponDataBase = getDefaultDatabase(pStack);
         weaponDataBase.appendHoverText(pStack, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(Component.empty());
+        getWeaponCap(pStack).appendHoverText(pStack, pTooltipComponents, pIsAdvanced);
     }
 
     @Override

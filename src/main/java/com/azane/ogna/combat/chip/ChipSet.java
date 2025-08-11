@@ -3,6 +3,8 @@ package com.azane.ogna.combat.chip;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
+import com.azane.ogna.lib.ColorHelper;
+import com.azane.ogna.lib.IComponentDisplay;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.resource.service.CommonDataService;
@@ -11,8 +13,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
@@ -25,7 +31,7 @@ import java.util.function.Predicate;
 /**
  * @author azaneNH37 (2025-08-02)
  */
-public class ChipSet implements INBTSerializable<CompoundTag>
+public class ChipSet implements INBTSerializable<CompoundTag>, IComponentDisplay
 {
     public static final ChipSet FALLBACK = new ChipSet(ChipEnv.FALLBACK);
 
@@ -43,6 +49,11 @@ public class ChipSet implements INBTSerializable<CompoundTag>
         this.chipEnv = chipEnv;
         for(ChipTiming timing : ChipTiming.values())
             triggeredChips.put(timing, new ArrayList<>());
+    }
+
+    public boolean isEmpty()
+    {
+        return chips.isEmpty();
     }
 
     public static int getVolumeTake(ChipArg arg)
@@ -175,5 +186,24 @@ public class ChipSet implements INBTSerializable<CompoundTag>
             toRemove.add(RlHelper.parse(lis.getString(i)));
         }
         volumeTake = nbt.getInt("volumeTake");
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag)
+    {
+        chips.forEach((rl,amt)->
+            {
+                var chip = OgnaChip.getChip(rl);
+                if(chip != null)
+                {
+                    tooltip.add(
+                        Component.empty()
+                            .append("[")
+                            .append(Component.translatable(chip.getDisplayContext().getName()).withStyle(Style.EMPTY.withColor(chip.getDisplayContext().getColor())))
+                            .append("] ×")
+                            .append(Component.literal(String.valueOf(amt))).withStyle(Style.EMPTY.withColor(ColorHelper.getGradientColor(amt)).withBold(true)));
+                }
+            }
+        );
     }
 }

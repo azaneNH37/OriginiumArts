@@ -14,16 +14,20 @@ import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
 import com.azane.ogna.registry.ModAttribute;
 import lombok.Getter;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Set;
 
 //TODO: 注意C/S端数据同步！
@@ -137,5 +141,22 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         skillCap.deserializeNBT((CompoundTag) nbt.get("skillCap"));
         currentEnergy = nbt.getDouble("currentEnergy");
         chipSet.deserializeNBT(nbt.getCompound("chipSet"));
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag)
+    {
+        if(getSkillCap().getSkill() != null)
+        {
+            tooltip.add(Component.translatable("ogna.tip.weapon.cap.skill").withStyle(ChatFormatting.YELLOW,ChatFormatting.ITALIC));
+            getSkillCap().getSkill().appendHoverText(stack,tooltip, flag);
+            tooltip.add(Component.empty());
+        }
+        if(!chipSet.isEmpty())
+        {
+            tooltip.add(Component.translatable("ogna.tip.weapon.cap.chipset").withStyle(ChatFormatting.YELLOW,ChatFormatting.ITALIC));
+            chipSet.appendHoverText(stack,tooltip,flag);
+            tooltip.add(Component.empty());
+        }
     }
 }

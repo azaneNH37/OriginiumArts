@@ -84,6 +84,8 @@
   "ogna.tip.chip.size": "Base Stack Count: ",
   "ogna.tip.skill.base.attr": "Basic Attribute Modifiers:",
   "ogna.tip.skill.skill.attr": "In-skill Attribute Modifiers:",
+  "ogna.tip.weapon.cap.skill": "Skill Equipped:",
+  "ogna.tip.weapon.cap.chipset": "Module Equipped:",
 
   "ogna.tip.chip.inner.mobEffect": "Apply Effect %s (Lv%d) to the target with duration %.1fs."
 }

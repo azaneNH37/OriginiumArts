@@ -72,10 +72,12 @@
   "ogna.genable.chip.store.1.name": "储能模块 I",
   "ogna.genable.chip.store.1.desp": "旧医疗电源改制。存得慢漏得快，像扎洞的能量罐头。",
   "ogna.genable.chip.inner.sand_poison.name": "神经腐蚀",
-  "ogna.genable.chip.inner.sand_poison.content": "攻击使目标中毒， 每20（每等级-5）ticks造成1.5（每等级+1）点持续伤害， 对远程目标伤害翻倍。",
+  "ogna.genable.chip.inner.sand_poison.content": "攻击使目标中毒, 每20（每等级-5）ticks 造成1.5（每等级+1）点 持续伤害, 对远程目标伤害翻倍。",
   "ogna.tip.chip.volume": "基础容量占用: ",
   "ogna.tip.chip.size": "基础最大堆叠: ",
   "ogna.tip.skill.base.attr": "基础属性修正：",
   "ogna.tip.skill.skill.attr": "技能属性修正：",
+  "ogna.tip.weapon.cap.skill": "装配技能:",
+  "ogna.tip.weapon.cap.chipset": "装配模块:",
   "ogna.tip.chip.inner.mobEffect": "对目标施加 %s (等级%d) 效果， 持续时间%.1fs."
 }
