@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 public interface IGenItem
 {
-    Marker GEN_ITEM_MARKER = MarkerManager.getMarker("GenItemTemplate");
-    String GEN_TAG = "weapon";
-    String IDENTIFIER_TAG = "template_identifier";
+    Marker GEN_ITEM_MARKER = MarkerManager.getMarker(ModGenIdentifier.getId()+".GenItemTemplate");
+    String GEN_TAG = ModGenIdentifier.getId()+".database";
+    String IDENTIFIER_TAG = ModGenIdentifier.getId()+".template_identifier";
 
     <T extends Item> T getItem();
 

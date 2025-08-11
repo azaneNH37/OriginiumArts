@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public interface IPolyItemDataBase<T extends IresourceLocation>
 {
-    Marker POLY_ITEM_DATABASE = MarkerManager.getMarker("PolyItemDatabase");
+    Marker POLY_ITEM_DATABASE = MarkerManager.getMarker(ModGenIdentifier.getId()+".PolyItemDatabase");
 
     boolean isDataBaseForStack(ItemStack itemStack);
 
@@ -30,6 +30,7 @@ public interface IPolyItemDataBase<T extends IresourceLocation>
         throw new ClassCastException("Cannot cast to " + type.getName());
     }
 
+    //TODO:改键会导致崩溃，但一般也不会改键值
     default T getDataBaseForStack(ItemStack itemStack)
     {
         try {

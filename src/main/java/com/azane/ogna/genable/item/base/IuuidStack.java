@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public interface IuuidStack
 {
-    String STACK_UUID_KEY = "stack_uuid";
+    String STACK_UUID_KEY = ModGenIdentifier.getId()+".stack_uuid";
 
     /**
      * 为武器生成或获取UUID
