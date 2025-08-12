@@ -14,5 +14,15 @@
     "end": {
       "id": "ognmarts:hit_fire"
     }
+  },
+  "sound": {
+    "awake": {
+      "key": "skill.volcano.loop",
+      "volume": 0.6
+    },
+    "hit": {
+      "key": "hit.fire",
+      "volume": 2
+    }
   }
 }

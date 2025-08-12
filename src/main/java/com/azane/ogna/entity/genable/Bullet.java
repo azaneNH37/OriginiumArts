@@ -8,6 +8,7 @@ import com.azane.ogna.combat.util.SelectRule;
 import com.azane.ogna.combat.util.SelectorType;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
+import com.azane.ogna.genable.data.SoundKeyData;
 import com.azane.ogna.genable.entity.IBullet;
 import com.azane.ogna.genable.entity.ITargetable;
 import com.azane.ogna.network.OgnmChannel;
@@ -24,6 +25,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -120,15 +122,24 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     public void tick() {
         super.tick();
 
-        if(life == 0 && this.level().isClientSide())
+        if(life == 0)
         {
-            OgnaFxHelper.extractFxUnit(getDataBase().getFxData(),FxData::getAwakeFx)
-                .map(FxData.FxUnit::getId).map(FXHelper::getFX)
-                .ifPresent(fx->{
-                    var effect = new EntityEffect(fx, this.level(), this, EntityEffect.AutoRotate.FORWARD);
-                    effect.setForcedDeath(true);
-                    effect.start();
-                });
+            if(this.level().isClientSide())
+                OgnaFxHelper.extractFxUnit(getDataBase().getFxData(),FxData::getAwakeFx)
+                    .map(FxData.FxUnit::getId).map(FXHelper::getFX)
+                    .ifPresent(fx->{
+                        var effect = new EntityEffect(fx, this.level(), this, EntityEffect.AutoRotate.FORWARD);
+                        effect.setForcedDeath(true);
+                        effect.start();
+                    });
+            else
+            {
+                SoundKeyData.SoundKeyUnit unit = getDataBase().getSoundData() == null ? null : getDataBase().getSoundData().getAwakeSound();
+                if(unit != null)
+                    SoundKeyData.getSound(unit).ifPresent(soundEvent ->
+                        this.level().playSound(null,this.position().x, this.position().y, this.position().z,
+                            soundEvent, SoundSource.PLAYERS, unit.getVolume(), unit.getPitch()));
+            }
         }
 
         if (++this.life >= getDataBase().getLife()) {
@@ -207,6 +218,16 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
                         128
                     );
                 });
+
+            SoundKeyData.SoundKeyUnit unit = getDataBase().getSoundData() == null ? null : getDataBase().getSoundData().getHitSound();
+            if(unit != null)
+            {
+                SoundKeyData.getSound(unit).ifPresent(soundEvent ->
+                    this.level().playSound(null,this.position().x, this.position().y, this.position().z,
+                        soundEvent, SoundSource.PLAYERS, unit.getVolume(), unit.getPitch()));
+                //DebugLogger.log(unit.getSoundKey());
+            }
+
             var dmgSource = new ArkDamageSource(combatUnit,this,this.getOwner(),null);
 
             if(selectorUnit.getType() == SelectorType.SINGLE)
@@ -229,6 +250,14 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     @Override
     protected void onHitBlock(BlockHitResult result) {
         //DebugLogger.log("Bullet hit block at: " + result.getBlockPos());
+        if(!this.level().isClientSide())
+        {
+            SoundKeyData.SoundKeyUnit unit = getDataBase().getSoundData() == null ? null : getDataBase().getSoundData().getHitSound();
+            if(unit != null)
+                SoundKeyData.getSound(unit).ifPresent(soundEvent ->
+                    this.level().playSound(null,this.position().x, this.position().y, this.position().z,
+                        soundEvent, SoundSource.PLAYERS, unit.getVolume(), unit.getPitch()));
+        }
         this.discard();
     }
 

@@ -6,6 +6,7 @@ import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.genable.data.FxData;
+import com.azane.ogna.genable.data.SoundKeyData;
 import com.azane.ogna.genable.entity.IBladeEffect;
 import com.azane.ogna.genable.manager.BladeEffectAABBManager;
 import com.azane.ogna.lib.EdataSerializer;
@@ -23,6 +24,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.VisibleForDebug;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
@@ -40,6 +42,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -149,6 +152,11 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
                 setInvisible(false);
                 updateTransform(this);
                 triggerAnim("default","attack");
+                SoundKeyData.SoundKeyUnit unit = getDataBase().getSoundData() == null ? null : getDataBase().getSoundData().getAwakeSound();
+                if(unit != null)
+                    SoundKeyData.getSound(unit).ifPresent(soundEvent ->
+                        this.level().playSound(null,this.position().x, this.position().y, this.position().z,
+                        soundEvent, SoundSource.PLAYERS, unit.getVolume(), unit.getPitch()));
             }
             if(this.getDataBase().getHitFrame().contains(age-getEntityData().get(DELAY)))
             {

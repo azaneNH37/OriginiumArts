@@ -3,13 +3,17 @@ package com.azane.ogna.item.weapon;
 import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.client.lib.IDynamicAssetItem;
 import com.azane.ogna.client.lib.IOffHandItem;
+import com.azane.ogna.genable.data.SoundKeyData;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.skill.ISkill;
+import com.azane.ogna.registry.ModSound;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -106,6 +110,14 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
         ISkillCap skillCap = getWeaponCap(stack).getSkillCap();
         if (skillCap.canStart(level, player, stack))
         {
+            if(level instanceof ServerLevel serverLevel)
+            {
+                SoundKeyData.getSound(ModSound.SKILL_START_UNIT).ifPresent(soundEvent ->
+                    serverLevel.playSound(null,
+                        player.position().x, player.position().y, player.position().z,
+                        soundEvent, SoundSource.PLAYERS, ModSound.SKILL_START_UNIT.getVolume(), ModSound.SKILL_START_UNIT.getPitch())
+                    );
+            }
             skillCap.start(level, player, stack);
             return true;
         }

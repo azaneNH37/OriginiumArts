@@ -11,5 +11,10 @@
     "awake": {
       "id": "ognmarts:potion_ball"
     }
+  },
+  "sound": {
+    "awake": {
+      "key": "skill.destreza.attack"
+    }
   }
 }

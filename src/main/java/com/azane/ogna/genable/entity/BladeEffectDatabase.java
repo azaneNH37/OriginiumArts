@@ -4,6 +4,7 @@ import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.data.GeckoAssetData;
+import com.azane.ogna.genable.data.SoundKeyData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
@@ -58,6 +59,11 @@ public class BladeEffectDatabase implements IBladeEffect
     @Getter
     @Nullable
     private FxData fxData;
+
+    @SerializedName("sound")
+    @Getter
+    @Nullable
+    private SoundKeyData soundData;
 
     //TODO: allow user to temporarily change the config
     @Override

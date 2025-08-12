@@ -1,0 +1,90 @@
+{
+    "attack.blade.fire": {
+        "sounds": [
+            {
+                "name": "ognmarts:attack.blade.fire",
+                "stream": false
+            }
+        ]
+    },
+    "attack.fire": {
+        "sounds": [
+            {
+                "name": "ognmarts:attack.fire",
+                "stream": false
+            }
+        ]
+    },
+    "attack.poison": {
+        "sounds": [
+            {
+                "name": "ognmarts:attack.poison",
+                "stream": false
+            }
+        ]
+    },
+    "attack.time": {
+        "sounds": [
+            {
+                "name": "ognmarts:attack.time",
+                "stream": false
+            }
+        ]
+    },
+    "hit.fire": {
+        "sounds": [
+            {
+                "name": "ognmarts:hit.fire",
+                "stream": false
+            }
+        ]
+    },
+    "hit.range": {
+        "sounds": [
+            {
+                "name": "ognmarts:hit.range",
+                "stream": false
+            }
+        ]
+    },
+    "skill.destreza.attack": {
+        "sounds": [
+            {
+                "name": "ognmarts:skill.destreza.attack",
+                "stream": false
+            }
+        ]
+    },
+    "skill.key.attack": {
+        "sounds": [
+            {
+                "name": "ognmarts:skill.key.attack",
+                "stream": false
+            }
+        ]
+    },
+    "skill.start": {
+        "sounds": [
+            {
+                "name": "ognmarts:skill.start",
+                "stream": false
+            }
+        ]
+    },
+    "skill.twilight.hit": {
+        "sounds": [
+            {
+                "name": "ognmarts:skill.twilight.hit",
+                "stream": false
+            }
+        ]
+    },
+    "skill.volcano.loop": {
+        "sounds": [
+            {
+                "name": "ognmarts:skill.volcano.loop",
+                "stream": false
+            }
+        ]
+    }
+}

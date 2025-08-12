@@ -16,5 +16,10 @@
   "gecko_asset": {
     "all": "ognmarts:blade-fire_reverse",
     "texture": "ognmarts:blade-fire"
+  },
+  "sound": {
+    "awake": {
+      "key": "attack.blade.fire"
+    }
   }
 }

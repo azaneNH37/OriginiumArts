@@ -20,5 +20,10 @@
     "awake": {
       "id": "ognmarts:roman"
     }
+  },
+  "sound": {
+    "awake": {
+      "key": "skill.key.attack"
+    }
   }
 }

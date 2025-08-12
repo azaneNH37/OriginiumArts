@@ -1,4 +1,5 @@
 import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
 
 plugins {
     id 'eclipse'
@@ -342,7 +343,57 @@ tasks.register('generateMultiResourceList') {
     }
 }
 
+tasks.register('generateSoundsJson') {
+    // 任务的描述，方便理解
+    description = "Generates sounds.json from .ogg files in the resources directory."
+
+    // 定义输入和输出，以便 Gradle 知道何时需要重新执行此任务
+    def soundsDir = file("src/main/resources/assets/${mod_id}/sounds")
+    def soundsJson = file("src/main/resources/assets/${mod_id}/sounds.json")
+
+    inputs.dir soundsDir
+    outputs.file soundsJson
+
+    // 确保这个任务只在 mod_id 属性存在时才执行
+    if (mod_id) {
+        // 核心执行逻辑
+        doLast {
+            // 确保 sounds 文件夹存在，否则创建它
+            if (!soundsDir.exists()) {
+                soundsDir.mkdirs()
+            }
+
+            // 获取所有 .ogg 文件，并去除后缀
+            def soundFiles = soundsDir.listFiles().findAll { it.name.endsWith(".ogg") }
+            def soundNames = soundFiles.collect { it.name.substring(0, it.name.lastIndexOf('.')) }
+
+            // 创建一个 Groovy 的 Map 来构建 JSON 结构
+            def jsonMap = [:]
+            soundNames.each { name ->
+                jsonMap.put("${name}", [
+                        sounds: [
+                                [
+                                        name: "${mod_id}:${name}",
+                                        stream: false
+                                ]
+                        ]
+                ])
+            }
+
+            // 新的 JSON 生成方式: 使用 JsonOutput.prettyPrint 直接生成格式化字符串
+            def jsonString = JsonOutput.prettyPrint(JsonOutput.toJson(jsonMap))
+
+            // 将 JSON 字符串写入到 sounds.json 文件
+            soundsJson.text = jsonString
+            println "Successfully generated sounds.json for mod: ${mod_id}"
+        }
+    } else {
+        println "Warning: 'mod_id' not found in gradle.properties. Skipping sounds.json generation."
+    }
+}
+
 // 在构建流程中插入任务
 processResources {
     dependsOn generateMultiResourceList
+    dependsOn generateSoundsJson
 }

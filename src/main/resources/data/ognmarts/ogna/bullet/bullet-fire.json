@@ -15,5 +15,10 @@
     "hit": {
       "id": "ognmarts:hit_fire"
     }
+  },
+  "sound": {
+    "awake": {
+      "key": "skill.twilight.hit"
+    }
   }
 }

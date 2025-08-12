@@ -35,6 +35,7 @@ public class OECRecipeCategory implements IRecipeCategory<OECRecipe>
     public static final RecipeType<OECRecipe> RECIPE_TYPE = RecipeType.create(OriginiumArts.MOD_ID, "oec", OECRecipe.class);
     private static final ResourceLocation TEXTURE = RlHelper.build(OriginiumArts.MOD_ID, "textures/gui/jei/oe_category.png");
 
+    @SuppressWarnings("deprecation")
     @Getter
     private final IDrawable background;
     @Getter

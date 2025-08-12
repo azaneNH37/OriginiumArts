@@ -14,5 +14,15 @@
     "end": {
       "id": "ognmarts:hit_fire"
     }
+  },
+  "sound": {
+    "awake": {
+      "key": "attack.fire",
+      "volume": 3
+    },
+    "hit": {
+      "key": "hit.fire",
+      "volume": 2
+    }
   }
 }

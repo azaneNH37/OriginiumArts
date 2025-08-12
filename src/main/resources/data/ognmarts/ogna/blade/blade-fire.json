@@ -15,5 +15,10 @@
   },
   "gecko_asset": {
     "all": "ognmarts:blade-fire"
+  },
+  "sound": {
+    "awake": {
+      "key": "attack.blade.fire"
+    }
   }
 }
