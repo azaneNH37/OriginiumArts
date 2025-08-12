@@ -27,8 +27,9 @@
     }
   ],
   "result": {
-    "type": "sword",
-    "id": "ognmarts:sword-lwd",
+    "type": "skill",
+    "id": "ognmarts:skill.key_of_chronology-1",
     "count": 1
   }
 }
+

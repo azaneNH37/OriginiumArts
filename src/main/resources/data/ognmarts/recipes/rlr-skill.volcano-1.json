@@ -27,8 +27,9 @@
     }
   ],
   "result": {
-    "type": "sword",
-    "id": "ognmarts:sword-jc",
+    "type": "skill",
+    "id": "ognmarts:skill.volcano-1",
     "count": 1
   }
 }
+

@@ -27,8 +27,9 @@
     }
   ],
   "result": {
-    "type": "skill",
-    "id": "ognmarts:skill.twilight-1",
+    "type": "staff",
+    "id": "ognmarts:staff-sheep",
     "count": 1
   }
 }
+

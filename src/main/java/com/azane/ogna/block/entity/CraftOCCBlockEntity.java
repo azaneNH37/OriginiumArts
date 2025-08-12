@@ -5,6 +5,7 @@ import com.azane.ogna.client.gui.ldlib.custom.MaterialWidget;
 import com.azane.ogna.client.gui.ldlib.custom.MaterialWidgetGroup;
 import com.azane.ogna.client.gui.ldlib.custom.MenuItemWidget;
 import com.azane.ogna.craft.rlr.RLRRecipe;
+import com.azane.ogna.craft.rlr.RLRRecipes;
 import com.azane.ogna.inventory.MenuItemDisplay;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
 import com.azane.ogna.lib.RlHelper;
@@ -122,9 +123,7 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
             // DebugLogger.log("{}",this.level.getRecipeManager().getAllRecipesFor(ModRecipe.RL_RESULT_TYPE.get()).size());
             menuItemDisplay.clearContent();
             AtomicInteger index = new AtomicInteger(0);
-            this.level.getRecipeManager().getAllRecipesFor(ModRecipe.RLR_TYPE.get())
-                .stream()
-                .sorted(Comparator.comparing(e->e.getResult().getId().toString()))//TODO:为什么他妈C/S端能sort出不一样的结果？？？？
+            RLRRecipes.getRLRRecipeList(this.level)
                 .forEach(rlrr-> {
                     var wg = new MenuItemWidget();
                     if(wg.injectRecipe(rlrr,menuItemDisplay,index.get()))

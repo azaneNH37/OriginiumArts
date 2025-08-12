@@ -13,6 +13,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -34,6 +35,10 @@ public class ModItem
 
     public static final RegistryObject<Item> ENERGY_UNIT_SIMPLE = register("eu_simple",()->new EnergyUnit(10));
     public static final RegistryObject<Item> ENERGY_UNIT_SIMPLE_EMPTY = register("eu_simple_empty",()->new EnergyUnit(0));
+
+    public static final List<RegistryObject<Item>> GENABLE_ITEMS = List.of(
+      OGNA_STAFF,OGNA_SWORD,OGNA_SKILL,OGNA_CHIP
+    );
 
     public static RegistryObject<Item> register(String name, boolean isInCreativeTab,Supplier<? extends Item> supplier)
     {

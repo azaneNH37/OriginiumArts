@@ -27,8 +27,9 @@
     }
   ],
   "result": {
-    "type": "staff",
-    "id": "ognmarts:staff-sheep",
+    "type": "sword",
+    "id": "ognmarts:sword-jc",
     "count": 1
   }
 }
+

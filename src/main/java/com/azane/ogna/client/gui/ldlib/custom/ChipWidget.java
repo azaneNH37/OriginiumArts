@@ -110,7 +110,7 @@ public class ChipWidget extends WidgetGroup
         displayContainer.clearContent();
         AtomicInteger atomicInteger = new AtomicInteger(0);
         var storedChips = chipSet.getStoredChips(IChip::isItem);
-        DebugLogger.log("chip size: {}",storedChips.size());
+        //DebugLogger.log("chip size: {}",storedChips.size());
         chipSet.getStoredChips(IChip::isItem).forEach(ichip -> {
             var cw = new ChipWidget();
             cw.injectChipData(chipSet,ichip, displayContainer, atomicInteger.getAndIncrement(), (cd, b) -> {
@@ -135,5 +135,6 @@ public class ChipWidget extends WidgetGroup
         });
         chipList.setLayout(Layout.VERTICAL_CENTER);
         chipList.setLayout(Layout.NONE);
+        chipList.computeMax();
     }
 }

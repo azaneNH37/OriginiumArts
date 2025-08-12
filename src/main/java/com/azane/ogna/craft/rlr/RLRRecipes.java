@@ -1,12 +1,16 @@
 package com.azane.ogna.craft.rlr;
 
+import com.azane.ogna.registry.ModRecipe;
 import com.azane.ogna.resource.service.ServerDataService;
 import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
@@ -63,5 +67,14 @@ public final class RLRRecipes
             )
         );
         map = builder.build();
+    }
+
+    //TODO:为什么他妈C/S端能sort出不一样的结果？？？？
+    public static List<RLRRecipe> getRLRRecipeList(Level level)
+    {
+        return level.getRecipeManager().getAllRecipesFor(ModRecipe.RLR_TYPE.get())
+            .stream()
+            .sorted(Comparator.comparing(e->e.getResult().getId().toString()))
+            .toList();
     }
 }

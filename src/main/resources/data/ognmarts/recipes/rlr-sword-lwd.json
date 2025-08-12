@@ -27,8 +27,9 @@
     }
   ],
   "result": {
-    "type": "staff",
-    "id": "ognmarts:staff-lockkey",
+    "type": "sword",
+    "id": "ognmarts:sword-lwd",
     "count": 1
   }
 }
+

@@ -26,6 +26,14 @@ public interface IGenItem
         return getItem().getDescriptionId();
     }
 
+    @Nullable
+    default String getDatabaseId(ItemStack stack)
+    {
+        if(!isThisGenItem(stack))
+            return null;
+        return stack.getOrCreateTag().getCompound(GEN_TAG).getString(IresourceLocation.TAG_RL);
+    }
+
     default boolean isThisGenItem(ItemStack stack)
     {
         if(stack.hasTag())
