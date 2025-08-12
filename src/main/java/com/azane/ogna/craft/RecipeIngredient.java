@@ -5,6 +5,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author azaneNH37 (2025-07-28)
  */
@@ -31,4 +34,14 @@ public class RecipeIngredient
         return ingredient.test(stack);
     }
 
+    public List<ItemStack> buildStacks()
+    {
+        return Arrays.stream(ingredient.getItems())
+                .map(itemStack -> {
+                    ItemStack stack = itemStack.copy();
+                    stack.setCount(count);
+                    return stack;
+                })
+                .toList();
+    }
 }

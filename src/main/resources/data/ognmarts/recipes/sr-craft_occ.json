@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "ognmarts:eu_simple_empty"
+    },
+    "X": {
+      "tag": "forge:ingots/iron"
+    },
+    "&": {
+      "item": "minecraft:smooth_stone"
+    }
+  },
+  "pattern": [
+    "XXX",
+    "&#&",
+    "& &"
+  ],
+  "result": {
+    "count": 1,
+    "item": "ognmarts:craft_occ"
+  },
+  "show_notification": true
+}

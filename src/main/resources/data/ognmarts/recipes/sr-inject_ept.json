@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "ognmarts:eu_simple_empty"
+    },
+    "X": {
+      "item": "ognmarts:oriron"
+    },
+    "&": {
+      "item": "ognmarts:orirock_cube"
+    }
+  },
+  "pattern": [
+    "X#X",
+    " & ",
+    "&&&"
+  ],
+  "result": {
+    "count": 1,
+    "item": "ognmarts:inject_ept"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "ognmarts:eu_simple_empty"
+    },
+    "X": {
+        "item": "ognmarts:ognm_shard"
+    },
+    "&": {
+        "item": "minecraft:smooth_stone"
+    }
+  },
+  "pattern": [
+    "# #",
+    "#X#",
+    "&&&"
+  ],
+  "result": {
+    "count": 1,
+    "item": "ognmarts:energy_eh"
+  },
+  "show_notification": true
+}
