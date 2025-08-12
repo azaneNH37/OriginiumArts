@@ -1,7 +1,7 @@
 package com.azane.ogna.client.gui.ldlib.custom;
 
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.craft.RecipeIngredient;
+import com.azane.ogna.craft.QuantifiedIngredient;
 import com.azane.ogna.lib.NumStrHelper;
 import com.azane.ogna.lib.RlHelper;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.Configurable;
@@ -11,8 +11,6 @@ import com.lowdragmc.lowdraglib.gui.widget.ImageWidget;
 import com.lowdragmc.lowdraglib.gui.widget.TextTextureWidget;
 import com.lowdragmc.lowdraglib.gui.widget.WidgetGroup;
 import lombok.Setter;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 
 /**
  * @author azaneNH37 (2025-07-29)
@@ -55,7 +53,7 @@ public class MaterialWidget extends WidgetGroup
         this.setBackground(MTR_BACK_TEXTURE.copy());
     }
 
-    public boolean injectIngredient(RecipeIngredient ingredient,int exist)
+    public boolean injectIngredient(QuantifiedIngredient ingredient, int exist)
     {
         itemTexture = new ItemStackTexture(ingredient.getIngredient().getItems());
         var itemWidget = (ImageWidget)getFirstWidgetById("item");

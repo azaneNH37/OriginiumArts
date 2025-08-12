@@ -25,6 +25,8 @@ public interface IPolyItemDataBase<T extends IresourceLocation>
 
     Class<T> getDataBaseType();
 
+    T getFallbackDataBase();
+
     @SuppressWarnings("unchecked")
     default <U extends IresourceLocation> IPolyItemDataBase<U> castToType(Class<U> type) {
         if(getDataBaseType().equals(type)) {
@@ -40,7 +42,8 @@ public interface IPolyItemDataBase<T extends IresourceLocation>
             if(!isDataBaseForStack(itemStack))
             {
                 DebugLogger.log(LogLv.ERROR, POLY_ITEM_DATABASE, "ItemStack is not a valid GenItem: {}",itemStack.toString());
-                throw new IllegalArgumentException("ItemStack is not a valid GenItem: " + itemStack);
+                return getFallbackDataBase();
+                //throw new IllegalArgumentException("ItemStack is not a valid GenItem: " + itemStack);
             }
             // 从NBT获取Database ID
             ResourceLocation dbId = RlHelper.parse(Objects.requireNonNull(itemStack.getTagElement(IGenItem.GEN_TAG)).getString(IresourceLocation.TAG_RL));
@@ -53,7 +56,8 @@ public interface IPolyItemDataBase<T extends IresourceLocation>
         } catch (Exception e) {
             DebugLogger.log(LogLv.ERROR, POLY_ITEM_DATABASE, "Error getting database for stack: " + e.getMessage());
         }
-        throw new IllegalArgumentException("ItemStack is not a valid GenItem: " + itemStack);
+        return getFallbackDataBase();
+        //throw new IllegalArgumentException("ItemStack is not a valid GenItem: " + itemStack);
     }
 
     default void registerDataBase(T dataBase)

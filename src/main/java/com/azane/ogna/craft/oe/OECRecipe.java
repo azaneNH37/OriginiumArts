@@ -1,6 +1,6 @@
 package com.azane.ogna.craft.oe;
 
-import com.azane.ogna.craft.RecipeIngredient;
+import com.azane.ogna.craft.QuantifiedIngredient;
 import com.azane.ogna.registry.ModRecipe;
 import com.google.gson.JsonObject;
 import lombok.Getter;
@@ -20,12 +20,12 @@ import org.jetbrains.annotations.Nullable;
 @Getter
 public class OECRecipe implements Recipe<Container> {
     private final ResourceLocation id;
-    private final RecipeIngredient ingredient;
+    private final QuantifiedIngredient ingredient;
     private final ItemStack result;
     private final double energyCost;
     private final int processingTime;
 
-    public OECRecipe(ResourceLocation id, RecipeIngredient ingredient, ItemStack result, double energyCost, int processingTime) {
+    public OECRecipe(ResourceLocation id, QuantifiedIngredient ingredient, ItemStack result, double energyCost, int processingTime) {
         this.id = id;
         this.ingredient = ingredient;
         this.result = result;
@@ -93,7 +93,7 @@ public class OECRecipe implements Recipe<Container> {
             double energyCost = GsonHelper.getAsDouble(json, "energy_cost");
             int processingTime = GsonHelper.getAsInt(json, "processing_time", 200);
 
-            return new OECRecipe(recipeId, new RecipeIngredient(ingredient, count), result, energyCost, processingTime);
+            return new OECRecipe(recipeId, new QuantifiedIngredient(ingredient, count), result, energyCost, processingTime);
         }
 
         @Override
@@ -104,7 +104,7 @@ public class OECRecipe implements Recipe<Container> {
             double energyCost = buffer.readDouble();
             int processingTime = buffer.readVarInt();
 
-            return new OECRecipe(recipeId, new RecipeIngredient(ingredient, count), result, energyCost, processingTime);
+            return new OECRecipe(recipeId, new QuantifiedIngredient(ingredient, count), result, energyCost, processingTime);
         }
 
         @Override

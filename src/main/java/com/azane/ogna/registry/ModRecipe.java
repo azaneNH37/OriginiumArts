@@ -3,9 +3,7 @@ package com.azane.ogna.registry;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.craft.oe.OECRecipe;
 import com.azane.ogna.craft.oe.OEGRecipe;
-import com.azane.ogna.craft.rlr.RlResultRecipe;
-import com.azane.ogna.craft.rlr.RlResultRecipeSerializer;
-import com.azane.ogna.craft.rlr.RlResultRecipeType;
+import com.azane.ogna.craft.rlr.RLRRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -24,11 +22,11 @@ public class ModRecipe
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES =
         DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, OriginiumArts.MOD_ID);
 
-    public static final RegistryObject<RecipeSerializer<RlResultRecipe>> RL_RESULT_SERIALIZER =
-        RECIPE_SERIALIZERS.register("rlr", () -> RlResultRecipeSerializer.INSTANCE);
+    public static final RegistryObject<RecipeSerializer<RLRRecipe>> RL_RESULT_SERIALIZER =
+        RECIPE_SERIALIZERS.register("rlr", () -> RLRRecipe.SERIALIZER);
 
-    public static final RegistryObject<RecipeType<RlResultRecipe>> RL_RESULT_TYPE =
-        RECIPE_TYPES.register("rlr", () -> RlResultRecipeType.INSTANCE);
+    public static final RegistryObject<RecipeType<RLRRecipe>> RLR_TYPE =
+        RECIPE_TYPES.register("rlr", () -> RLRRecipe.TYPE);
 
     // OEG Recipe - Originium Energy Generation
     public static final RegistryObject<RecipeType<OEGRecipe>> OEG_TYPE = RECIPE_TYPES.register("oeg",

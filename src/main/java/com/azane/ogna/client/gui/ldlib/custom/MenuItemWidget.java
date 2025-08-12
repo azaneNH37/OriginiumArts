@@ -2,13 +2,13 @@ package com.azane.ogna.client.gui.ldlib.custom;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
+import com.azane.ogna.craft.rlr.RLRRecipe;
 import com.azane.ogna.genable.data.display.IDisplayContext;
 import com.azane.ogna.lib.ColorHelper;
 import com.azane.ogna.lib.RegexHelper;
-import com.azane.ogna.craft.rlr.RlResultRecipe;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.resource.service.CommonDataService;
-import com.azane.ogna.craft.rlr.RlrRecipes;
+import com.azane.ogna.craft.rlr.RLRRecipes;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.Configurable;
 import com.lowdragmc.lowdraglib.gui.editor.annotation.LDLRegister;
 import com.lowdragmc.lowdraglib.gui.texture.*;
@@ -88,11 +88,11 @@ public class MenuItemWidget extends WidgetGroup
         }
     }
 
-    public boolean injectRecipe(RlResultRecipe recipe, Container displayContainer,int index)
+    public boolean injectRecipe(RLRRecipe recipe, Container displayContainer, int index)
     {
         String type = recipe.getResult().getType();
         ResourceLocation resrl = recipe.getResult().getId();
-        var func = RlrRecipes.map.get(type);
+        var func = RLRRecipes.map.get(type);
         if(func == null || !func.getExistence().test(resrl))
             return false;
         var slot = UiHelper.getAsNonnull(SlotWidget.class, RegexHelper.startWith("item"),this.widgets);
@@ -134,7 +134,7 @@ public class MenuItemWidget extends WidgetGroup
     }
 
     //TODO: 翻页按钮一定要清空展示槽位的container，否则会导致显示错误
-    public void displayInMainUI(List<Widget> displayList, RlResultRecipe recipe,Container displayContainer,int index)
+    public void displayInMainUI(List<Widget> displayList, RLRRecipe recipe,Container displayContainer,int index)
     {
         var modelView = UiHelper.getAsNonnull(TriDImageWidget.class,endWith("model"),displayList);
         var slot = UiHelper.getAsNonnull(SlotWidget.class, endWith("slot"), displayList);

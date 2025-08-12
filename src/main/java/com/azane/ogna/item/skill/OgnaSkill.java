@@ -1,11 +1,13 @@
 package com.azane.ogna.item.skill;
 
+import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.lib.IExtraModel;
 import com.azane.ogna.client.renderer.ExtraModelItemRenderer;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.genable.item.skill.ISkill;
+import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.resource.service.CommonDataService;
 import com.azane.ogna.resource.service.ServerDataService;
 import lombok.Getter;
@@ -52,6 +54,12 @@ public class OgnaSkill extends Item implements IGenItem, IPolyItemDataBase<ISkil
     public boolean isDataBaseForStack(ItemStack itemStack)
     {
         return isThisGenItem(itemStack);
+    }
+
+    @Override
+    public ISkill getFallbackDataBase()
+    {
+        return CommonDataService.get().getSkill(RlHelper.build(OriginiumArts.MOD_ID,"skill.key_of_chronology-1"));
     }
 
     @Override

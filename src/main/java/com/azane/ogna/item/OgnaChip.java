@@ -1,5 +1,6 @@
 package com.azane.ogna.item;
 
+import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.lib.IExtraModel;
 import com.azane.ogna.client.renderer.ExtraModelItemRenderer;
 import com.azane.ogna.genable.item.base.IGenItem;
@@ -7,6 +8,7 @@ import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.skill.OgnaSkill;
+import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.resource.service.CommonDataService;
 import com.azane.ogna.resource.service.ServerDataService;
 import lombok.Getter;
@@ -53,6 +55,12 @@ public class OgnaChip extends Item implements IGenItem, IPolyItemDataBase<IChip>
     public boolean isDataBaseForStack(ItemStack itemStack)
     {
         return isThisGenItem(itemStack);
+    }
+
+    @Override
+    public IChip getFallbackDataBase()
+    {
+        return OgnaChip.getChip(RlHelper.build(OriginiumArts.MOD_ID,"chip.attr-atk.1"));
     }
 
     @Override

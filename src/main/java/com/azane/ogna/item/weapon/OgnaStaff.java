@@ -1,12 +1,15 @@
 package com.azane.ogna.item.weapon;
 
+import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.client.renderer.OgnaWeaponRenderer;
 import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.genable.item.weapon.IStaffDataBase;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
+import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModAttribute;
+import com.azane.ogna.resource.service.CommonDataService;
 import com.azane.ogna.resource.service.ServerDataService;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
@@ -75,6 +78,12 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
     public boolean isDataBaseForStack(ItemStack itemStack)
     {
         return isThisGenItem(itemStack);
+    }
+
+    @Override
+    public IStaffDataBase getFallbackDataBase()
+    {
+        return CommonDataService.get().getStaff(RlHelper.build(OriginiumArts.MOD_ID,"staff-sheep"));
     }
 
     @Override

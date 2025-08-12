@@ -30,7 +30,7 @@ public interface IGenItem
     {
         if(stack.hasTag())
         {
-            CompoundTag tag = stack.getTag();
+            CompoundTag tag = stack.getOrCreateTag();
             if(tag.contains(IDENTIFIER_TAG) && tag.getString(IDENTIFIER_TAG).equals(getTagIdentifier()))
             {
                 CompoundTag tag1 = stack.getTagElement(GEN_TAG);

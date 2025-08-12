@@ -4,11 +4,9 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.custom.MaterialWidget;
 import com.azane.ogna.client.gui.ldlib.custom.MaterialWidgetGroup;
 import com.azane.ogna.client.gui.ldlib.custom.MenuItemWidget;
-import com.azane.ogna.debug.log.DebugLogger;
+import com.azane.ogna.craft.rlr.RLRRecipe;
 import com.azane.ogna.inventory.MenuItemDisplay;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
-import com.azane.ogna.craft.rlr.RlrCraftHelper;
-import com.azane.ogna.craft.rlr.RlResultRecipe;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlockEntity;
 import com.azane.ogna.registry.ModRecipe;
@@ -26,18 +24,15 @@ import com.lowdragmc.lowdraglib.syncdata.field.FieldManagedStorage;
 import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -127,7 +122,7 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
             // DebugLogger.log("{}",this.level.getRecipeManager().getAllRecipesFor(ModRecipe.RL_RESULT_TYPE.get()).size());
             menuItemDisplay.clearContent();
             AtomicInteger index = new AtomicInteger(0);
-            this.level.getRecipeManager().getAllRecipesFor(ModRecipe.RL_RESULT_TYPE.get())
+            this.level.getRecipeManager().getAllRecipesFor(ModRecipe.RLR_TYPE.get())
                 .stream()
                 .sorted(Comparator.comparing(e->e.getResult().getId().toString()))//TODO:为什么他妈C/S端能sort出不一样的结果？？？？
                 .forEach(rlrr-> {
@@ -146,19 +141,19 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
         return ui;
     }
 
-    private void refreshMtrGroup(MaterialWidgetGroup group,RlResultRecipe recipe,Player player)
+    private void refreshMtrGroup(MaterialWidgetGroup group, RLRRecipe recipe, Player player)
     {
         if(group == null || recipe == null || player == null) return;
-        group.setMaterialAmt(recipe.getRlrIngredients().size());
+        group.setMaterialAmt(recipe.getQuantifiedIngredients().size());
         var lis = group.getWidgetsById(MaterialWidgetGroup.CHILD_ID);
-        for(int i=0;i<Math.min(recipe.getRlrIngredients().size(),lis.size());i++)
+        for(int i = 0; i<Math.min(recipe.getQuantifiedIngredients().size(),lis.size()); i++)
         {
-            int amt = RlrCraftHelper.getIngredientCount(player,recipe.getRlrIngredients().get(i));
-            ((MaterialWidget)lis.get(i)).injectIngredient(recipe.getRlrIngredients().get(i),amt);
+            int amt = recipe.getQuantifiedIngredients().get(i).getIngredientCount(player);
+            ((MaterialWidget)lis.get(i)).injectIngredient(recipe.getQuantifiedIngredients().get(i),amt);
         }
     }
 
-    private void setMenuItemCallback(WidgetGroup root, MenuItemWidget target, RlResultRecipe recipe, Player player, Container displayContainer,int index)
+    private void setMenuItemCallback(WidgetGroup root, MenuItemWidget target, RLRRecipe recipe, Player player, Container displayContainer,int index)
     {
         var mtrGroup = (MaterialWidgetGroup)root.getFirstWidgetById("mtr.group");
         var craftButton = UiHelper.getAsNonnull(ButtonWidget.class, endWith("craft"), root.widgets);
@@ -171,14 +166,14 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
         });
     }
 
-    private void setCraftButtonCallback(WidgetGroup root, ButtonWidget target, RlResultRecipe recipe,Player player)
+    private void setCraftButtonCallback(WidgetGroup root, ButtonWidget target, RLRRecipe recipe,Player player)
     {
         var mtrGroup = (MaterialWidgetGroup)root.getFirstWidgetById("mtr.group");
         target.setOnPressCallback(cd->{
-            if(!RlrCraftHelper.canCraft(player,recipe))
+            if(!recipe.canCraft(player))
                 return;
             if(!cd.isRemote)
-                RlrCraftHelper.executeCraft(player,recipe);
+                recipe.craft(player);
             refreshMtrGroup(mtrGroup,recipe, player);
         });
     }

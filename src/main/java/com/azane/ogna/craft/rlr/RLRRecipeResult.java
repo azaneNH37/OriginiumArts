@@ -1,6 +1,5 @@
-package com.azane.ogna.craft;
+package com.azane.ogna.craft.rlr;
 
-import com.azane.ogna.craft.rlr.RlrRecipes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +10,8 @@ import net.minecraft.world.item.ItemStack;
  */
 @Getter
 @AllArgsConstructor
-public class RecipeResult {
+public class RLRRecipeResult
+{
     private final String type;
     private final ResourceLocation id;
     private final int count;
@@ -19,7 +19,7 @@ public class RecipeResult {
     // 通过数据存储结构获取产物
     public ItemStack buildItemStack()
     {
-        var func = RlrRecipes.map.get(type);
+        var func = RLRRecipes.map.get(type);
         if(func == null) {
             return ItemStack.EMPTY;
         }

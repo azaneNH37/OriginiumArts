@@ -14,9 +14,9 @@ import java.util.function.Predicate;
 /**
  * @author azaneNH37 (2025-08-09)
  */
-public final class RlrRecipes
+public final class RLRRecipes
 {
-    private RlrRecipes(){}
+    private RLRRecipes(){}
 
     @AllArgsConstructor(staticName = "of")
     @Getter
