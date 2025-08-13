@@ -6,7 +6,8 @@
     "model": "ognmarts:store.1"
   },
   "base_data": {
-    "volume": 4
+    "volume": 2,
+    "stack_size": 5
   },
   "env": "WEAPON",
   "list": [
@@ -14,7 +15,7 @@
       "attr": "ognmarts:weapon.energy.store",
       "id": "58f83ec7-6eb3-4274-a4f5-a3c2b8c5d774",
       "bucket": "DIRECT_ADD",
-      "amount": 50,
+      "amount": 60,
       "stack_size": 10000000
     }
   ]

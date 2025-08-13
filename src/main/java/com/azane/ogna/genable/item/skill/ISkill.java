@@ -3,7 +3,7 @@ package com.azane.ogna.genable.item.skill;
 import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
-import com.azane.ogna.combat.data.skill.OgnaSkillData;
+import com.azane.ogna.combat.data.OgnaSkillData;
 import com.azane.ogna.genable.data.AtkEntityData;
 import com.azane.ogna.genable.data.display.SkillDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;

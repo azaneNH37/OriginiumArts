@@ -3,25 +3,31 @@
   "ingredients": [
     {
       "ingredient": {
-        "item": "minecraft:diamond"
-      },
-      "count": 1
-    },
-    {
-      "ingredient": {
-        "item":"minecraft:iron_ingot"
+        "item": "ognmarts:oriron"
       },
       "count": 3
     },
     {
       "ingredient": {
-        "item":"minecraft:gold_ingot"
+        "item": "ognmarts:orirock_cube"
       },
-      "count": 1
+      "count": 8
     },
     {
       "ingredient": {
-        "item":"minecraft:copper_ingot"
+        "item":"ognmarts:eu_simple"
+      },
+      "count": 8
+    },
+    {
+      "ingredient": {
+        "item":"minecraft:pink_wool"
+      },
+      "count": 12
+    },
+    {
+      "ingredient": {
+        "item":"minecraft:compass"
       },
       "count": 1
     }

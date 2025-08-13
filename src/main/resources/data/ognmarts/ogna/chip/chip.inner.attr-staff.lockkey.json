@@ -1,0 +1,16 @@
+{
+  "display_context": {
+    "name": "ogna.genable.chip.inner.attr-staff.lockkey.name",
+    "color": "#EFADFF"
+  },
+  "env": "WEAPON",
+  "list": [
+    {
+      "attr": "ognmarts:skill.sp.rate",
+      "id": "2e9f1dc0-2ed3-4dbd-8484-841971150915",
+      "bucket": "TOTAL_ADD",
+      "amount": 0.4,
+      "stack_size": 1
+    }
+  ]
+}

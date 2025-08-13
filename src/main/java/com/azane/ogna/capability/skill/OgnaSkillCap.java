@@ -2,6 +2,7 @@ package com.azane.ogna.capability.skill;
 
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.combat.attr.AttrMap;
+import com.azane.ogna.combat.chip.ChipTiming;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -30,6 +32,7 @@ import java.util.Set;
  */
 public class OgnaSkillCap implements ISkillCap
 {
+    @NotNull
     private IOgnaWeaponCap weaponCap;
 
     private boolean active;
@@ -86,7 +89,10 @@ public class OgnaSkillCap implements ISkillCap
         active = false;
         RD = 0;
         if(skill != null)
+        {
             skill.onSkillEnd(level, player, (IOgnaWeapon) stack.getItem(), stack);
+            weaponCap.getChipSet().gather(ChipTiming.ON_SKILL_END).forEach(chip -> chip.onSkillEnd(level, player, stack, weaponCap, this));
+        }
     }
 
     @Override

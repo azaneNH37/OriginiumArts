@@ -31,7 +31,7 @@ public class SandPotionEffect extends MobEffect
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier)
     {
-        return pDuration % Math.max(20 - pAmplifier*5,5) == 0;
+        return pDuration % Math.max(20 - pAmplifier*3,5) == 0;
     }
 
     @Override

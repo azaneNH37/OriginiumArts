@@ -5,7 +5,7 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.combat.data.ArkDamageSource;
 import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.SelectorUnit;
-import com.azane.ogna.combat.data.skill.OgnaSkillData;
+import com.azane.ogna.combat.data.OgnaSkillData;
 import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.AtkEntityData;
@@ -32,7 +32,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.List;
 
@@ -137,6 +136,6 @@ public class DefaultSkillDataBase implements ISkill
 
     public void appendSkillDetailHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag)
     {
-
+        tooltip.add(Component.translatable(getDisplayContext().getName().substring(0,getDisplayContext().getName().lastIndexOf(".")) + ".content"));
     }
 }

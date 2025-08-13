@@ -46,11 +46,11 @@
     }
   },
   "weapon_data": {
-    "cooldown": 1500,
+    "cooldown": 1250,
     "max_charge_time": 3000,
-    "reload_time": 5000,
-    "energy_max": 600,
-    "energy_consume": 1,
+    "reload_time": 3000,
+    "energy_max": 750,
+    "energy_consume": 10,
     "chip_set_volume": 50,
     "dmg_dataset": {
       "fallback": "normal",
@@ -65,26 +65,16 @@
     },
     "attr_modifiers": [
       {
-        "attr": "ognmarts:weapon.attack.cd",
-        "id": "a3e05a6c-6ece-4894-b353-5d61a76c87c4",
-        "bucket": "DIRECT_ADD",
-        "amount": -500,
-        "stack_size": 1
-      },
-      {
-        "attr": "ognmarts:weapon.attack.cd",
-        "id": "1c9eca28-8813-478d-9959-4a30226edc1d",
-        "bucket": "DIRECT_MUL",
-        "amount": 0.1,
-        "stack_size": 1
-      },
-      {
         "attr": "generic.attack_damage",
         "id": "a3e05a6c-6ece-4894-b930-5d61a76c87c4",
-        "bucket": "TOTAL_ADD",
-        "amount": 1,
+        "bucket": "DIRECT_ADD",
+        "amount": 9,
         "stack_size": 1
       }
+    ],
+    "inner_chips": [
+      "ognmarts:chip.inner.attr-staff.lockkey",
+      "ognmarts:chip.inner.effect-staff.lockkey.2"
     ]
   }
 }

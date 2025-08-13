@@ -1,6 +1,8 @@
 package com.azane.ogna.combat.data;
 
 import com.azane.ogna.combat.attr.AttrMatrix;
+import com.azane.ogna.combat.util.DmgCategory;
+import com.azane.ogna.registry.ModAttribute;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,7 +26,12 @@ public class ArkDamageSource extends DamageSource
 
     public float submitSidedVal()
     {
-        return (float) Optional.ofNullable(unit.getMatrices().get(Attributes.ATTACK_DAMAGE))
-            .orElse(AttrMatrix.UNIT_MATRIX).submit(unit.getBaseVal());
+        AttrMatrix matrix = AttrMatrix.combine(true,
+            unit.getMatrices().get(Attributes.ATTACK_DAMAGE),
+            unit.getCategory() == DmgCategory.PHYSICS ? unit.getMatrices().get(ModAttribute.DAMAGE_PHYSICS.get()) :
+            unit.getCategory() == DmgCategory.ARTS ? unit.getMatrices().get(ModAttribute.DAMAGE_ARTS.get()) :
+                AttrMatrix.UNIT_MATRIX
+        );
+        return (float) matrix.submit(unit.getBaseVal());
     }
 }

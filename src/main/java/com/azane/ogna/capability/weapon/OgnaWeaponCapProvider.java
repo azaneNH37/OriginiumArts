@@ -1,6 +1,6 @@
 package com.azane.ogna.capability.weapon;
 
-import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
+import com.azane.ogna.combat.data.OgnaWeaponData;
 import com.azane.ogna.registry.ModCapability;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

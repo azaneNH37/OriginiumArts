@@ -3,27 +3,27 @@
   "ingredients": [
     {
       "ingredient": {
-        "item": "minecraft:diamond"
+        "item": "ognmarts:oriron"
       },
-      "count": 1
+      "count": 6
     },
     {
       "ingredient": {
-        "item":"minecraft:iron_ingot"
+        "item":"ognmarts:eu_simple"
       },
-      "count": 3
+      "count": 20
     },
     {
       "ingredient": {
-        "item":"minecraft:gold_ingot"
+        "item":"minecraft:snow_block"
       },
-      "count": 1
+      "count": 32
     },
     {
       "ingredient": {
-        "item":"minecraft:copper_ingot"
+        "item":"minecraft:blaze_rod"
       },
-      "count": 1
+      "count": 4
     }
   ],
   "result": {

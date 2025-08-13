@@ -3,27 +3,27 @@
   "ingredients": [
     {
       "ingredient": {
-        "item": "minecraft:diamond"
+        "item": "ognmarts:oriron"
       },
-      "count": 1
+      "count": 4
     },
     {
       "ingredient": {
-        "item":"minecraft:iron_ingot"
+        "item":"ognmarts:eu_simple"
       },
-      "count": 3
+      "count": 12
     },
     {
       "ingredient": {
-        "item":"minecraft:gold_ingot"
+        "item":"minecraft:sand"
       },
-      "count": 1
+      "count": 32
     },
     {
       "ingredient": {
-        "item":"minecraft:copper_ingot"
+        "item":"minecraft:seagrass"
       },
-      "count": 1
+      "count": 32
     }
   ],
   "result": {

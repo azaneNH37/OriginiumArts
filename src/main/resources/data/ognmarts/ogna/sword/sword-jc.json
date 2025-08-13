@@ -53,35 +53,28 @@
     }
   },
   "weapon_data": {
-    "cooldown": 700,
+    "cooldown": 750,
     "max_charge_time": 3000,
-    "reload_time": 5000,
-    "energy_max": 600,
+    "reload_time": 6000,
+    "energy_max": 300,
     "energy_consume": 3,
-    "chip_set_volume": 60,
+    "chip_set_volume": 50,
     "dmg_dataset": {
       "fallback": "normal",
       "map": {
         "normal": {
           "dmg_type": "ognmarts:ark_default",
-          "dmg_category": "ARTS",
+          "dmg_category": "PHYSICS",
           "selector": "SINGLE"
         }
       }
     },
     "attr_modifiers": [
       {
-        "attr": "ognmarts:weapon.attack.cd",
-        "id": "1c9eca28-8813-478d-9959-4a30226edc1d",
-        "bucket": "DIRECT_MUL",
-        "amount": -0.1,
-        "stack_size": 1
-      },
-      {
         "attr": "generic.attack_damage",
         "id": "a3e05a6c-6ece-4894-b930-5d61a76c87c4",
         "bucket": "TOTAL_ADD",
-        "amount": 1,
+        "amount": 4,
         "stack_size": 1
       }
     ],

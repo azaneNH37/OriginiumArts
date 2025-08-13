@@ -41,7 +41,7 @@ public class Volcano extends DefaultSkillDataBase
                 ServerPlayer serverPlayer = (ServerPlayer) player;
                 ISkillCap skillCap = weapon.getWeaponCap(stack).getSkillCap();
                 double RD = skillCap.getRD();
-                if(((int)RD) % 6 == 0)
+                if(((int)RD) % 5 == 0)
                 {
                     List<LivingEntity> entities = serverLevel.getEntitiesOfClass(LivingEntity.class,player.getBoundingBox().inflate(24), SelectRule.NON_PLAYER.getFilter());
                     Collections.shuffle(entities);

@@ -6,6 +6,7 @@ import com.azane.ogna.client.lib.IOffHandItem;
 import com.azane.ogna.genable.data.SoundKeyData;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.skill.ISkill;
+import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.registry.ModSound;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author azaneNH37 (2025-08-09)
@@ -80,7 +82,7 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
     public void tickSP(Level level, Player player, ItemStack stack)
     {
         ISkillCap skillCap = getWeaponCap(stack).getSkillCap();
-        skillCap.modifySP(1D,false,player,stack);
+        skillCap.modifySP(getWeaponCap(stack).submitAttrVal(ModAttribute.SKILL_SP_RATE.get(),player,stack,1D),false,player,stack);
         //DebugLogger.log("Weapon %s ticked SP, now is %s".formatted(this.getStackUUID(stack), skillCap.getSP()));
     }
 

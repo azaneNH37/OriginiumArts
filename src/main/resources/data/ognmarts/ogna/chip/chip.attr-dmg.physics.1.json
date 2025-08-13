@@ -1,0 +1,22 @@
+{
+  "display_context": {
+    "name": "ogna.genable.chip.dmg.physics.1.name",
+    "description": "ogna.genable.chip.dmg.physics.1.desp",
+    "color": "#BFD1BA",
+    "model": "ognmarts:dmg.physics.1"
+  },
+  "base_data": {
+    "volume": 5,
+    "stack_size": 8
+  },
+  "env": "WEAPON",
+  "list": [
+    {
+      "attr": "ognmarts:damage.physics",
+      "id": "ae1fea3f-afcd-4d46-87b4-e2877fc954cc",
+      "bucket": "DIRECT_MUL",
+      "amount": 0.1,
+      "stack_size": 1000000
+    }
+  ]
+}

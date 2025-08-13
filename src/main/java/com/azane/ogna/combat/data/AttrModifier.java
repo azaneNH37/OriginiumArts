@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -40,10 +41,15 @@ public class AttrModifier implements IComponentDisplay
     @Override
     public void appendHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag)
     {
+        tooltip.add(getComponent(stack,tooltip,flag));
+    }
+
+    @Override
+    public MutableComponent getComponent(ItemStack stack, List<Component> tooltip, TooltipFlag flag)
+    {
         var attr = ForgeRegistries.ATTRIBUTES.getValue(attribute);
         var key = attr == null ? "<unknown attribute>" : attr.getDescriptionId();
-        tooltip.add(
-            Component.translatable(key).withStyle(ChatFormatting.BOLD,ChatFormatting.WHITE)
-                .append(bucket.getFormat().apply(amount)));
+        return Component.translatable(key).withStyle(ChatFormatting.BOLD,ChatFormatting.WHITE)
+            .append(bucket.getFormat().apply(amount));
     }
 }

@@ -1,8 +1,15 @@
 {
     "item_models": [
         "ognmarts:chip/atk.1",
+        "ognmarts:chip/atk.cd.1",
         "ognmarts:chip/consume.1",
+        "ognmarts:chip/dmg.arts.1",
+        "ognmarts:chip/dmg.physics.1",
+        "ognmarts:chip/effect.level.1",
+        "ognmarts:chip/effect.tick.1",
         "ognmarts:chip/null",
+        "ognmarts:chip/reload.cd.1",
+        "ognmarts:chip/sp.rate.1",
         "ognmarts:chip/store.1",
         "ognmarts:item_gui/staff-alpha.gui",
         "ognmarts:item_gui/staff-lockkey.gui",

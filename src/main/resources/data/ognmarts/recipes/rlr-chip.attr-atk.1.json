@@ -3,9 +3,21 @@
   "ingredients": [
     {
       "ingredient": {
-        "item": "minecraft:diamond"
+        "item": "ognmarts:ogna_chip_base"
       },
       "count": 1
+    },
+    {
+      "ingredient": {
+        "tag": "forge:ingots/gold"
+      },
+      "count": 2
+    },
+    {
+      "ingredient": {
+        "item": "ognmarts:eu_simple"
+      },
+      "count": 5
     }
   ],
   "result": {

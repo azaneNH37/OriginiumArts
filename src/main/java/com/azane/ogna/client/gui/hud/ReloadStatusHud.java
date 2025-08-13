@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class ReloadStatusHud extends OgnaHud
 {
+    public static final ResourceLocation ALL = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/reload/all.png");
     public static final ResourceLocation RELOADING = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/reload/reloading.png");
     public static final ResourceLocation COMPLETE = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/reload/complete.png");
     public static final ResourceLocation WEAPON_MISMATCH = RlHelper.build(OriginiumArts.MOD_ID,"textures/gui/reload/weapon_mismatch.png");
@@ -36,6 +37,7 @@ public class ReloadStatusHud extends OgnaHud
 
     public void refreshReloadState(ReloadState reloadState, long duration)
     {
+        //DebugLogger.log("refresh {} {}",reloadState,duration);
         this.reloadState = reloadState;
         this.duration = duration;
         this.startTime = System.currentTimeMillis();
@@ -46,23 +48,23 @@ public class ReloadStatusHud extends OgnaHud
     {
         if(System.currentTimeMillis()-startTime >= duration)
             return;
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
+        //RenderSystem.enableBlend();
+        //RenderSystem.defaultBlendFunc();
 
         graphics.pose().pushPose();
-        ResourceLocation texture = switch (reloadState) {
-            case RELOADING -> RELOADING;
-            case COMPLETE -> COMPLETE;
-            case WEAPON_MISMATCH -> WEAPON_MISMATCH;
-            case OUT_OF_ENERGY -> OUT_OF_ENERGY;
-            case RELOAD_IGNORED -> RELOAD_IGNORED;
+        int height = switch (reloadState) {
+            case RELOADING -> 192;
+            case COMPLETE -> 0;
+            case WEAPON_MISMATCH -> 256;
+            case OUT_OF_ENERGY -> 64;
+            case RELOAD_IGNORED -> 128;
         };
         graphics.pose().scale(0.5f, 0.5f, 1f);
         long time = System.currentTimeMillis()%100000;
         float alpha = (float) (0.6f + 0.4f*Math.sin(time*0.004f));
         //DebugLogger.log("{},{},{},{}",time,time*0.95f,Math.sin(time*0.95f),String.valueOf(alpha));
         graphics.setColor(1f,1f,1f, alpha);
-        graphics.blit(texture,0, 0,0,0, 256, 64,256,64);
+        graphics.blit(ALL,0, 0,0,height, 256, 64,512,512);
         graphics.pose().popPose();
     }
 }

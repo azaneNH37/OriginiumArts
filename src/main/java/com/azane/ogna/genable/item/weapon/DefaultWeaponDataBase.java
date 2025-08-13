@@ -3,7 +3,7 @@ package com.azane.ogna.genable.item.weapon;
 import com.azane.ogna.client.lib.Datums;
 import com.azane.ogna.genable.data.AnimeDatumData;
 import com.azane.ogna.genable.data.GeckoAssetData;
-import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
+import com.azane.ogna.combat.data.OgnaWeaponData;
 import com.azane.ogna.genable.data.AtkEntityData;
 import com.azane.ogna.genable.data.display.WeaponDisplayContext;
 import com.azane.ogna.item.OgnaChip;

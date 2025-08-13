@@ -5,5 +5,6 @@ package com.azane.ogna.combat.chip;
  */
 public enum ChipTiming
 {
-    ON_HIT_ENTITY
+    ON_HIT_ENTITY,
+    ON_SKILL_END
 }

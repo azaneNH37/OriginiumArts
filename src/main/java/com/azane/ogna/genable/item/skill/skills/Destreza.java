@@ -14,6 +14,7 @@ import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
+import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.registry.ModEffect;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,7 +37,9 @@ public class Destreza extends DefaultSkillDataBase
     @Override
     public void onImpactEntity(ServerLevel level, LivingEntity entity, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource)
     {
-        entity.addEffect(new MobEffectInstance(ModEffect.SAND_POTION.get(),63,1));
+        entity.forceAddEffect(new MobEffectInstance(ModEffect.SAND_POTION.get(),
+            (int) combatUnit.getMatrices().get(ModAttribute.EFFECT_TICK.get()).submit(65) ,
+            (int) combatUnit.getMatrices().get(ModAttribute.EFFECT_LEVEL.get()).submit(2)),null);
         OgnmChannel.DEFAULT.sendToWithinRange(
             new FxEntityEffectTriggerPacket(RlHelper.parse("ognmarts:sand_poison"),entity.getId(),false),
             level,

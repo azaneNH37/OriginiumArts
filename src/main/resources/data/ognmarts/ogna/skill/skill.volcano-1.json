@@ -9,8 +9,8 @@
   },
   "level": 1,
   "base_data": {
-    "sp": 50,
-    "duration": 1200,
+    "sp": 800,
+    "duration": 250,
     "dmg_dataset": {
       "fallback": "skill",
       "map": {
@@ -26,13 +26,33 @@
       {
         "attr": "generic.attack_damage",
         "id": "3d6db817-c844-44ef-8291-fe0d7672415d",
-        "bucket": "TOTAL_ADD",
-        "amount": 0,
+        "bucket": "DIRECT_ADD",
+        "amount": 3,
         "stack_size": 1
       }
     ],
     "skill_attr_modifiers": [
-
+      {
+        "attr": "generic.attack_damage",
+        "id": "22b8a85d-7bbd-4c4c-ad18-16a060e10fc7",
+        "bucket": "DIRECT_MUL",
+        "amount": 1.3,
+        "stack_size": 1
+      },
+      {
+        "attr": "ognmarts:weapon.energy.consume",
+        "id": "5b778237-fb0d-4831-bffe-9e92c79701a4",
+        "bucket": "TOTAL_MUL",
+        "amount": 2,
+        "stack_size": 1
+      },
+      {
+        "attr": "ognmarts:weapon.attack.cd",
+        "id": "b4d76878-7c6c-417b-a0fe-d8e9900302d9",
+        "bucket": "TOTAL_MUL",
+        "amount": 0.5,
+        "stack_size": 1
+      }
     ]
   },
   "attack_entities": {

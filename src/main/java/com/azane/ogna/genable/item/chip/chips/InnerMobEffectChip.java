@@ -14,6 +14,7 @@ import com.azane.ogna.genable.item.chip.NonItemChip;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_client.FxBlockEffectTriggerPacket;
 import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
+import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.util.OgnaFxHelper;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
@@ -78,7 +79,11 @@ public class InnerMobEffectChip extends NonItemChip
                     );
                 });
         }
-        target.addEffect(new MobEffectInstance(effect,duration,effect_level-1,false,visible,false));
+        target.forceAddEffect(
+            new MobEffectInstance(effect,
+                (int) combatUnit.getMatrices().get(ModAttribute.EFFECT_TICK.get()).submit(duration),
+                (int) (combatUnit.getMatrices().get(ModAttribute.EFFECT_LEVEL.get()).submit(effect_level)-1),
+                false,visible,false),null);
     }
 
     @Override
@@ -90,9 +95,7 @@ public class InnerMobEffectChip extends NonItemChip
             tooltip.add(Component.translatable("effect.unknown").withStyle(Style.EMPTY.withColor(0xFF0000)));
             return;
         }
-        tooltip.add(Component.empty()
-            .append(Component.translatable(displayContext.getName()).withStyle(Style.EMPTY.withColor(displayContext.getColor())).withStyle(ChatFormatting.BOLD))
-            .append(" - ")
+        tooltip.add(getHeader()
             .append(Component.translatable("ogna.tip.chip.inner.mobEffect",effect.getDisplayName().getString(),effect_level, duration < 0 ? "∞" : duration/20f)
             ));
     }

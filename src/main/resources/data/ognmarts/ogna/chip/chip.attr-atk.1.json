@@ -6,14 +6,14 @@
     "model": "ognmarts:atk.1"
   },
   "base_data": {
-    "volume": 3
+    "volume": 4
   },
   "env": "WEAPON",
   "list": [
     {
       "attr": "generic.attack_damage",
       "id": "cdec5ec4-4660-4e31-8c0b-c55aa3e84a5a",
-      "bucket": "TOTAL_ADD",
+      "bucket": "DIRECT_ADD",
       "amount": 2,
       "stack_size": 1000000
     }

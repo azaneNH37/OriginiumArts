@@ -1,0 +1,21 @@
+{
+  "display_context": {
+    "name": "ogna.genable.chip.atk.cd.1.name",
+    "description": "ogna.genable.chip.atk.cd.1.desp",
+    "color": "#FAFFA8",
+    "model": "ognmarts:atk.cd.1"
+  },
+  "base_data": {
+    "volume": 10
+  },
+  "env": "WEAPON",
+  "list": [
+    {
+      "attr": "ognmarts:weapon.attack.cd",
+      "id": "89b7b53e-db89-4462-b383-2a1c216858c0",
+      "bucket": "TOTAL_MUL",
+      "amount": 0.8,
+      "stack_size": 1000000
+    }
+  ]
+}

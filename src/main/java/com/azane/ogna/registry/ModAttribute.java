@@ -22,8 +22,15 @@ public class ModAttribute
 
     public static final RegistryObject<Attribute> SKILL_SP = registerRange("skill.sp",300,1,Double.MAX_VALUE);
     public static final RegistryObject<Attribute> SKILL_DURATION = registerRange("skill.duration",150,1,Double.MAX_VALUE);
+    public static final RegistryObject<Attribute> SKILL_SP_RATE = registerRange("skill.sp.rate",1,1-Double.MAX_VALUE,Double.MAX_VALUE);
 
     public static final RegistryObject<Attribute> CHIP_SET_VOLUME = registerRange("chip.set.volume",100,0,Double.MAX_VALUE);
+
+    public static final RegistryObject<Attribute> EFFECT_LEVEL = registerRange("effect.level",0,1-Double.MAX_VALUE,Double.MAX_VALUE);
+    public static final RegistryObject<Attribute> EFFECT_TICK = registerRange("effect.tick",0,1-Double.MAX_VALUE,Double.MAX_VALUE);
+
+    public static final RegistryObject<Attribute> DAMAGE_PHYSICS = registerRange("damage.physics",0,1-Double.MAX_VALUE,Double.MAX_VALUE);
+    public static final RegistryObject<Attribute> DAMAGE_ARTS = registerRange("damage.arts",0,1-Double.MAX_VALUE,Double.MAX_VALUE);
 
     public static RegistryObject<Attribute> registerRange(String name,double defaultVal,double minVal,double maxVal)
     {

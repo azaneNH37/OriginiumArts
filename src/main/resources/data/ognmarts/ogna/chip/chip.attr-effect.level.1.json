@@ -1,0 +1,22 @@
+{
+  "display_context": {
+    "name": "ogna.genable.chip.effect.level.1.name",
+    "description": "ogna.genable.chip.effect.level.1.desp",
+    "color": "#FFC707",
+    "model": "ognmarts:effect.level.1"
+  },
+  "base_data": {
+    "volume": 18,
+    "stack_size": 2
+  },
+  "env": "WEAPON",
+  "list": [
+    {
+      "attr": "ognmarts:effect.level",
+      "id": "c7baf86b-6363-4512-9e48-b1b9a1edc548",
+      "bucket": "DIRECT_ADD",
+      "amount": 1,
+      "stack_size": 1000000
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "type": "ognmarts:rlr",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "ognmarts:ogna_chip_base"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "glass_bottle"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "tag": "forge:dusts/glowstone"
+      },
+      "count": 16
+    },
+    {
+      "ingredient": {
+        "item": "ognmarts:eu_simple"
+      },
+      "count": 16
+    }
+  ],
+  "result": {
+    "type": "chip",
+    "id": "ognmarts:chip.attr-effect.level.1",
+    "count": 1
+  }
+}
+

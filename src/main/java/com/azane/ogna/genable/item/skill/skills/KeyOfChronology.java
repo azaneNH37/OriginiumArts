@@ -9,6 +9,7 @@ import com.azane.ogna.genable.item.skill.DefaultSkillDataBase;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
@@ -20,6 +21,13 @@ public class KeyOfChronology extends DefaultSkillDataBase
     @Override
     public void onImpactEntity(ServerLevel level, LivingEntity entity, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource)
     {
-        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,600,4,true,true));
+        var attacker = damageSource.getEntity();
+        if (attacker != null)
+        {
+            double deltaX = entity.getX() - attacker.getX();
+            double deltaZ = entity.getZ() - attacker.getZ();
+            double knockbackStrength = 0.2D;
+            entity.knockback(knockbackStrength, deltaX, deltaZ);
+        }
     }
 }

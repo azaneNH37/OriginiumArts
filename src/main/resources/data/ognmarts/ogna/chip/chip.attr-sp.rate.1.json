@@ -1,0 +1,22 @@
+{
+  "display_context": {
+    "name": "ogna.genable.chip.sp.rate.1.name",
+    "description": "ogna.genable.chip.sp.rate.1.desp",
+    "color": "#36FFE3",
+    "model": "ognmarts:sp.rate.1"
+  },
+  "base_data": {
+    "volume": 6,
+    "stack_size": 10
+  },
+  "env": "WEAPON",
+  "list": [
+    {
+      "attr": "ognmarts:skill.sp.rate",
+      "id": "9379897f-fe58-4aed-a786-2e5cecbb992c",
+      "bucket": "DIRECT_ADD",
+      "amount": 0.1,
+      "stack_size": 1000000
+    }
+  ]
+}

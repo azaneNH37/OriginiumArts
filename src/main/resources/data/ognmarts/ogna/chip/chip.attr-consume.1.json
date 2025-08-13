@@ -13,8 +13,8 @@
     {
       "attr": "ognmarts:weapon.energy.consume",
       "id": "74529e7e-0405-44ab-bf54-8ca5824975b6",
-      "bucket": "DIRECT_ADD",
-      "amount": -2,
+      "bucket": "TOTAL_MUL",
+      "amount": 0.8,
       "stack_size": 10000000
     }
   ]

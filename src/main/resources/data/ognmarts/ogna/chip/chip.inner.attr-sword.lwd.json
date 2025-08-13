@@ -1,0 +1,16 @@
+{
+  "display_context": {
+    "name": "ogna.genable.chip.inner.attr-sword.lwd.name",
+    "color": "#FF670C"
+  },
+  "env": "WEAPON",
+  "list": [
+    {
+      "attr": "ognmarts:damage.arts",
+      "id": "8ee068c3-a2e5-4e7a-99c3-04c51523fc30",
+      "bucket": "TOTAL_MUL",
+      "amount": 1.2,
+      "stack_size": 1
+    }
+  ]
+}

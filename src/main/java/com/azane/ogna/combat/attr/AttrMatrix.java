@@ -10,8 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 属性矩阵类，用于存储乘区，作为轻量级类可以被大量创建和传递
- */
-/**
  * @author azaneNH37 (2025-07-25)
  */
 public class AttrMatrix implements INBTSerializable<CompoundTag>

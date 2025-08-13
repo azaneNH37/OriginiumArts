@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ognmarts:item/chip/reload.cd.1"
+  }
+}

@@ -120,10 +120,9 @@ public class AttrMap implements INBTSerializable<CompoundTag>
             return new Matrices(builder);
         }
 
-        @Nullable
         public AttrMatrix get(Attribute attribute)
         {
-            return matrices.get(attribute);
+            return matrices.getOrDefault(attribute,AttrMatrix.UNIT_MATRIX);
         }
     }
 }

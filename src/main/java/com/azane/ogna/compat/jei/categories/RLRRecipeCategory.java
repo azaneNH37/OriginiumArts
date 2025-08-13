@@ -82,7 +82,7 @@ public class RLRRecipeCategory implements IRecipeCategory<RLRRecipe> {
         }
         
         // 配置输出槽位
-        int outputX = 16 + Math.min(MAX_INGREDIENTS, ingredients.size()) * 20 + 48; // 原料槽后 + 箭头宽度
+        int outputX = 16 + Math.min(MAX_INGREDIENTS, ingredients.size()) * 20 + 48 - 16; // 原料槽后 + 箭头宽度
         builder.addSlot(RecipeIngredientRole.OUTPUT, outputX, 10)
             .addItemStack(recipe.getResultItem(null))
             .setSlotName("output");
@@ -100,11 +100,11 @@ public class RLRRecipeCategory implements IRecipeCategory<RLRRecipe> {
             JeiHelper.draw(graphics, x, y, 20f/32f, this.slotBack);
         }
 
-        int arrowX = 24 + ingredientCount * 20 + 16;
+        int arrowX = 24 + ingredientCount * 20 + 16 - 8;
         JeiHelper.draw(graphics, arrowX, 18, 0.5f, this.progressBack);
         JeiHelper.draw(graphics, arrowX, 18, 0.5f, this.progress);
 
-        int outputX = 16 + ingredientCount * 20 + 48 + 8;
+        int outputX = 16 + ingredientCount * 20 + 48 + 8 - 16;
         JeiHelper.draw(graphics, outputX, 18, 20f/32f, this.slotBack);
     }
 }

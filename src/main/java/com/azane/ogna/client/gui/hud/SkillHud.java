@@ -61,6 +61,7 @@ public class SkillHud extends OgnaHud
         if(skill == null)
         {
             blitTextureSimple(graphics, EMPTY, ICON_SIZE, ICON_SIZE);
+            graphics.pose().popPose();
             return;
         }
 

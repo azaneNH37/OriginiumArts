@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "ognmarts:eu_simple"
+    },
+    "X": {
+      "item": "ognmarts:oriron"
+    },
+    "&": {
+      "item": "ognmarts:orirock_cube"
+    }
+  },
+  "pattern": [
+    "&X&",
+    "&#&",
+    "&&&"
+  ],
+  "result": {
+    "count": 2,
+    "item": "ognmarts:ogna_chip_base"
+  },
+  "show_notification": true
+}

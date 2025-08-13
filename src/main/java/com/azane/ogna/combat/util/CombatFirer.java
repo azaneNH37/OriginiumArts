@@ -11,12 +11,14 @@ import com.azane.ogna.genable.data.AtkEntityData;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
+import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.util.AtkEntityHelper;
 import com.google.common.collect.ImmutableList;
 import lombok.AllArgsConstructor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
@@ -27,6 +29,14 @@ import java.util.Set;
  */
 public final class CombatFirer
 {
+    public static final Set<Attribute> combatAttributes = Set.of(
+        Attributes.ATTACK_DAMAGE,
+        ModAttribute.EFFECT_LEVEL.get(),
+        ModAttribute.EFFECT_TICK.get(),
+        ModAttribute.DAMAGE_PHYSICS.get(),
+        ModAttribute.DAMAGE_ARTS.get()
+    );
+
     @AllArgsConstructor(staticName = "of")
     public static class UnitsSet
     {
@@ -63,7 +73,7 @@ public final class CombatFirer
         CombatUnit combatUnit = CombatUnit.of(
             DDunit.getDmgTypeHolder(false),
             baseVal,
-            weaponCap.extractMatrices(Set.of(Attributes.ATTACK_DAMAGE)),
+            weaponCap.extractMatrices(combatAttributes),
             DDunit.getDmgCategory(),
             builder.build()
         );

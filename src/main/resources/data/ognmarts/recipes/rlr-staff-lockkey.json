@@ -3,25 +3,25 @@
   "ingredients": [
     {
       "ingredient": {
-        "item": "minecraft:diamond"
+        "item": "ognmarts:oriron"
+      },
+      "count": 6
+    },
+    {
+      "ingredient": {
+        "item":"ognmarts:eu_simple"
+      },
+      "count": 20
+    },
+    {
+      "ingredient": {
+        "item":"minecraft:cake"
       },
       "count": 1
     },
     {
       "ingredient": {
-        "item":"minecraft:iron_ingot"
-      },
-      "count": 3
-    },
-    {
-      "ingredient": {
-        "item":"minecraft:gold_ingot"
-      },
-      "count": 1
-    },
-    {
-      "ingredient": {
-        "item":"minecraft:copper_ingot"
+        "item":"minecraft:campfire"
       },
       "count": 1
     }

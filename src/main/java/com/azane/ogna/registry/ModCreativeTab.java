@@ -30,9 +30,9 @@ public class ModCreativeTab
 
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OriginiumArts.MOD_ID);
 
-    public static RegistryObject<CreativeModeTab> STAFF_TAB = TABS.register("staff", () -> CreativeModeTab.builder()
-        .title(Component.translatable("ogna.tab.azane"))
-        .icon(() -> new ItemStack(Items.ENCHANTED_BOOK))
+    public static RegistryObject<CreativeModeTab> MOD_TAB = TABS.register("all", () -> CreativeModeTab.builder()
+        .title(Component.translatable("ogna.tab.all"))
+        .icon(() -> new ItemStack(ModBlock.ENERGY_EH.item.get()))
         .displayItems((parameters, output) -> output.acceptAll(
             Stream.of(OgnaStaff.fillCreativeTab(), OgnaSword.fillCreativeTab(),OgnaSkill.fillCreativeTab(),OgnaChip.fillCreativeTab(),fillCreativeTab())
                 .flatMap(List::stream).distinct().toList()

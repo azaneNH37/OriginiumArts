@@ -1,7 +1,5 @@
-package com.azane.ogna.combat.data.skill;
+package com.azane.ogna.combat.data;
 
-import com.azane.ogna.combat.data.AttrModifier;
-import com.azane.ogna.combat.data.DmgDataSet;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 

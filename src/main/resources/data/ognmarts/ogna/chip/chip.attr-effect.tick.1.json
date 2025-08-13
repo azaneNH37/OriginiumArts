@@ -1,0 +1,21 @@
+{
+  "display_context": {
+    "name": "ogna.genable.chip.effect.tick.1.name",
+    "description": "ogna.genable.chip.effect.tick.1.desp",
+    "color": "#D63030",
+    "model": "ognmarts:effect.tick.1"
+  },
+  "base_data": {
+    "volume": 8
+  },
+  "env": "WEAPON",
+  "list": [
+    {
+      "attr": "ognmarts:effect.tick",
+      "id": "c7baf86b-6363-4512-9e48-b1b9a1edc548",
+      "bucket": "DIRECT_MUL",
+      "amount": 0.3,
+      "stack_size": 1000000
+    }
+  ]
+}

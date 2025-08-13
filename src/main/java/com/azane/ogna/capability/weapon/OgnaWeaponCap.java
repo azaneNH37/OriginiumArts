@@ -8,7 +8,7 @@ import com.azane.ogna.combat.chip.ChipArg;
 import com.azane.ogna.combat.chip.ChipEnv;
 import com.azane.ogna.combat.chip.ChipSet;
 import com.azane.ogna.combat.data.AttrModifier;
-import com.azane.ogna.combat.data.weapon.OgnaWeaponData;
+import com.azane.ogna.combat.data.OgnaWeaponData;
 import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
@@ -24,7 +24,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

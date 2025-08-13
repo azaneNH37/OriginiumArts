@@ -1,0 +1,22 @@
+{
+  "display_context": {
+    "name": "ogna.genable.chip.dmg.arts.1.name",
+    "description": "ogna.genable.chip.dmg.arts.1.desp",
+    "color": "#C817FF",
+    "model": "ognmarts:dmg.arts.1"
+  },
+  "base_data": {
+    "volume": 5,
+    "stack_size": 8
+  },
+  "env": "WEAPON",
+  "list": [
+    {
+      "attr": "ognmarts:damage.arts",
+      "id": "9379897f-fe58-4aed-a786-2e5cecbb992c",
+      "bucket": "DIRECT_MUL",
+      "amount": 0.1,
+      "stack_size": 1000000
+    }
+  ]
+}
