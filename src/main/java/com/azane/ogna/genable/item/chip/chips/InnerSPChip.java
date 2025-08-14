@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +31,7 @@ import java.util.List;
 public class InnerSPChip extends NonItemChip
 {
     @SerializedName("deviation")
-    private int deviation = 5;
+    private int deviation = 50;
     @SerializedName("skill_end")
     private int skillEndSP;
 
@@ -58,7 +57,7 @@ public class InnerSPChip extends NonItemChip
         MutableComponent header = getHeader();
         header.append(Component.translatable("ogna.tip.chip.timing.skill.end")
             .append(" ")
-            .append(Component.translatable("ogna.tip.sp.gain.range",Math.max(1,skillEndSP-deviation), skillEndSP + deviation)));
+            .append(Component.translatable("ogna.tip.sp.gain.range",Math.max(1,skillEndSP-deviation)/10, (skillEndSP + deviation)/10)));
         tooltip.add(header);
     }
 }
