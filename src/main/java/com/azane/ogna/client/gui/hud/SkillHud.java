@@ -106,5 +106,7 @@ public class SkillHud extends OgnaHud
         }
 
         graphics.pose().popPose();
+
+        RenderSystem.disableBlend();
     }
 }
