@@ -1,0 +1,12 @@
+{
+    "display_context": {
+        "name": "ogna.genable.chip.tle.optical_refraction_accessories.name",
+        "description": "ogna.genable.chip.tle.optical_refraction_accessories.desp",
+        "color": "#C521FF",
+        "model": "ognmarts:tle.optical_refraction_accessories"
+    },
+    "base_data": {
+        "volume": 8,
+        "stack_size": 1
+    }
+}

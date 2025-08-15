@@ -1,0 +1,99 @@
+package com.azane.ogna.genable.item.chip.chips;
+
+import com.azane.cjsop.annotation.JsonClassTypeBinder;
+import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.combat.chip.ChipArg;
+import com.azane.ogna.combat.chip.ChipSet;
+import com.azane.ogna.combat.chip.ChipTiming;
+import com.azane.ogna.combat.data.ArkDamageSource;
+import com.azane.ogna.combat.data.CombatUnit;
+import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.debug.log.DebugLogger;
+import com.azane.ogna.genable.data.FxData;
+import com.azane.ogna.genable.item.chip.ItemChip;
+import com.azane.ogna.genable.item.chip.NonItemChip;
+import com.azane.ogna.network.OgnmChannel;
+import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
+import com.azane.ogna.registry.ModAttribute;
+import com.azane.ogna.util.OgnaFxHelper;
+import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.ArrayList;
+import java.util.List;
+
+//TODO: inner outer 业务逻辑混乱 下版本改
+/**
+ * @author azaneNH37 (2025-08-11)
+ */
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
+@JsonClassTypeBinder(fullName = "chip.effect",namespace = OriginiumArts.MOD_ID)
+public class MobEffectChip extends ItemChip
+{
+    @SerializedName("effectID")
+    private ResourceLocation rl;
+    @SerializedName("level")
+    private int effect_level = -10;
+    @SerializedName("duration")
+    private int duration = -1;
+    @SerializedName("visible")
+    private boolean visible = false;
+    @SerializedName("fx")
+    private FxData fxData;
+
+    @Override
+    public List<ChipTiming> registerTiming() {return List.of(ChipTiming.ON_HIT_ENTITY);}
+
+    @Override
+    public void onImpactEntity(ServerLevel level, LivingEntity target, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource)
+    {
+        MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(rl);
+        if(effect == null)
+        {
+            DebugLogger.error("EfcEffectAdder: Effect %s not found, cannot apply to entity %s".formatted(rl, target.getStringUUID()));
+            return;
+        }
+        if(fxData != null)
+        {
+            OgnaFxHelper.extractFxUnit(fxData,FxData::getHitFx)
+                .map(FxData.FxUnit::getId).ifPresent(rl->{
+                    OgnmChannel.DEFAULT.sendToWithinRange(
+                        new FxEntityEffectTriggerPacket(rl,target.getId(),false),
+                        level,
+                        target.getOnPos(),
+                        128
+                    );
+                });
+        }
+        target.forceAddEffect(
+            new MobEffectInstance(effect,
+                (int) combatUnit.getMatrices().get(ModAttribute.EFFECT_TICK.get()).submit(duration),
+                (int) (combatUnit.getMatrices().get(ModAttribute.EFFECT_LEVEL.get()).submit(effect_level)-1),
+                false,visible,false),null);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag)
+    {
+        super.appendHoverText(stack, tooltip, flag);
+        MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(rl);
+        if(effect == null)
+        {
+            tooltip.add(Component.translatable("effect.unknown").withStyle(Style.EMPTY.withColor(0xFF0000)));
+            return;
+        }
+        tooltip.add(Component.translatable("ogna.tip.chip.inner.mobEffect",effect.getDisplayName().getString(),effect_level, duration < 0 ? "∞" : duration/20f));
+    }
+}

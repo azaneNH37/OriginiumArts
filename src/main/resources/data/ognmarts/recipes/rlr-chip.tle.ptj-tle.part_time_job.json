@@ -1,0 +1,28 @@
+{
+    "type": "ognmarts:rlr",
+    "ingredients": [
+        {
+            "ingredient": {
+                "item": "ognmarts:ogna_chip_base"
+            },
+            "count": 1
+        },
+        {
+            "ingredient": {
+                "item": "minecraft:allium"
+            },
+            "count": 6
+        },
+        {
+            "ingredient": {
+                "item": "ognmarts:eu_simple"
+            },
+            "count": 3
+        }
+    ],
+    "result": {
+        "type": "chip",
+        "id": "ognmarts:chip.tle.ptj-tle.part_time_job",
+        "count": 1
+    }
+}

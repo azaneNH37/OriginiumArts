@@ -1,0 +1,28 @@
+{
+    "type": "ognmarts:rlr",
+    "ingredients": [
+        {
+            "ingredient": {
+                "item": "ognmarts:ogna_chip_base"
+            },
+            "count": 1
+        },
+        {
+            "ingredient": {
+                "item": "minecraft:fermented_spider_eye"
+            },
+            "count": 6
+        },
+        {
+            "ingredient": {
+                "item": "ognmarts:eu_simple"
+            },
+            "count": 5
+        }
+    ],
+    "result": {
+        "type": "chip",
+        "id": "ognmarts:chip.effect-effect.weak",
+        "count": 1
+    }
+}

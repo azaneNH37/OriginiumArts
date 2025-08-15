@@ -1,0 +1,21 @@
+{
+    "display_context": {
+        "name": "ogna.genable.chip.skill.rd.1.name",
+        "description": "ogna.genable.chip.skill.rd.1.desp",
+        "color": "#E0B714",
+        "model": "ognmarts:skill.rd.1"
+    },
+    "base_data": {
+        "volume": 9
+    },
+    "env": "WEAPON",
+    "list": [
+        {
+            "attr": "ognmarts:skill.duration",
+            "id": "fe6b6863-000c-4c92-9296-ef3365c43913",
+            "bucket": "DIRECT_ADD",
+            "amount": 60,
+            "stack_size": 1000000
+        }
+    ]
+}

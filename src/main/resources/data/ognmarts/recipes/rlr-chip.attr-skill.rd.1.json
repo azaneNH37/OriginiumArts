@@ -1,0 +1,28 @@
+{
+    "type": "ognmarts:rlr",
+    "ingredients": [
+        {
+            "ingredient": {
+                "item": "ognmarts:ogna_chip_base"
+            },
+            "count": 1
+        },
+        {
+            "ingredient": {
+                "item": "minecraft:clock"
+            },
+            "count": 2
+        },
+        {
+            "ingredient": {
+                "item": "ognmarts:eu_simple"
+            },
+            "count": 10
+        }
+    ],
+    "result": {
+        "type": "chip",
+        "id": "ognmarts:chip.attr-skill.rd.1",
+        "count": 1
+    }
+}

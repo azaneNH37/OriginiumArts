@@ -3,7 +3,6 @@ package com.azane.ogna.compat.jei.categories;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.compat.jei.JeiHelper;
 import com.azane.ogna.craft.oe.OECRecipe;
-import com.azane.ogna.craft.oe.OEGRecipe;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlock;
 import lombok.Getter;
@@ -24,8 +23,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.Arrays;
 
 /**
  * @author azaneNH37 (2025/8/12)

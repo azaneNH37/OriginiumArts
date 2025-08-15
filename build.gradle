@@ -1,5 +1,7 @@
 import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import groovy.json.JsonGenerator
 
 plugins {
     id 'eclipse'
@@ -397,3 +399,258 @@ processResources {
     dependsOn generateMultiResourceList
     dependsOn generateSoundsJson
 }
+
+// === chip generating ===
+tasks.register('generateChipFiles') {
+    description = "自动生成芯片相关文件"
+    group = "build"
+
+    doLast {
+        // 定义路径
+        def texturesPath = file("src/main/resources/assets/ognmarts/textures/item/chip")
+        def modelsPath = file("src/main/resources/assets/ognmarts/models/chip")
+        def langFile = file("src/main/resources/assets/ognmarts/lang/en_us.json")
+        def dataPath = file("src/main/resources/data/ognmarts/ogna/chip")
+        def recipesPath = file("src/main/resources/data/ognmarts/recipes")
+
+        // 确保目录存在
+        modelsPath.mkdirs()
+        dataPath.mkdirs()
+        langFile.parentFile.mkdirs()
+
+        println "开始生成芯片文件..."
+
+        if (!texturesPath.exists()) {
+            println "纹理路径不存在: ${texturesPath.absolutePath}"
+            return
+        }
+
+        // 获取所有纹理文件
+        def textureFiles = texturesPath.listFiles().findAll {
+            it.isFile() && (it.name.endsWith('.png') || it.name.endsWith('.jpg'))
+        }
+
+        if (textureFiles.isEmpty()) {
+            println "在 ${texturesPath.absolutePath} 中未找到纹理文件"
+            return
+        }
+
+        // 读取现有的语言文件
+        def langData = [:]
+        if (langFile.exists()) {
+            try {
+                def jsonSlurper = new JsonSlurper()
+                langData = jsonSlurper.parse(langFile)
+            } catch (Exception e) {
+                println "读取语言文件失败，将创建新文件: ${e.message}"
+                langData = [:]
+            }
+        }
+
+        // 记录需要添加的新语言条目
+        def newLangEntries = [:]
+
+        textureFiles.each { textureFile ->
+            def fileName = textureFile.name.replaceAll(/\.(png|jpg)$/, '')
+            if(fileName.equals("empty"))
+                return
+
+            println "处理纹理文件: ${fileName}"
+
+            // 1. 生成物品模型
+            generateItemModel(modelsPath, fileName)
+
+            // 2. 收集需要添加的语言条目（但不修改现有的）
+            collectNewLanguageEntries(langData, newLangEntries, fileName)
+
+            // 3. 生成数据文件
+            generateDataFile(dataPath, fileName)
+            generateRecipeFile(recipesPath,fileName)
+        }
+
+        // 打印需要添加的新语言条目
+        if (!newLangEntries.isEmpty()) {
+            printNewEntries(newLangEntries)
+        } else {
+            println "没有新的语言条目需要添加"
+        }
+
+        println "芯片文件生成完成!"
+    }
+}
+
+def generateItemModel(File modelsPath, String fileName) {
+    def modelFile = new File(modelsPath, "${fileName}.json")
+
+    def modelData = [
+            parent: "minecraft:item/generated",
+            textures: [
+                    layer0: "ognmarts:item/chip/${fileName}"
+            ]
+    ]
+
+    def json = new JsonBuilder(modelData)
+    modelFile.text = json.toPrettyString()
+
+    println "  生成模型文件: ${modelFile.name}"
+}
+
+def collectNewLanguageEntries(Map langData, Map newEntries, String fileName) {
+    def nameKey = "ogna.genable.chip.${fileName}.name"
+    def despKey = "ogna.genable.chip.${fileName}.desp"
+
+    // 修复键匹配判断 - 使用字符串比较而不是对象比较
+    boolean nameExists = false
+    boolean despExists = false
+
+    // 检查键是否存在
+    for (key in langData.keySet()) {
+        if (key.toString() == nameKey) {
+            nameExists = true
+        }
+        if (key.toString() == despKey) {
+            despExists = true
+        }
+    }
+
+    // 只有当键不存在时才添加到新条目中
+    if (!nameExists) {
+        newEntries[nameKey] = fileName.replaceAll(/[_-]/, ' ').split(' ').collect {
+            it.toLowerCase().capitalize()
+        }.join(' ') + " Chip"
+        println "  发现需要添加的语言条目: ${nameKey}"
+    } else {
+        println "  跳过已存在的语言条目: ${nameKey}"
+    }
+
+    if (!despExists) {
+        newEntries[despKey] = "A ${fileName.replaceAll(/[_-]/, ' ').toLowerCase()} chip component"
+        println "  发现需要添加的语言条目: ${despKey}"
+    } else {
+        println "  跳过已存在的语言条目: ${despKey}"
+    }
+}
+
+def generateDataFile(File dataPath, String fileName) {
+    def dataFile = new File(dataPath, "chip-${fileName}.json")
+
+    // 检查是否已存在包含此文件名的文件
+    def existingFiles = dataPath.listFiles().findAll {
+        it.isFile() && it.name.contains(fileName) && it.name.endsWith('.json')
+    }
+
+    if (existingFiles.isEmpty()) {
+        def chipData = [
+                display_context: [
+                        name: "ogna.genable.chip.${fileName}.name",
+                        description: "ogna.genable.chip.${fileName}.desp",
+                        color: "#FFFFFF",
+                        model: "ognmarts:${fileName}"
+                ]
+        ]
+
+        def json = new JsonBuilder(chipData)
+        dataFile.text = json.toPrettyString()
+
+        println "  生成数据文件: ${dataFile.name}"
+    } else {
+        println "  跳过数据文件生成，已存在: ${existingFiles[0].name}"
+    }
+}
+
+def generateRecipeFile(File dataPath, String fileName) {
+    def dataFile = new File(dataPath, "rlr-chip-${fileName}.json")
+
+    // 检查是否已存在包含此文件名的文件
+    def existingFiles = dataPath.listFiles().findAll {
+        it.isFile() && it.name.contains(fileName) && it.name.endsWith('.json')
+    }
+
+    if (existingFiles.isEmpty()) {
+        def chipData = [
+            "type": "ognmarts:rlr",
+            "ingredients": [
+                    [
+                        "ingredient": [
+                        "item": "ognmarts:ogna_chip_base"
+                    ],
+                        "count": 1
+                    ],
+                    [
+                        "ingredient": [
+                        "item": ""
+                    ],
+                        "count": 2
+                    ],
+                    [
+                        "ingredient": [
+                        "item": "ognmarts:eu_simple"
+                    ],
+                        "count": 5
+                    ]
+            ],
+            "result": [
+                "type": "chip",
+                "id": "ognmarts:chip-${fileName}",
+                "count": 1
+            ]
+        ]
+
+        def json = new JsonBuilder(chipData)
+        dataFile.text = json.toPrettyString()
+
+        println "  生成配方文件: ${dataFile.name}"
+    } else {
+        println "  跳过配方文件生成，已存在: ${existingFiles[0].name}"
+    }
+}
+
+generateMultiResourceList.dependsOn(generateChipFiles)
+// === chip generating end===
+
+// === lib functions ===
+def static printNewEntries(Map newEntries) {
+    println "\n==============================================="
+    println "需要添加到文件中的新条目 (JSON格式):"
+    println "==============================================="
+
+    def jsonConfig = new JsonGenerator.Options()
+            .disableUnicodeEscaping()
+            .build()
+
+    // 按键排序
+    def sortedEntries = newEntries.sort()
+
+    // 生成格式化的JSON
+    def jsonOutput = new StringBuilder()
+    jsonOutput.append("{\n")
+
+    def entries = sortedEntries.entrySet().toList()
+    entries.eachWithIndex { entry, index ->
+        def key = entry.key
+        def value = entry.value
+
+        // 转义JSON字符串中的特殊字符
+        def escapedValue = value.toString()
+                .replace('\\', '\\\\')
+                .replace('"', '\\"')
+                .replace('\n', '\\n')
+                .replace('\r', '\\r')
+                .replace('\t', '\\t')
+
+        jsonOutput.append("  \"${key}\": \"${escapedValue}\"")
+
+        if (index < entries.size() - 1) {
+            jsonOutput.append(",")
+        }
+        jsonOutput.append("\n")
+    }
+
+    jsonOutput.append("}")
+
+    println jsonOutput.toString()
+    println "==============================================="
+    println "请将以上内容复制并手动添加到文件中"
+    println "===============================================\n"
+}
+// === lib functions end ===

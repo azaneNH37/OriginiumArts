@@ -1,0 +1,16 @@
+{
+    "display_context": {
+        "name": "ogna.genable.chip.effect.flow.name",
+        "description": "ogna.genable.chip.effect.flow.desp",
+        "color": "#B7FFFF",
+        "model": "ognmarts:effect.flow"
+    },
+    "base_data": {
+        "volume": 15,
+        "stack_size": 1
+    },
+    "effectID": "levitation",
+    "level": 2,
+    "duration": 60,
+    "visible": false
+}

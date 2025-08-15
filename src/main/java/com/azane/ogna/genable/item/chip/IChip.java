@@ -54,4 +54,17 @@ public interface IChip extends IresourceLocation, IGenItemDatabase, IComponentDi
     default void onImpactEntity(ServerLevel level, LivingEntity target, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource){}
 
     default void onSkillEnd(Level level, Player player, ItemStack stack, IOgnaWeaponCap cap, ISkillCap skillCap){}
+
+    default void onSkillStart(Level level, Player player, ItemStack stack, IOgnaWeaponCap cap, ISkillCap skillCap){}
+
+    /**
+     * tick单位0.2s
+     * 没有重写tick方法的chip一定不要注册该时点
+     * @param level
+     * @param player
+     * @param stack
+     * @param cap
+     * @param skillCap
+     */
+    default void onTick(boolean isMainHand,Level level, Player player, ItemStack stack, IOgnaWeaponCap cap, ISkillCap skillCap,int tickCount){}
 }

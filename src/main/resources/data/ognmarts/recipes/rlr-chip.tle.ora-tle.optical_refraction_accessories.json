@@ -1,0 +1,28 @@
+{
+    "type": "ognmarts:rlr",
+    "ingredients": [
+        {
+            "ingredient": {
+                "item": "ognmarts:ogna_chip_base"
+            },
+            "count": 1
+        },
+        {
+            "ingredient": {
+                "item": "minecraft:light_gray_stained_glass"
+            },
+            "count": 12
+        },
+        {
+            "ingredient": {
+                "item": "ognmarts:eu_simple"
+            },
+            "count": 8
+        }
+    ],
+    "result": {
+        "type": "chip",
+        "id": "ognmarts:chip.tle.ora-tle.optical_refraction_accessories",
+        "count": 1
+    }
+}

@@ -81,6 +81,7 @@ public class OgnaSkillCap implements ISkillCap
         RD = Mth.clamp(duration,0,Double.MAX_VALUE);
         active = true;
         skill.onSkillStart(level,player,(IOgnaWeapon) stack.getItem(),stack);
+        weaponCap.getChipSet().gather(ChipTiming.ON_SKILL_START).forEach(chip -> chip.onSkillStart(level, player, stack, weaponCap, this));
     }
 
     @Override

@@ -1,0 +1,28 @@
+{
+    "type": "ognmarts:rlr",
+    "ingredients": [
+        {
+            "ingredient": {
+                "item": "ognmarts:ogna_chip_base"
+            },
+            "count": 1
+        },
+        {
+            "ingredient": {
+                "item": "minecraft:bread"
+            },
+            "count": 64
+        },
+        {
+            "ingredient": {
+                "item": "ognmarts:eu_simple"
+            },
+            "count": 8
+        }
+    ],
+    "result": {
+        "type": "chip",
+        "id": "ognmarts:chip.tle.boke-tle.thresher",
+        "count": 1
+    }
+}

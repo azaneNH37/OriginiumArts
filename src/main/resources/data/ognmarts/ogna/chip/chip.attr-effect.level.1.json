@@ -6,7 +6,7 @@
     "model": "ognmarts:effect.level.1"
   },
   "base_data": {
-    "volume": 18,
+    "volume": 12,
     "stack_size": 2
   },
   "env": "WEAPON",

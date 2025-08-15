@@ -1,0 +1,28 @@
+{
+    "type": "ognmarts:rlr",
+    "ingredients": [
+        {
+            "ingredient": {
+                "item": "ognmarts:ogna_chip_base"
+            },
+            "count": 1
+        },
+        {
+            "ingredient": {
+                "item": "minecraft:feather"
+            },
+            "count": 16
+        },
+        {
+            "ingredient": {
+                "item": "ognmarts:eu_simple"
+            },
+            "count": 6
+        }
+    ],
+    "result": {
+        "type": "chip",
+        "id": "ognmarts:chip.effect-effect.flow",
+        "count": 1
+    }
+}

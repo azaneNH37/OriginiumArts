@@ -1,0 +1,16 @@
+{
+    "display_context": {
+        "name": "ogna.genable.chip.effect.weak.name",
+        "description": "ogna.genable.chip.effect.weak.desp",
+        "color": "#B4B5C2",
+        "model": "ognmarts:effect.weak"
+    },
+    "base_data": {
+        "volume": 10,
+        "stack_size": 1
+    },
+    "effectID": "weakness",
+    "level": 2,
+    "duration": 80,
+    "visible": false
+}

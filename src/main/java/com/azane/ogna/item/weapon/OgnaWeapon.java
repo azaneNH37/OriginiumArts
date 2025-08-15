@@ -3,6 +3,7 @@ package com.azane.ogna.item.weapon;
 import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.client.lib.IDynamicAssetItem;
 import com.azane.ogna.client.lib.IOffHandItem;
+import com.azane.ogna.combat.chip.ChipTiming;
 import com.azane.ogna.genable.data.SoundKeyData;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.skill.ISkill;
@@ -64,6 +65,10 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
             else
                 tickSP(level, player, stack);
         }
+        int tickCount = player.tickCount;
+        boolean isMainHand = player.getMainHandItem() == stack;
+        if(tickCount % 4 == 0)
+            getWeaponCap(stack).getChipSet().gather(ChipTiming.CHIP_TICK).forEach(chip -> chip.onTick(isMainHand, level, player, stack, getWeaponCap(stack), skillCap, tickCount / 4));
     }
 
     @Override

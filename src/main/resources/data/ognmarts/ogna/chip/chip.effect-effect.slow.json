@@ -1,0 +1,16 @@
+{
+    "display_context": {
+        "name": "ogna.genable.chip.effect.slow.name",
+        "description": "ogna.genable.chip.effect.slow.desp",
+        "color": "#B4B5C2",
+        "model": "ognmarts:effect.slow"
+    },
+    "base_data": {
+        "volume": 12,
+        "stack_size": 1
+    },
+    "effectID": "slowness",
+    "level": 2,
+    "duration": 60,
+    "visible": false
+}
