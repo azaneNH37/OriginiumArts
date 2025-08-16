@@ -1,0 +1,25 @@
+{
+  "life": 7,
+  "hitframe": [3],
+  "color": 0,
+  "transform": {
+    "distance": 1.4,
+    "length": 1,
+    "width": 2.2,
+    "height": 0.5,
+    "xRot": 0,
+    "yRot": 0,
+    "naturalScale": 1.0,
+    "crossScale": 1.0,
+    "heightScale": 1.0
+  },
+  "gecko_asset": {
+    "all": "ognmarts:blade-default_reverse",
+    "texture": "ognmarts:blade-default"
+  },
+  "sound": {
+    "awake": {
+      "key": "attack.blade.fire"
+    }
+  }
+}

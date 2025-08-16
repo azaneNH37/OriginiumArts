@@ -31,27 +31,27 @@ public class DefaultWeaponDataBase implements IComponentDisplay
     @Expose(deserialize = false)
     @Setter
     @Getter
-    private ResourceLocation id;
+    protected ResourceLocation id;
 
     @SerializedName("gecko_asset")
     @Getter
     @Nullable
-    private GeckoAssetData geckoAsset;
+    protected GeckoAssetData geckoAsset;
 
     @SerializedName("display_context")
     @Getter
-    private WeaponDisplayContext displayContext = new WeaponDisplayContext();
+    protected WeaponDisplayContext displayContext = new WeaponDisplayContext();
 
     @SerializedName("anime_datum")
-    private AnimeDatumData animeDatumData = new AnimeDatumData();
+    protected AnimeDatumData animeDatumData = new AnimeDatumData();
 
     @SerializedName("attack_entities")
     @Getter
-    private AtkEntityData atkEntities;
+    protected AtkEntityData atkEntities;
 
     @SerializedName("weapon_data")
     @Getter
-    private OgnaWeaponData ognaWeaponData;
+    protected OgnaWeaponData ognaWeaponData;
 
     public Datums getAnimeDatum(ItemDisplayContext context, String animeName)
     {

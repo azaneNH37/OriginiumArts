@@ -6,6 +6,8 @@ import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.base.IPolyItemDataBase;
 import com.azane.ogna.registry.ModItem;
+import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -15,6 +17,13 @@ import net.minecraft.world.item.ItemStack;
 @JsonClassTypeBinder(fullName = "sword", simpleName = "sword", namespace = OriginiumArts.MOD_ID)
 public class SwordDataBase extends DefaultWeaponDataBase implements ISwordDataBase
 {
+    @SerializedName("normal_combo")
+    @Getter
+    protected int normalCombo = 1;
+    @SerializedName("skill_combo")
+    @Getter
+    protected int skillCombo = 1;
+
     @Override
     public void registerDataBase()
     {

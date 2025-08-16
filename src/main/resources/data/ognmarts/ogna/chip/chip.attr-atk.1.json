@@ -6,7 +6,8 @@
     "model": "ognmarts:atk.1"
   },
   "base_data": {
-    "volume": 4
+    "volume": 4,
+    "stack_size": 5
   },
   "env": "WEAPON",
   "list": [

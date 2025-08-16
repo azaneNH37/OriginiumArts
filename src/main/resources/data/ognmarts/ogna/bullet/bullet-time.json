@@ -1,0 +1,25 @@
+{
+  "life": 120,
+  "speed": 3.5,
+  "gecko_asset": {
+    "all": "ognmarts:bullet-default"
+  },
+  "fx": {
+    "awake": {
+      "id": "ognmarts:protal_roman"
+    },
+    "end": {
+      "id": "ognmarts:explode_roman"
+    }
+  },
+  "sound": {
+    "awake": {
+      "key": "attack.time",
+      "volume": 2.5
+    },
+    "hit": {
+      "key": "hit.range",
+      "volume": 2
+    }
+  }
+}

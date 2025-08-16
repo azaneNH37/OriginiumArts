@@ -1,4 +1,12 @@
 {
+    "attack.arts": {
+        "sounds": [
+            {
+                "name": "ognmarts:attack.arts",
+                "stream": false
+            }
+        ]
+    },
     "attack.blade.fire": {
         "sounds": [
             {
@@ -27,6 +35,14 @@
         "sounds": [
             {
                 "name": "ognmarts:attack.time",
+                "stream": false
+            }
+        ]
+    },
+    "hit.arts": {
+        "sounds": [
+            {
+                "name": "ognmarts:hit.arts",
                 "stream": false
             }
         ]

@@ -1,13 +1,13 @@
 {
   "gecko_asset": {
-    "all": "ognmarts:sword-lwd"
+    "all": "ognmarts:sword-standard"
   },
   "display_context": {
     "type_icon": "ognmarts:guard",
-    "name": "ogna.genable.weapon.sword.lwd.name",
-    "description": "ogna.genable.weapon.sword.lwd.desp",
-    "code_name": "R111-AFT-X",
-    "color": "#FF4605",
+    "name": "ogna.genable.weapon.sword.standard.name",
+    "description": "ogna.genable.weapon.sword.standard.desp",
+    "code_name": "RO-GUARD",
+    "color": "#FFFCD2",
     "3d": {
       "scale": 1.7,
       "offset": [0,15,0]
@@ -28,12 +28,12 @@
         "third": "front3"
       },
       "sword.attack.skill": {
-        "first": "hand1",
-        "third": "hand3"
+        "first": "front1",
+        "third": "front3"
       },
       "sword.skill.start": {
-        "first": "hand1",
-        "third": "hand3"
+        "first": "front1",
+        "third": "front3"
       },
       "sword.skill.end": {
         "first": "central1",
@@ -45,28 +45,28 @@
     "fallback": "normal",
     "map": {
       "normal": {
-        "id":"ognmarts:blade-fire_reverse"
+        "id":"ognmarts:blade-default_reverse"
       },
       "normal.1": {
-        "id":"ognmarts:blade-fire"
+        "id":"ognmarts:blade-default"
       }
     }
   },
   "weapon_data": {
-    "cooldown": 600,
+    "cooldown": 500,
     "max_charge_time": 3000,
-    "reload_time": 5000,
-    "energy_max": 600,
-    "energy_consume": 3,
-    "chip_set_volume": 60,
+    "reload_time": 4000,
+    "energy_max": 320,
+    "energy_consume": 4,
+    "chip_set_volume": 40,
     "dmg_dataset": {
       "fallback": "normal",
       "map": {
         "normal": {
           "dmg_type": "ognmarts:ark_default",
-          "dmg_category": "ARTS",
+          "dmg_category": "PHYSICS",
           "selector": "MULTI",
-          "hit_count": 3
+          "hit_count": 2
         }
       }
     },
@@ -75,13 +75,11 @@
         "attr": "generic.attack_damage",
         "id": "a3e05a6c-6ece-4894-b930-5d61a76c87c4",
         "bucket": "DIRECT_ADD",
-        "amount": 8,
+        "amount": 5,
         "stack_size": 1
       }
-    ],
-    "inner_chips": [
-      "ognmarts:chip.inner.attr-sword.lwd"
     ]
   },
-  "normal_combo": 2
+  "normal_combo": 2,
+  "skill_combo": 2
 }

@@ -48,7 +48,7 @@
 			}
 		},
 		"sword.skill.start": {
-			"animation_length": 0.4,
+			"animation_length": 0.6,
 			"bones": {
 				"standard": {
 					"rotation": [0, -90, 0],
@@ -56,14 +56,14 @@
 					"scale": 0.75
 				},
 				"core": {
-					"rotation": [32.5, 0, 0],
+					"rotation": {
+						"0.1667": [32.73848, -0.00282, -0.02087],
+						"0.3667": [157.5, 0, -180]
+					},
 					"position": [0, 3, -3]
 				},
 				"move": {
-					"rotation": {
-						"0.0": [360, 0, 0],
-						"0.3667": [0, 0, 0]
-					}
+					"position": [0, "70*query.anim_time-110*query.anim_time*query.anim_time", 0]
 				}
 			}
 		},

@@ -48,6 +48,7 @@ public class OgnaSword extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
     private static final RawAnimation ATTACK_NORMAL = RawAnimation.begin().thenPlay("sword.attack.normal");
     private static final RawAnimation ATTACK_NORMAL_1 = RawAnimation.begin().thenPlay("sword.attack.normal.1");
     private static final RawAnimation ATTACK_SKILL = RawAnimation.begin().thenPlay("sword.attack.skill");
+    private static final RawAnimation ATTACK_SKILL_1 = RawAnimation.begin().thenPlay("sword.attack.skill.1");
     private static final RawAnimation SKILL_START = RawAnimation.begin().thenPlay("sword.skill.start");
     private static final RawAnimation SKILL_END = RawAnimation.begin().thenPlay("sword.skill.end");
 
@@ -57,6 +58,7 @@ public class OgnaSword extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
         .put(ATTACK_NORMAL.hashCode(),"sword.attack.normal")
         .put(ATTACK_NORMAL_1.hashCode(),"sword.attack.normal")
         .put(ATTACK_SKILL.hashCode(),"sword.attack.skill")
+        .put(ATTACK_SKILL_1.hashCode(),"sword.attack.skill.1")
         .put(IDLE_SKILL.hashCode(),"sword.idle.skill")
         .put(SKILL_START.hashCode(),"sword.skill.start")
         .put(SKILL_END.hashCode(),"sword.skill.end")
@@ -108,6 +110,7 @@ public class OgnaSword extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
                 .triggerableAnim("attack.normal", ATTACK_NORMAL)
                 .triggerableAnim("attack.normal.1", ATTACK_NORMAL_1)
                 .triggerableAnim("attack.skill", ATTACK_SKILL)
+                .triggerableAnim("attack.skill.1", ATTACK_SKILL_1)
                 .triggerableAnim("skill.start", SKILL_START)
                 .triggerableAnim("skill.end", SKILL_END)
         );
@@ -172,13 +175,13 @@ public class OgnaSword extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
                 -cap.submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_CONSUME.get(), pPlayer, stack),
                 true,pPlayer,stack
             );
-
+            ISwordDataBase dataBase = getDataBaseForStack(stack);
             int curHit = NbtHelper.getOrCreate(stack.getOrCreateTag(),"ognaCurHit",0);
-            NbtHelper.put(stack.getOrCreateTag(), "ognaCurHit", (curHit + 1)%2);
+            NbtHelper.put(stack.getOrCreateTag(), "ognaCurHit", (curHit + 1)%(isInSkill ? dataBase.getSkillCombo() : dataBase.getNormalCombo()));
             String hitSuffix = curHit == 0 ? "" : ".%d".formatted(curHit);
 
             if(isInSkill)
-                triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack.skill");
+                triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack.skill"+hitSuffix);
             else
                 triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack.normal"+hitSuffix);
 

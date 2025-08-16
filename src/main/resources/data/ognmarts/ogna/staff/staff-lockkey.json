@@ -41,7 +41,7 @@
     "fallback": "normal",
     "map": {
       "normal": {
-        "id":"ognmarts:bullet-default"
+        "id":"ognmarts:bullet-time"
       }
     }
   },

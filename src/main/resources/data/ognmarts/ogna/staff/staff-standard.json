@@ -1,13 +1,13 @@
 {
   "gecko_asset": {
-    "all": "ognmarts:staff-sheep"
+    "all": "ognmarts:staff-standard"
   },
   "display_context": {
     "type_icon": "ognmarts:caster",
-    "name": "ogna.genable.weapon.staff.sheep.name",
-    "description": "ogna.genable.weapon.staff.sheep.desp",
-    "code_name": "LN02-CCR-X",
-    "color": "#FF19B9",
+    "name": "ogna.genable.weapon.staff.standard.name",
+    "description": "ogna.genable.weapon.staff.standard.desp",
+    "code_name": "RO-CASTER",
+    "color": "#DFCFFF",
     "3d": {
       "scale": 1.5
     }
@@ -44,17 +44,17 @@
     "fallback": "normal",
     "map": {
       "normal": {
-        "id":"ognmarts:bullet-fireball"
+        "id":"ognmarts:bullet-default"
       }
     }
   },
   "weapon_data": {
-    "cooldown": 800,
+    "cooldown": 900,
     "max_charge_time": 3000,
-    "reload_time": 6500,
-    "energy_max": 480,
-    "energy_consume": 4,
-    "chip_set_volume": 60,
+    "reload_time": 8000,
+    "energy_max": 400,
+    "energy_consume": 5,
+    "chip_set_volume": 40,
     "dmg_dataset": {
       "fallback": "normal",
       "map": {
@@ -70,12 +70,9 @@
         "attr": "generic.attack_damage",
         "id": "a3e05a6c-6ece-4894-b930-5d61a76c87c4",
         "bucket": "DIRECT_ADD",
-        "amount": 6,
+        "amount": 5,
         "stack_size": 1
       }
-    ],
-    "inner_chips": [
-      "ognmarts:chip.inner.sp-staff.sheep"
     ]
   }
 }

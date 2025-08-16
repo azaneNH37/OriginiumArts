@@ -1,0 +1,137 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"staff.idle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"magic": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"1.0": [0, 360, 0]
+					},
+					"scale": {
+						"0.0": [1, 1, 1],
+						"0.5": [1.2, 1.2, 1.2],
+						"1.0": [1, 1, 1]
+					}
+				},
+				"standard": {
+					"rotation": [90, 70, 90],
+					"position": [0, -12, 0],
+					"scale": 0.7
+				},
+				"move": {
+					"position": [0, -6, 0]
+				}
+			}
+		},
+		"staff.idle.skill": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"Staff_first": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"1.0": [0, -360, 0]
+					}
+				},
+				"magic": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"1.0": [0, 720, 0]
+					},
+					"scale": {
+						"0.0": [1, 1, 1],
+						"0.5": [1.5, 1.5, 1.5],
+						"1.0": [1, 1, 1]
+					}
+				},
+				"standard": {
+					"rotation": [90, 70, 90],
+					"position": [0, -12, 0],
+					"scale": 0.7
+				},
+				"move": {
+					"position": [0, -6, 0]
+				}
+			}
+		},
+		"staff.attack.normal": {
+			"animation_length": 0.4,
+			"bones": {
+				"standard": {
+					"rotation": [90, 70, 90],
+					"position": [0, -12, 0],
+					"scale": 0.7
+				},
+				"core": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.2": [55, 0, 0],
+						"0.4": [0, 0, 0]
+					},
+					"position": {
+						"0.0": [0, 0, 0],
+						"0.2": [0, 0, -7],
+						"0.4": [0, 0, 0]
+					}
+				},
+				"move": {
+					"position": [0, -6, 0]
+				}
+			}
+		},
+		"staff.attack.skill": {
+			"animation_length": 0.4,
+			"bones": {
+				"Staff_first": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.4": [0, 360, 0]
+					}
+				},
+				"standard": {
+					"rotation": [90, 70, 90],
+					"position": [0, -12, 0],
+					"scale": 0.7
+				},
+				"core": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.2": [55, 0, 0],
+						"0.4": [0, 0, 0]
+					},
+					"position": {
+						"0.0": [0, 0, 0],
+						"0.2": [0, 0, -7],
+						"0.4": [0, 0, 0]
+					}
+				},
+				"move": {
+					"position": [0, -6, 0]
+				}
+			}
+		},
+		"staff.skill.start": {
+			"animation_length": 0.6,
+			"bones": {
+				"standard": {
+					"rotation": [89.99999, -67.5, -89.99999],
+					"position": [0, -11, 0],
+					"scale": 0.75
+				},
+				"core": {
+					"rotation": {
+						"0.1333": [0, 0, 0],
+						"0.4333": [360, 0, 0]
+					},
+					"position": [0, 3, -3]
+				},
+				"move": {
+					"position": [0, "-6+70*query.anim_time-110*query.anim_time*query.anim_time", 0]
+				}
+			}
+		}
+	}
+}

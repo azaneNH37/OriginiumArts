@@ -1,0 +1,29 @@
+{
+  "type": "ognmarts:rlr",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "ognmarts:oriron"
+      },
+      "count": 2
+    },
+    {
+      "ingredient": {
+        "item":"ognmarts:eu_simple"
+      },
+      "count": 5
+    },
+    {
+      "ingredient": {
+        "item":"minecraft:blue_dye"
+      },
+      "count": 2
+    }
+  ],
+  "result": {
+    "type": "sword",
+    "id": "ognmarts:sword-standard",
+    "count": 1
+  }
+}
+

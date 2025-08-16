@@ -1,24 +1,27 @@
 {
-  "life": 120,
-  "speed": 3.5,
+  "life": 150,
+  "range": 196,
+  "speed": 4.5,
+  "gravity": true,
   "gecko_asset": {
-    "all": "ognmarts:bullet-default"
+    "all": "ognmarts:bullet-default",
+    "texture": "ognmarts:bullet-default_purple"
   },
   "fx": {
     "awake": {
-      "id": "ognmarts:protal_roman"
+      "id": "ognmarts:purpleball"
     },
     "end": {
-      "id": "ognmarts:explode_roman"
+      "id": "ognmarts:hit_triangle"
     }
   },
   "sound": {
     "awake": {
-      "key": "attack.time",
-      "volume": 2.5
+      "key": "attack.arts",
+      "volume": 2
     },
     "hit": {
-      "key": "hit.range",
+      "key": "hit.arts",
       "volume": 2
     }
   }

@@ -33,8 +33,10 @@ public class ModSound
             "attack.fire",
             "attack.poison",
             "attack.blade.fire",
+            "attack.arts",
             "hit.range",
             "hit.fire",
+            "hit.arts",
             //Skill
             "skill.key.attack",
             "skill.twilight.hit",
