@@ -2,7 +2,7 @@
     "display_context": {
         "name": "ogna.genable.chip.tle.part_time_job.name",
         "description": "ogna.genable.chip.tle.part_time_job.desp",
-        "color": "#232BFF",
+        "color": "#CADEFF",
         "model": "ognmarts:tle.part_time_job"
     },
     "base_data": {
