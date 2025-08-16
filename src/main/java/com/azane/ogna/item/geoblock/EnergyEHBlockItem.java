@@ -1,5 +1,6 @@
 package com.azane.ogna.item.geoblock;
 
+import com.azane.ogna.OgnaConfig;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.util.GeoAnimations;
@@ -63,7 +64,8 @@ public class EnergyEHBlockItem extends BlockItem implements GeoItem
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if(this.renderer == null) {
                     this.renderer = new GeoItemRenderer<>(new DefaultedBlockGeoModel<>(RlHelper.build(OriginiumArts.MOD_ID, "energy_eh")));
-                    this.renderer.addRenderLayer(new AutoGlowingGeoLayer<>(this.renderer));
+                    if(OgnaConfig.isEnableGlowingTexture())
+                        this.renderer.addRenderLayer(new AutoGlowingGeoLayer<>(this.renderer));
                 }
                 return this.renderer;
             }

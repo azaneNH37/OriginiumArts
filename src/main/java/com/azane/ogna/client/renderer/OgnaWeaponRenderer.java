@@ -1,5 +1,6 @@
 package com.azane.ogna.client.renderer;
 
+import com.azane.ogna.OgnaConfig;
 import com.azane.ogna.client.model.weapon.OgnaWeaponModel;
 import com.azane.ogna.item.weapon.OgnaWeapon;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -30,7 +31,8 @@ public class OgnaWeaponRenderer<T extends OgnaWeapon> extends GeoItemRenderer<T>
     public OgnaWeaponRenderer()
     {
         super(new OgnaWeaponModel<>());
-        addRenderLayer(new AutoGlowingGeoLayer<>(this));
+        if(OgnaConfig.isEnableGlowingTexture())
+            addRenderLayer(new AutoGlowingGeoLayer<>(this));
         minecraft = Minecraft.getInstance();
         itemRenderer = minecraft.getItemRenderer();
         modelManager = minecraft.getModelManager();

@@ -1,5 +1,6 @@
 package com.azane.ogna.client.renderer.block;
 
+import com.azane.ogna.OgnaConfig;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.block.entity.CraftOCCBlockEntity;
 import com.azane.ogna.lib.RlHelper;
@@ -16,6 +17,7 @@ public class CraftOCCRenderer extends GeoBlockRenderer<CraftOCCBlockEntity>
     public CraftOCCRenderer(BlockEntityRendererProvider.Context context)
     {
         super(new DefaultedBlockGeoModel<>(RlHelper.build(OriginiumArts.MOD_ID,"craft_occ")));
-        addRenderLayer(new AutoGlowingGeoLayer<>(this));
+        if(OgnaConfig.isEnableGlowingTexture())
+            addRenderLayer(new AutoGlowingGeoLayer<>(this));
     }
 }
