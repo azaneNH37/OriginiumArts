@@ -2,6 +2,7 @@ package com.azane.ogna.item.geoblock;
 
 import com.azane.ogna.OgnaConfig;
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.client.renderer.layer.GlowingLayer;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.util.GeoAnimations;
 import lombok.Getter;
@@ -64,8 +65,7 @@ public class InjectEPTBlockItem extends BlockItem implements GeoItem
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if(this.renderer == null) {
                     this.renderer = new GeoItemRenderer<>(new DefaultedBlockGeoModel<>(RlHelper.build(OriginiumArts.MOD_ID, "inject_ept")));
-                    if(OgnaConfig.isEnableGlowingTexture())
-                        this.renderer.addRenderLayer(new AutoGlowingGeoLayer<>(this.renderer));
+                    this.renderer.addRenderLayer(new GlowingLayer<>(this.renderer));
                 }
                 return this.renderer;
             }

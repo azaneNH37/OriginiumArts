@@ -15,7 +15,6 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class OgnaConfig
 {
     private static ForgeConfigSpec.BooleanValue DEBUG_HITBOX;
-    private static ForgeConfigSpec.BooleanValue ENABLE_GLOWING_TEXTURE;
 
     public static void register(ModLoadingContext context)
     {
@@ -24,15 +23,12 @@ public class OgnaConfig
 
     @Getter
     private static boolean debughitbox;
-    @Getter
-    private static boolean enableGlowingTexture;
 
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
     {
         debughitbox = DEBUG_HITBOX.get();
-        enableGlowingTexture = ENABLE_GLOWING_TEXTURE.get();
     }
 
     private static ForgeConfigSpec init()
@@ -40,8 +36,6 @@ public class OgnaConfig
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 
         DEBUG_HITBOX = builder.comment("Whether to render hitboxes in the client").define("debug.hitbox", false);
-        ENABLE_GLOWING_TEXTURE = builder.comment("Whether to enable glowing texture for items(1) & blocks(2) (it can be useful when encountering certain shaderpacks)")
-            .define("render.glowingTexture",true);
 
         return builder.build();
     }

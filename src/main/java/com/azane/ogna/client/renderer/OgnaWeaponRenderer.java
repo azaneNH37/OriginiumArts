@@ -1,6 +1,6 @@
 package com.azane.ogna.client.renderer;
 
-import com.azane.ogna.OgnaConfig;
+import com.azane.ogna.client.renderer.layer.GlowingLayer;
 import com.azane.ogna.client.model.weapon.OgnaWeaponModel;
 import com.azane.ogna.item.weapon.OgnaWeapon;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 import static com.azane.ogna.client.lib.OffHandItemTransform.*;
 
@@ -31,8 +30,7 @@ public class OgnaWeaponRenderer<T extends OgnaWeapon> extends GeoItemRenderer<T>
     public OgnaWeaponRenderer()
     {
         super(new OgnaWeaponModel<>());
-        if(OgnaConfig.isEnableGlowingTexture())
-            addRenderLayer(new AutoGlowingGeoLayer<>(this));
+        addRenderLayer(new GlowingLayer<>(this));
         minecraft = Minecraft.getInstance();
         itemRenderer = minecraft.getItemRenderer();
         modelManager = minecraft.getModelManager();
@@ -72,6 +70,5 @@ public class OgnaWeaponRenderer<T extends OgnaWeapon> extends GeoItemRenderer<T>
         poseStack.popPose();
         poseStack.pushPose();
         itemRenderer.render(currentItemStack, transformType, false,poseStack, bufferSource, packedLight, packedOverlay, bakedModel);
-        //super.renderInGui(transformType, poseStack, bufferSource, packedLight, packedOverlay);
     }
 }
