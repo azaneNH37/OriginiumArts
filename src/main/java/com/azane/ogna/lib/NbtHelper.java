@@ -3,6 +3,8 @@ package com.azane.ogna.lib;
 import net.minecraft.nbt.Tag;
 
 import net.minecraft.nbt.*;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -78,6 +80,7 @@ public class NbtHelper
      * @param type  值类型
      * @return 读取到的值，如果键不存在或类型不匹配则返回 null
      */
+    @Nullable
     public static <T> T get(CompoundTag tag, String key, Class<T> type) {
         // 根据类型获取对应的读取器
         BiFunction<CompoundTag, String, Object> reader = READERS.get(type);
