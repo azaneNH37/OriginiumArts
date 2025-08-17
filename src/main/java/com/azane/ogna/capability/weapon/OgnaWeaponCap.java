@@ -11,6 +11,7 @@ import com.azane.ogna.combat.data.AttrModifier;
 import com.azane.ogna.combat.data.OgnaWeaponData;
 import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.weapon.AttackType;
+import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
 import com.azane.ogna.registry.ModAttribute;
 import lombok.Getter;
@@ -46,16 +47,24 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
 
     private AttrMap attrMap = new AttrMap(Attributes.ATTACK_DAMAGE);
 
-    public OgnaWeaponCap(OgnaWeaponData baseData,@Nullable CompoundTag storedData)
+    /**
+     * 一定要注意检查子方法中会不会涉及getCapability的循环调用
+     * @param weapon
+     * @param storedData
+     */
+    public OgnaWeaponCap(ItemStack weapon,@Nullable CompoundTag storedData)
     {
-        this.baseData = baseData;
+        if(!IOgnaWeapon.isWeapon(weapon))
+            throw new IllegalArgumentException("ItemStack should be a valid ogna weapon stack when generating capabilities: "+weapon);
+        IOgnaWeapon iWeapon = (IOgnaWeapon)weapon.getItem();
+        this.baseData = iWeapon.getDefaultDatabase(weapon).getOgnaWeaponData();
         this.skillCap = new OgnaSkillCap(this);
         this.chipSet = new ChipSet(ChipEnv.WEAPON);
         if(storedData == null)
         {
             baseData.getAttrModifiers().forEach(attrMap::acceptModifier);
-            //事实上，这里传空chipArg是符合预期的行为，因为此处的chip属性是跟武器data走的，不应在insert处因stack和所有者而异（期待回旋镖）
-            baseData.getInnerChips().stream().map(OgnaChip::getChip).forEach(i->this.chipSet.insertChip(i,ChipArg.EMPTY));
+            //回旋镖了（蚌）
+            baseData.getInnerChips().stream().map(OgnaChip::getChip).forEach(i->this.chipSet.insertChip(i,ChipArg.of(null,null,this)));
             currentEnergy = submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(), null, null);
         }
         else
@@ -92,6 +101,15 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         return baseData.getBaseValue(attribute);
     }
 
+    /**
+     * 此处绝对不能调用stack的getCapability，因为会导致死循环<br>
+     * 不过话又说回来了，谁会在cap里面再找自己
+     * @param attribute
+     * @param player
+     * @param stack
+     * @param baseValue
+     * @return
+     */
     @Override
     public double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack, double baseValue)
     {

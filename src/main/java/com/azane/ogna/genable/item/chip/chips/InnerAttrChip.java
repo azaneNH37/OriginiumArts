@@ -22,6 +22,7 @@ import net.minecraft.world.item.TooltipFlag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author azaneNH37 (2025-08-11)
@@ -51,11 +52,7 @@ public class InnerAttrChip extends NonItemChip
     {
         if(chipEnv == ChipEnv.WEAPON)
         {
-            if(IOgnaWeapon.isWeapon(arg.getWeaponStack()))
-            {
-                IOgnaWeapon weapon = (IOgnaWeapon)arg.getWeaponStack().getItem();
-                modifiers.forEach(weapon.getWeaponCap(arg.getWeaponStack())::acceptModifier);
-            }
+            Optional.ofNullable(arg.getWeaponCap()).ifPresent(cap->modifiers.forEach(cap::acceptModifier));
         }
     }
 
@@ -64,11 +61,7 @@ public class InnerAttrChip extends NonItemChip
     {
         if(chipEnv == ChipEnv.WEAPON)
         {
-            if(IOgnaWeapon.isWeapon(arg.getWeaponStack()))
-            {
-                IOgnaWeapon weapon = (IOgnaWeapon)arg.getWeaponStack().getItem();
-                modifiers.forEach(weapon.getWeaponCap(arg.getWeaponStack())::removeModifier);
-            }
+            Optional.ofNullable(arg.getWeaponCap()).ifPresent(cap->modifiers.forEach(cap::removeModifier));
         }
     }
 

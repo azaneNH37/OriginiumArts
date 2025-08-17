@@ -262,7 +262,7 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
         chipListWidget = UiHelper.getAsNonnull(DraggableScrollableWidgetGroup.class,endWith("chip.list"),chipWidgets);
 
         volumeIcon.setProgressSupplier(()-> {
-            if(chip_weaponSlot == null || chip_weaponSlot.getItem().isEmpty())
+            if(chip_weaponSlot == null || chip_weaponSlot.getItem().isEmpty() || !IOgnaWeapon.isWeapon(chip_weaponSlot.getItem()))
             {
                 volumeText.setText("NaN/NaN");
                 return 0.0;

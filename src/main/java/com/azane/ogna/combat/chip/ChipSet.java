@@ -1,5 +1,6 @@
 package com.azane.ogna.combat.chip;
 
+import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
@@ -21,10 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
@@ -58,25 +56,15 @@ public class ChipSet implements INBTSerializable<CompoundTag>, IComponentDisplay
 
     public static int getVolumeTake(ChipArg arg)
     {
-        if(IOgnaWeapon.isWeapon(arg.getWeaponStack()))
-        {
-            IOgnaWeapon weapon = (IOgnaWeapon)arg.getWeaponStack().getItem();
-            return weapon.getWeaponCap(arg.getWeaponStack()).getChipSet().getVolumeTake();
-        }
-        return 0;
+        return Optional.ofNullable(arg.getWeaponCap()).map(IOgnaWeaponCap::getChipSet).map(ChipSet::getVolumeTake).orElse(0);
     }
 
     public static int getVolumeLimit(ChipArg arg)
     {
-        if(IOgnaWeapon.isWeapon(arg.getWeaponStack()))
-        {
-            IOgnaWeapon weapon = (IOgnaWeapon)arg.getWeaponStack().getItem();
-            return (int) weapon.getWeaponCap(arg.getWeaponStack())
-                .submitBaseAttrVal(ModAttribute.CHIP_SET_VOLUME.get(),
-                    arg.getEntity() instanceof Player ? (Player) arg.getEntity() : null,
-                    arg.getWeaponStack());
-        }
-        return 0;
+        return Optional.ofNullable(arg.getWeaponCap()).map(
+            cap->cap.submitBaseAttrVal(ModAttribute.CHIP_SET_VOLUME.get(),
+            arg.getEntity() instanceof Player ? (Player) arg.getEntity() : null,
+            arg.getWeaponStack())).orElse(0D).intValue();
     }
 
     public void cleanUp()

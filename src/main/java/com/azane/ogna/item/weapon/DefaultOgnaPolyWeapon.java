@@ -92,7 +92,7 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
     @Override
     public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new OgnaWeaponCapProvider(getDefaultDatabase(stack).getOgnaWeaponData(),nbt);
+        return new OgnaWeaponCapProvider(stack,nbt);
     }
 
     @Override
