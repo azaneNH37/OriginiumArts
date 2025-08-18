@@ -1,3 +1,6 @@
 {
-	"parent": "ognmarts:block/geo_item_block"
+	"parent": "ognmarts:block/geo_item_block",
+	"textures": {
+		"particle": "minecraft:block/diamond_block"
+	}
 }
