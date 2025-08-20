@@ -67,12 +67,7 @@ public class CraftOCCBlockEntity extends BlockEntity implements IUIHolder.BlockE
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers)
     {
-        controllers.add(new AnimationController<>(this,"misc",state -> {
-            if(isOpen)
-                return state.setAndContinue(GeoAnimations.MISC_WORK);
-            else
-                return state.setAndContinue(GeoAnimations.MISC_IDLE);
-        }));
+        controllers.add(new AnimationController<>(this,"misc",state -> state.setAndContinue(GeoAnimations.MISC_WORK)));
         controllers.add(new AnimationController<>(this,"move",state -> PlayState.STOP)
             .triggerableAnim("op.open",GeoAnimations.OP_OPEN)
             .triggerableAnim("op.close",GeoAnimations.OP_CLOSE));

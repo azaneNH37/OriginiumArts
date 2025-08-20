@@ -37,6 +37,8 @@
   "attribute.name.ognmarts.skill.sp.rate": "SP Recovery Rate(/s)",
 
   "ogna.tab.all": "Originium Arts",
+  "key.category.ognmarts": "Originium Arts",
+  "key.ognmarts.reload.desc": "Arts Unit Reload",
 
   "jei.ognmarts.category.oec": "OriEnergy Inject",
   "jei.ognmarts.category.oeg": "OriEnergy Extract",
@@ -57,6 +59,7 @@
   "ogna.gui.inject.skill.slot.weapon": "Arts Unit Slot",
   "ogna.gui.inject.skill.slot.skill": "Skill Slot",
   "ogna.gui.inject.chip.slot.chip": "Module Slot",
+  "ogna.gui.inject.chip.volume.icon": "Module Capacity",
   "ogna.gui.energy.title": "En■ro■y Hu■ (■■)",
   "ogna.gui.energy.energy": "■■■■■■■■■ Energy: %s / %s (OE)",
   "ogna.gui.energy.in": "Input Slot",

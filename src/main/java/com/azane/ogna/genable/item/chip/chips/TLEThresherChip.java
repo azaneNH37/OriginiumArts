@@ -45,7 +45,7 @@ public class TLEThresherChip extends ItemChip
         final float armorPenaltyFactor = 0.075f;
         final float toughnessPenaltyFactor = 0.75f;
 
-        return (BASE_PENALTY + (armor * armor * armorPenaltyFactor) + (armorToughness * toughnessPenaltyFactor));
+        return (BASE_PENALTY + (Math.pow(armor,1.7f) * armorPenaltyFactor) + (armorToughness * toughnessPenaltyFactor));
     }
 
     @Override
