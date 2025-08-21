@@ -80,9 +80,18 @@ description='''${mod_description}'''
     modId="photon"
     mandatory=true
 # This version range declares a minimum of the current azane version up to but not including the next major version
-    versionRange="[1.0.39.a,)"
+    versionRange="[1.1.12,)"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+# This is an optional dependency, so it does not have to exist
+modId="ldlib"
+mandatory=true
+# This version range declares a minimum of the current azane version up to but not including the next major version
+versionRange="[1.0.41,)"
+ordering="NONE"
+side="BOTH"
 
 # Features are specific properties of the game environment, that you may want to declare you require. This azane declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
