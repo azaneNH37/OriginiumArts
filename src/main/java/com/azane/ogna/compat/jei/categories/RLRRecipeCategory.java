@@ -84,7 +84,7 @@ public class RLRRecipeCategory implements IRecipeCategory<RLRRecipe> {
         // 配置输出槽位
         int outputX = 16 + Math.min(MAX_INGREDIENTS, ingredients.size()) * 20 + 48 - 16; // 原料槽后 + 箭头宽度
         builder.addSlot(RecipeIngredientRole.OUTPUT, outputX, 10)
-            .addItemStack(recipe.getResultItem(null))
+            .addItemStack(recipe.getResult().buildItemStack())
             .setSlotName("output");
     }
 

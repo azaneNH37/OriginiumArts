@@ -1,6 +1,7 @@
 package com.azane.ogna.craft.rlr;
 
 import com.azane.ogna.craft.QuantifiedIngredient;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.resource.service.IResourceProvider;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -16,6 +17,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
 import javax.annotation.Nullable;
 
@@ -24,8 +27,9 @@ import javax.annotation.Nullable;
  * 整合了原有的Recipe、Serializer、Type和Helper功能
  * @author azaneNH37 (2025-08-09)
  */
-public class RLRRecipe implements Recipe<Container> {
-
+public class RLRRecipe implements Recipe<Container>
+{
+    public static final Marker MARKER = MarkerManager.getMarker("RLRRecipe");
     // Recipe Type单例
     public static final RLRRecipeType TYPE = new RLRRecipeType();
     // Recipe Serializer单例
@@ -57,8 +61,10 @@ public class RLRRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack assemble(Container container, RegistryAccess registryAccess) {
-        return result.buildItemStack();
+    public ItemStack assemble(Container container, RegistryAccess registryAccess)
+    {
+        DebugLogger.warn(MARKER,"Unexpected call to RLRRecipe.assemble(). This method should not be used. Recipe ID: {}", id);
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -67,8 +73,10 @@ public class RLRRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
-        return result.buildItemStack();
+    public ItemStack getResultItem(RegistryAccess registryAccess)
+    {
+        DebugLogger.warn(MARKER,"Unexpected call to RLRRecipe.getResultItem(). This method should not be used. Recipe ID: {}", id);
+        return ItemStack.EMPTY;
     }
 
     @Override
