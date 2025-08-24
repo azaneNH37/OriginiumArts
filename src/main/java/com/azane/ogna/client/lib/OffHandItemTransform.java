@@ -5,6 +5,8 @@ import com.mojang.math.Axis;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -47,7 +49,6 @@ public final class OffHandItemTransform
         if(transformType.firstPerson())
         {
             popDownPoseStack(poseStack,2);
-            //poseStack.translate(0F,-1F,-1F);//in hand
         } else{
             popDownPoseStack(poseStack,3);
             //default third person transformation in order to move the model to right-hand side
@@ -62,20 +63,21 @@ public final class OffHandItemTransform
     {
         if(maintain < 1)
             return;
-        Deque<PoseStack.Pose> poses = new LinkedList<>();
+        Deque<Matrix4f> pose = new LinkedList<>();
+        Deque<Matrix3f> normal = new LinkedList<>();
         while (!poseStack.clear())
         {
-            poses.addFirst(poseStack.last());
+            pose.addFirst(new Matrix4f().set(poseStack.last().pose()));
+            normal.addFirst(new Matrix3f().set(poseStack.last().normal()));
             poseStack.popPose();
         }
-        for(int i = 0; i < maintain-1 && !poses.isEmpty(); i++)
+        for(int i = 0; i < maintain-1 && !pose.isEmpty(); i++)
         {
             poseStack.pushPose();
-            PoseStack.Pose pose = poses.removeFirst();
-            poseStack.last().pose().set(pose.pose());
-            poseStack.last().normal().set(pose.normal());
+            poseStack.last().pose().set(pose.removeFirst());
+            poseStack.last().normal().set(normal.removeFirst());
         }
-        for(int i = 0;i < poses.size();i++)
+        for(int i = 0;i < pose.size();i++)
             poseStack.pushPose();
     }
 
