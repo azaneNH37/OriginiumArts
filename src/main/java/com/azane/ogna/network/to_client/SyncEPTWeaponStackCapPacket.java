@@ -9,6 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
@@ -43,6 +45,7 @@ public class SyncEPTWeaponStackCapPacket implements IOgnmPacket
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void handle(NetworkEvent.Context context)
     {
         Level level = Minecraft.getInstance().level;

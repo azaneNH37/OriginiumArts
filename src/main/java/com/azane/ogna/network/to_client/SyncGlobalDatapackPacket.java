@@ -5,6 +5,8 @@ import com.azane.ogna.network.IOgnmPacket;
 import lombok.Getter;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.Map;
@@ -34,6 +36,7 @@ public class SyncGlobalDatapackPacket implements IOgnmPacket
 
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void handle(NetworkEvent.Context context)
     {
         ClientDataService.fromNetwork(getCache());

@@ -5,6 +5,8 @@ import com.azane.ogna.client.gui.hud.OgnaHuds;
 import com.azane.ogna.network.IOgnmPacket;
 import lombok.Getter;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 
 /**
@@ -32,6 +34,7 @@ public class SyncReloadStatePacket implements IOgnmPacket
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void handle(NetworkEvent.Context context)
     {
         OgnaHuds.RELOAD_STATUS_HUD.refreshReloadState(reloadState,2500);

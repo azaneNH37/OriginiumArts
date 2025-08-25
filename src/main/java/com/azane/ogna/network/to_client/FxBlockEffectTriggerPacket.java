@@ -7,6 +7,8 @@ import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 
 /**
@@ -36,6 +38,7 @@ public class FxBlockEffectTriggerPacket implements IOgnmPacket
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void handle(NetworkEvent.Context context)
     {
         OgnaFxHelper.clientTriggerBlockEffectFx(this);
