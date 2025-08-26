@@ -7,6 +7,7 @@ import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.resource.service.CommonDataService;
+import com.azane.ogna.util.SyncUtil;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -166,6 +167,8 @@ public class OgnaSkillCap implements ISkillCap
         tag.putDouble("SP", SP);
         tag.putDouble("RD", RD);
         tag.putBoolean("active", active);
+        tag.put("baseAttrMap", baseAttrMap.serializeNBTFiltered(SyncUtil.SYNC_ATTRIBUTES));
+        tag.put("skillAttrMap", skillAttrMap.serializeNBTFiltered(SyncUtil.SYNC_ATTRIBUTES));
         return tag;
     }
 

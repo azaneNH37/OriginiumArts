@@ -57,6 +57,8 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
     {
         ISkillCap skillCap = getWeaponCap(stack).getSkillCap();
         ISkill skill = skillCap.getSkill();
+        if(!level.isClientSide())
+            getWeaponCap(stack).innerHeartbeatSync(player.tickCount);
         if(skill != null)
         {
             skill.onSkillTick(level,player,this,stack,skillCap.isActive());

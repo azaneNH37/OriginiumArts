@@ -6,7 +6,6 @@ import com.azane.ogna.client.gui.ldlib.extra.PredicateSlotWidget;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
 import com.azane.ogna.combat.chip.ChipArg;
 import com.azane.ogna.combat.chip.ChipSet;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.inventory.MenuItemDisplay;
 import com.azane.ogna.item.OgnaChip;
@@ -205,6 +204,8 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
         inButton.setOnPressCallback(cd->{
             ItemStack weapon = skill_weaponSlot.getItem();
             ItemStack skill = skill_skillSlot.getItem();
+            if(!cd.isRemote)
+                sendSync((ServerPlayer) player, weapon, 0);
             if(!inInject && IOgnaWeapon.isWeapon(weapon) && OgnaSkill.isSkill(skill))
             {
                 IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weapon.getItem();
@@ -230,6 +231,8 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
         outButton.setOnPressCallback(cd->{
             ItemStack weapon = skill_weaponSlot.getItem();
             ItemStack skill = skill_skillSlot.getItem();
+            if(!cd.isRemote)
+                sendSync((ServerPlayer) player, weapon, 0);
             if(!inInject && IOgnaWeapon.isWeapon(weapon) && skill.isEmpty())
             {
                 IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weapon.getItem();
@@ -290,6 +293,8 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
         var outButton = UiHelper.getAsNonnull(ButtonWidget.class,endWith("out"),chipWidgets);
 
         inButton.setOnPressCallback(cd->{
+            if(!cd.isRemote)
+                sendSync((ServerPlayer) player, chip_weaponSlot.getItem(), 2);
             if(inInject)
                 return;
             inInject = true;curOp = EPTOp.CHIP_IN;curTick = 0;
@@ -322,6 +327,8 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
             }
         });
         outButton.setOnPressCallback(cd->{
+            if(!cd.isRemote)
+                sendSync((ServerPlayer) player, chip_weaponSlot.getItem(), 2);
             if(inInject)
                 return;
             inInject = true;curOp = EPTOp.CHIP_OUT;curTick = 0;

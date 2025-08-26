@@ -17,6 +17,7 @@ import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.NbtHelper;
 import com.azane.ogna.registry.ModAttribute;
+import com.azane.ogna.util.SyncUtil;
 import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -37,7 +38,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-//TODO: 注意C/S端数据同步！
+//TODO: 注意C/S端数据同步！(狠狠回旋镖啊狠狠回旋镖)
 /**
  * @author azaneNH37 (2025-08-09)
  */
@@ -54,6 +55,11 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     private double currentEnergy = 100;
 
     private AttrMap attrMap = new AttrMap(Attributes.ATTACK_DAMAGE);
+
+    private int heartbeatTick = 0;
+
+    @Getter
+    private CompoundTag extraData = new CompoundTag();
 
     /**
      * 一定要注意检查子方法中会不会涉及getCapability的循环调用
@@ -170,13 +176,24 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     }
 
     @Override
+    public void innerHeartbeatSync(int tick)
+    {
+        if(tick % 100 == 0)
+        {
+            heartbeatTick = tick;
+        }
+    }
+
+    @Override
     public CompoundTag serializeNBT()
     {
         var nbt = new CompoundTag();
         nbt.put("attrMap", attrMap.serializeNBT());
         nbt.put("skillCap", skillCap.serializeNBT());
         nbt.putDouble("currentEnergy", currentEnergy);
+        nbt.putInt("heartbeatTick", heartbeatTick);
         nbt.put("chipSet", chipSet.serializeNBT());
+        nbt.put("extraData", extraData.copy());
         return nbt;
     }
 
@@ -184,9 +201,11 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     public CompoundTag serializeSyncNBT()
     {
         var nbt = new CompoundTag();
+        nbt.put("attrMap", attrMap.serializeNBTFiltered(SyncUtil.SYNC_ATTRIBUTES));
         nbt.put("skillCap", skillCap.serializeSyncNBT());
         nbt.put("chipSet", chipSet.serializeSyncNBT());
         nbt.putDouble("currentEnergy", currentEnergy);
+        nbt.putInt("heartbeatTick", heartbeatTick);
         return nbt;
     }
 
@@ -196,7 +215,9 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         Optional.ofNullable(nbt.get("attrMap")).map(CompoundTag.class::cast).ifPresent(attrMap::deserializeNBT);
         Optional.ofNullable(nbt.get("skillCap")).map(CompoundTag.class::cast).ifPresent(skillCap::deserializeNBT);
         currentEnergy = nbt.getDouble("currentEnergy");
+        heartbeatTick = nbt.getInt("heartbeatTick");
         Optional.ofNullable(nbt.get("chipSet")).map(CompoundTag.class::cast).ifPresent(chipSet::deserializeNBT);
+        Optional.ofNullable(nbt.get("extraData")).map(CompoundTag.class::cast).ifPresent(tag->extraData = tag.copy());
     }
 
     private boolean versionCheck(ItemStack stack)

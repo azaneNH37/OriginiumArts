@@ -63,6 +63,18 @@ public class AttrMap implements INBTSerializable<CompoundTag>
         return nbt;
     }
 
+    public CompoundTag serializeNBTFiltered(@Nullable Set<Attribute> filter)
+    {
+        if (filter == null || filter.isEmpty())
+            return serializeNBT();
+        var nbt = new CompoundTag();
+        attributes.forEach((attribute, unit) -> {
+            if (filter.contains(attribute))
+                nbt.put(ForgeRegistries.ATTRIBUTES.getKey(attribute).toString(), unit.serializeNBT());
+        });
+        return nbt;
+    }
+
     @Override
     public void deserializeNBT(CompoundTag nbt)
     {

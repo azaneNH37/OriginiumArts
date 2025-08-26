@@ -65,6 +65,12 @@ public interface IOgnaWeaponCap extends ISyncNBTSerializable<CompoundTag>, IComp
         public void modifyCurrentEnergy(double val, boolean needSync, Player player, ItemStack stack) {}
 
         @Override
+        public CompoundTag getExtraData() {return new CompoundTag();}
+
+        @Override
+        public void innerHeartbeatSync(int tick) {}
+
+        @Override
         public CompoundTag serializeSyncNBT() {return new CompoundTag();}
 
         @Override
@@ -100,4 +106,9 @@ public interface IOgnaWeaponCap extends ISyncNBTSerializable<CompoundTag>, IComp
     double getCurrentEnergy();
 
     void modifyCurrentEnergy(double val, boolean needSync, Player player, ItemStack stack);
+
+    CompoundTag getExtraData();
+
+    //必要性存疑，但可以干掉状态机枚举不完全的神秘情况
+    void innerHeartbeatSync(int tick);
 }

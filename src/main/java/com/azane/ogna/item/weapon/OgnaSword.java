@@ -19,6 +19,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -176,8 +177,8 @@ public class OgnaSword extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
                 true,pPlayer,stack
             );
             ISwordDataBase dataBase = getDataBaseForStack(stack);
-            int curHit = NbtHelper.getOrCreate(stack.getOrCreateTag(),"ognaCurHit",0);
-            NbtHelper.put(stack.getOrCreateTag(), "ognaCurHit", (curHit + 1)%(isInSkill ? dataBase.getSkillCombo() : dataBase.getNormalCombo()));
+            int curHit = NbtHelper.getOrCreate(cap.getExtraData(),"ognaCurHit",0);
+            NbtHelper.put(cap.getExtraData(), "ognaCurHit", (curHit + 1)%(isInSkill ? dataBase.getSkillCombo() : dataBase.getNormalCombo()));
             String hitSuffix = curHit == 0 ? "" : ".%d".formatted(curHit);
 
             if(isInSkill)
