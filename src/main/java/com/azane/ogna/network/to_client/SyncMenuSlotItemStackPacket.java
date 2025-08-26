@@ -1,9 +1,13 @@
 package com.azane.ogna.network.to_client;
 
+import com.azane.ogna.debug.log.DebugLogger;
+import com.azane.ogna.debug.log.LogLv;
 import com.azane.ogna.network.IOgnmPacket;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -42,7 +46,13 @@ public class SyncMenuSlotItemStackPacket implements IOgnmPacket
     @OnlyIn(Dist.CLIENT)
     public void handle(NetworkEvent.Context context)
     {
-        LocalPlayer player = Minecraft.getInstance().player;
+        Minecraft minecraft = Minecraft.getInstance();
+        if(minecraft.screen instanceof CreativeModeInventoryScreen)
+        {
+            DebugLogger.logReduced("CreativeTabCheck",10,"Skip syncing item stack in CreativeModeInventoryScreen");
+            return;
+        }
+        LocalPlayer player = minecraft.player;
         if(player != null && player.containerMenu.containerId == windowID)
         {
             player.containerMenu.setItem(slotIndex,player.containerMenu.incrementStateId(), ItemStack.of(itemStackNbt));

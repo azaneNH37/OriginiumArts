@@ -4,6 +4,7 @@ import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.genable.item.base.IuuidStack;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.item.skill.IEquipSkill;
+import com.azane.ogna.lib.ConnectionUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,13 +27,14 @@ public interface IOgnaWeapon extends IuuidStack, IEquipSkill
         return stack != null && !stack.isEmpty() && stack.getItem() instanceof IOgnaWeapon;
     }
 
-    static CompoundTag getSyncNbt(ItemStack stack)
+    static CompoundTag getSyncNbt(ServerPlayer serverPlayer,ItemStack stack)
     {
+        boolean isLocal = ConnectionUtil.isLocalConnection(serverPlayer);
         CompoundTag tag = stack.serializeNBT();
         if(isWeapon(stack))
         {
             IOgnaWeapon weapon = (IOgnaWeapon)stack.getItem();
-            tag.put("ForgeCaps", weapon.getWeaponCap(stack).serializeSyncNBT());
+            tag.put("ForgeCaps", isLocal ? weapon.getWeaponCap(stack).serializeNBT() : weapon.getWeaponCap(stack).serializeSyncNBT());
         }
         return tag;
     }
