@@ -80,7 +80,7 @@ description='''${mod_description}'''
     modId="photon"
     mandatory=true
 # This version range declares a minimum of the current azane version up to but not including the next major version
-    versionRange="[1.1.12,)"
+    versionRange="[1.1.14,)"
     ordering="NONE"
     side="BOTH"
 
@@ -89,7 +89,7 @@ description='''${mod_description}'''
 modId="ldlib"
 mandatory=true
 # This version range declares a minimum of the current azane version up to but not including the next major version
-versionRange="[1.0.41,)"
+versionRange="[1.0.43,)"
 ordering="NONE"
 side="BOTH"
 
