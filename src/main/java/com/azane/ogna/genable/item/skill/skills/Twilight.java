@@ -36,16 +36,18 @@ public class Twilight extends DefaultSkillDataBase
     public void onSkillStart(Level level, Player player, IOgnaWeapon weapon, ItemStack stack)
     {
         super.onSkillStart(level, player, weapon, stack);
-        if(player instanceof LocalPlayer localPlayer)
-            localPlayer.flashOnSetHealth = false;
+        if(level.isClientSide())
+            if(player instanceof LocalPlayer localPlayer)
+                localPlayer.flashOnSetHealth = false;
     }
 
     @Override
     public void onSkillEnd(Level level, Player player, IOgnaWeapon weapon, ItemStack stack)
     {
         super.onSkillEnd(level, player, weapon, stack);
-        if(player instanceof LocalPlayer localPlayer)
-            localPlayer.flashOnSetHealth = true;
+        if(level.isClientSide())
+            if(player instanceof LocalPlayer localPlayer)
+                localPlayer.flashOnSetHealth = true;
     }
 
     @Override
