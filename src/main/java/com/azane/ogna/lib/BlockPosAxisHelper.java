@@ -1,6 +1,6 @@
 package com.azane.ogna.lib;
 
-import com.ibm.icu.impl.Pair;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -68,7 +68,7 @@ public class BlockPosAxisHelper
         public BlockPos deal(BlockPos pPos,List<Pair<AxisDir,Integer>> pOp)
         {
             for (Pair<AxisDir, Integer> pPair : pOp) {
-                pPos = this.map.get(pPair.first).apply(pPos,pPair.second);
+                pPos = this.map.get(pPair.getFirst()).apply(pPos,pPair.getSecond());
             }
             return pPos;
         }
@@ -139,7 +139,7 @@ public class BlockPosAxisHelper
     }
     public static AxisDir getCompareAxisDir(Pair<Integer,Boolean> baseAxis,Pair<Integer,Boolean> followAxis)
     {
-        return AxisDir.getAxisDir(((3+followAxis.first- baseAxis.first)%3)*2+((baseAxis.second != followAxis.second) ? 1:0));
+        return AxisDir.getAxisDir(((3+followAxis.getFirst()- baseAxis.getFirst())%3)*2+((baseAxis.getSecond()!= followAxis.getSecond()) ? 1:0));
     }
 
     public static Pair<Integer,Boolean> attachAxis(Level pLevel, BlockPos pPos)

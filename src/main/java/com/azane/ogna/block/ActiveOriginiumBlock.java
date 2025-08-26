@@ -1,8 +1,7 @@
 package com.azane.ogna.block;
 
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.registry.ModBlock;
-import com.ibm.icu.impl.Pair;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -145,8 +144,8 @@ public class ActiveOriginiumBlock extends Block
                 .setValue(DIRECTION,pRandom.nextInt(0,3+1))
                 .setValue(ANGLE,pRandom.nextInt(0,ANGLE_MAX+1))
                 .setValue(GROW,true)
-                .setValue(BLOCKPOS_AXIS, pAttachAxis.first)
-                .setValue(BLOCKPOS_AXIS_DIRECTION,pAttachAxis.second)
+                .setValue(BLOCKPOS_AXIS, pAttachAxis.getFirst())
+                .setValue(BLOCKPOS_AXIS_DIRECTION,pAttachAxis.getSecond())
             ,3);
     }
     protected void expand(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom, int declineFloor,int declineCeil,boolean grow)
