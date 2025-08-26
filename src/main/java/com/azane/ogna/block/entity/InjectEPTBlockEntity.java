@@ -6,6 +6,7 @@ import com.azane.ogna.client.gui.ldlib.extra.PredicateSlotWidget;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
 import com.azane.ogna.combat.chip.ChipArg;
 import com.azane.ogna.combat.chip.ChipSet;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.inventory.MenuItemDisplay;
 import com.azane.ogna.item.OgnaChip;
@@ -23,7 +24,6 @@ import com.lowdragmc.lowdraglib.gui.texture.ProgressTexture;
 import com.lowdragmc.lowdraglib.gui.widget.*;
 import com.lowdragmc.lowdraglib.syncdata.IManaged;
 import com.lowdragmc.lowdraglib.syncdata.IManagedStorage;
-import com.lowdragmc.lowdraglib.syncdata.annotation.DescSynced;
 import com.lowdragmc.lowdraglib.syncdata.annotation.DropSaved;
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
 import com.lowdragmc.lowdraglib.syncdata.blockentity.IAsyncAutoSyncBlockEntity;
@@ -48,7 +48,6 @@ import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -114,7 +113,7 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     private final MenuItemDisplay chipListDisplay = new MenuItemDisplay();
 
     //TODO:不要用List不要用List不要用List不要用List不要用List不要用List!!!!!!!! 很好静默处理干掉我半天
-    @DropSaved @DescSynced @Persisted
+    @DropSaved @Persisted
     private ItemStack[] stacks = new ItemStack[4];
     @DropSaved @Persisted
     private boolean inInject;
@@ -218,6 +217,13 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
                     });
                     if(skill_progressWidget != null)
                         skill_progressWidget.setFillDirection(curOp.fillDirection);
+
+                    if(cd.isRemote)
+                        return;
+
+                    iOgnaWeapon.onSkillEquip(weapon,OgnaSkill.getSkillId(skill));
+                    skill_skillSlot.setItem(ItemStack.EMPTY);
+                    sendSync((ServerPlayer) player, weapon, 0);
                 }
             }
         });
@@ -236,6 +242,13 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
                     });
                     if(skill_progressWidget != null)
                         skill_progressWidget.setFillDirection(curOp.fillDirection);
+
+                    if(cd.isRemote)
+                        return;
+
+                    skill_skillSlot.setItem(OgnaSkill.buildSkillStack(iOgnaWeapon.getSkillId(weapon)));
+                    iOgnaWeapon.onSkillUnequip(weapon);
+                    sendSync((ServerPlayer) player, weapon, 0);
                 }
             }
         });
@@ -295,15 +308,16 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
             if(IOgnaWeapon.isWeapon(weapon) && OgnaChip.isChip(chip))
             {
                 IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weapon.getItem();
-                ChipSet chipSet = iOgnaWeapon.getWeaponCap(weapon).getChipSet();
+                var cap = iOgnaWeapon.getWeaponCap(weapon);
+                ChipSet chipSet = cap.getChipSet();
                 IChip iChip = ((OgnaChip) chip.getItem()).getDataBaseForStack(chip);
-                ChipArg arg = ChipArg.of(player, weapon);
+                ChipArg arg = ChipArg.of(player, weapon,cap);
                 if(iChip.canPlugIn(chipSet,arg))
                 {
                     chipSet.insertChip(iChip,arg);
                     chip.shrink(1);
                     cleanUpChipList();
-                    sendSync((ServerPlayer) player, weapon, 2);
+                    sendSync((ServerPlayer) player,weapon, 2);
                 }
             }
         });
@@ -325,8 +339,9 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
             ItemStack chip = chip_chipSlot.getItem();
             if(IOgnaWeapon.isWeapon(weapon) && chip.isEmpty())
             {
-                ChipSet chipSet = ((IOgnaWeapon) weapon.getItem()).getWeaponCap(weapon).getChipSet();
-                ChipArg arg = ChipArg.of(player, weapon);
+                var cap = ((IOgnaWeapon) weapon.getItem()).getWeaponCap(weapon);
+                ChipSet chipSet = cap.getChipSet();
+                ChipArg arg = ChipArg.of(player, weapon,cap);
                 if(chipListWidget != null && selectedChipWidget != null)
                 {
                     IChip iChip = selectedChipWidget.getChip();
@@ -352,7 +367,7 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
             IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weaponStack.getItem();
             if(iOgnaWeapon.getStackUUID(weaponStack).equals(packet.getStackUUID().toString()))
             {
-                iOgnaWeapon.getWeaponCap(weaponStack).deserializeNBT(packet.getCapNBT());
+                stacks[packet.getSlotIndex()] = ItemStack.of(packet.getStackNBT());
                 cleanUpChipList();
             }
         }
@@ -365,7 +380,7 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
             IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weaponStack.getItem();
             OgnmChannel.DEFAULT.sendTo(new SyncEPTWeaponStackCapPacket(
                 UUID.fromString(iOgnaWeapon.getOrCreateStackUUID(weaponStack)),
-                iOgnaWeapon.getWeaponCap(weaponStack).serializeNBT(),this.getBlockPos(), slotIndex), player);
+                weaponStack.serializeNBT(),this.getBlockPos(), slotIndex), player);
         }
     }
 
@@ -396,11 +411,7 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
         {
             pBlockEntity.curTick++;
             if(pBlockEntity.curTick >= pBlockEntity.curOp.baseTick)
-            {
-                if(EPTOp.isSkill(pBlockEntity.curOp))
-                    onSkillOpEnd(pBlockEntity);
                 onProgressEnd(pBlockEntity);
-            }
         }
     }
 
@@ -410,9 +421,7 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
         {
             pBlockEntity.curTick++;
             if(pBlockEntity.curTick >= pBlockEntity.curOp.baseTick)
-            {
                 onProgressEnd(pBlockEntity);
-            }
         }
     }
 
@@ -424,28 +433,6 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
             slotWidget.setCanPutItems(true);
             slotWidget.setCanTakeItems(true);
         });
-    }
-
-    private static void onSkillOpEnd(InjectEPTBlockEntity pBlockEntity)
-    {
-        if(pBlockEntity.skill_weaponSlot == null || pBlockEntity.skill_skillSlot == null)
-            return;
-        ItemStack weapon = pBlockEntity.skill_weaponSlot.getItem();
-        ItemStack skill = pBlockEntity.skill_skillSlot.getItem();
-        boolean available = IOgnaWeapon.isWeapon(weapon) && (pBlockEntity.curOp == EPTOp.SKILL_IN ? OgnaSkill.isSkill(skill) : skill.isEmpty());
-        if(!available)
-            return;
-        IOgnaWeapon iOgnaWeapon = (IOgnaWeapon) weapon.getItem();
-        if(pBlockEntity.curOp == EPTOp.SKILL_IN)
-        {
-            iOgnaWeapon.onSkillEquip(weapon,OgnaSkill.getSkillId(skill));
-            pBlockEntity.skill_skillSlot.setItem(ItemStack.EMPTY);
-        }
-        else
-        {
-            pBlockEntity.skill_skillSlot.setItem(OgnaSkill.buildSkillStack(iOgnaWeapon.getSkillId(weapon)));
-            iOgnaWeapon.onSkillUnequip(weapon);
-        }
     }
 
     @Override
@@ -475,7 +462,6 @@ public class InjectEPTBlockEntity extends BlockEntity implements Container,IUIHo
     @Override
     public void setItem(int pSlot, ItemStack pStack)
     {
-
         this.stacks[pSlot] =  pStack;
         if(pSlot == 2)
             cleanUpChipList();

@@ -6,13 +6,13 @@ import com.azane.ogna.combat.chip.ChipSet;
 import com.azane.ogna.combat.data.AttrModifier;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.lib.IComponentDisplay;
+import com.azane.ogna.lib.ISyncNBTSerializable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * @author azaneNH37 (2025-08-02)
  */
-public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>, IComponentDisplay
+public interface IOgnaWeaponCap extends ISyncNBTSerializable<CompoundTag>, IComponentDisplay
 {
     IOgnaWeaponCap FALLBACK = new IOgnaWeaponCap()
     {
@@ -63,6 +63,9 @@ public interface IOgnaWeaponCap extends INBTSerializable<CompoundTag>, IComponen
 
         @Override
         public void modifyCurrentEnergy(double val, boolean needSync, Player player, ItemStack stack) {}
+
+        @Override
+        public CompoundTag serializeSyncNBT() {return new CompoundTag();}
 
         @Override
         public CompoundTag serializeNBT(){return new CompoundTag(); }

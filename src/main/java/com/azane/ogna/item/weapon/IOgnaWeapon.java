@@ -4,6 +4,7 @@ import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.genable.item.base.IuuidStack;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
 import com.azane.ogna.item.skill.IEquipSkill;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +26,17 @@ public interface IOgnaWeapon extends IuuidStack, IEquipSkill
         return stack != null && !stack.isEmpty() && stack.getItem() instanceof IOgnaWeapon;
     }
 
+    static CompoundTag getSyncNbt(ItemStack stack)
+    {
+        CompoundTag tag = stack.serializeNBT();
+        if(isWeapon(stack))
+        {
+            IOgnaWeapon weapon = (IOgnaWeapon)stack.getItem();
+            tag.put("ForgeCaps", weapon.getWeaponCap(stack).serializeSyncNBT());
+        }
+        return tag;
+    }
+
     @Override
     default boolean hasSkill(ItemStack stack)
     {
@@ -36,6 +48,8 @@ public interface IOgnaWeapon extends IuuidStack, IEquipSkill
     {
         return hasSkill(stack) ? getWeaponCap(stack).getSkillCap().getSkill().getId() : null;
     }
+
+
 
     IOgnaWeaponCap getWeaponCap(ItemStack stack);
 

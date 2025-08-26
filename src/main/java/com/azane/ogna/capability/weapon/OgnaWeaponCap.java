@@ -16,14 +16,12 @@ import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.NbtHelper;
-import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
 import com.azane.ogna.registry.ModAttribute;
 import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -32,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -165,13 +164,9 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     }
 
     @Override
-    public void modifyCurrentEnergy(double val, boolean needSync, Player player, ItemStack stack)
+    public void modifyCurrentEnergy(double val, boolean needSync, Player player, @NotNull ItemStack stack)
     {
         currentEnergy = Mth.clamp(currentEnergy + val, 0, submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_STORE.get(),player, stack));
-        if(!needSync || player == null || stack == null)
-            return;
-        if(player instanceof ServerPlayer serverPlayer)
-            SyncWeaponCapPacket.trySend(serverPlayer,stack, SyncWeaponCapPacket.CapData.CURRENT_ENERGY, currentEnergy);
     }
 
     @Override
@@ -182,6 +177,16 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         nbt.put("skillCap", skillCap.serializeNBT());
         nbt.putDouble("currentEnergy", currentEnergy);
         nbt.put("chipSet", chipSet.serializeNBT());
+        return nbt;
+    }
+
+    @Override
+    public CompoundTag serializeSyncNBT()
+    {
+        var nbt = new CompoundTag();
+        nbt.put("skillCap", skillCap.serializeSyncNBT());
+        nbt.put("chipSet", chipSet.serializeSyncNBT());
+        nbt.putDouble("currentEnergy", currentEnergy);
         return nbt;
     }
 

@@ -3,9 +3,9 @@ package com.azane.ogna.combat.chip;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.genable.item.chip.IChip;
 import com.azane.ogna.item.OgnaChip;
-import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.ColorHelper;
 import com.azane.ogna.lib.IComponentDisplay;
+import com.azane.ogna.lib.ISyncNBTSerializable;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.resource.service.CommonDataService;
@@ -20,7 +20,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,7 +28,7 @@ import java.util.function.Predicate;
 /**
  * @author azaneNH37 (2025-08-02)
  */
-public class ChipSet implements INBTSerializable<CompoundTag>, IComponentDisplay
+public class ChipSet implements ISyncNBTSerializable<CompoundTag>, IComponentDisplay
 {
     public static final ChipSet FALLBACK = new ChipSet(ChipEnv.FALLBACK);
 
@@ -149,30 +148,50 @@ public class ChipSet implements INBTSerializable<CompoundTag>, IComponentDisplay
     }
 
     @Override
+    public CompoundTag serializeSyncNBT()
+    {
+        var nbt = new CompoundTag();
+        nbt.putString("env", chipEnv.name());
+        var chipsNbt = new CompoundTag();
+        chips.forEach((id, count) -> chipsNbt.putInt(id.toString(), count));
+        nbt.put("chips", chipsNbt);
+        nbt.putInt("volumeTake", volumeTake);
+        return nbt;
+    }
+
+    @Override
     public void deserializeNBT(CompoundTag nbt)
     {
         chipEnv = ChipEnv.valueOf(nbt.getString("env"));
-        var chipsNbt = nbt.getCompound("chips");
-        chips.clear();
-        chipsNbt.getAllKeys().forEach(key ->
-            chips.put(RlHelper.parse(key), chipsNbt.getInt(key)));
-        var triggeredNbt = nbt.getCompound("triggered");
-        triggeredChips.clear();
-        for(ChipTiming timing : ChipTiming.values())
-        {
-            var chipsList = new ArrayList<ResourceLocation>();
-            var lt = triggeredNbt.getList(timing.name(), Tag.TAG_STRING);
-            for(int i = 0; i < lt.size(); i++) {
-                chipsList.add(RlHelper.parse(lt.getString(i)));
+        Optional.ofNullable(nbt.get("chips")).map(CompoundTag.class::cast).ifPresent(
+            chipsNbt->{
+                chips.clear();
+                chipsNbt.getAllKeys().forEach(key ->
+                    chips.put(RlHelper.parse(key), chipsNbt.getInt(key)));
             }
-            triggeredChips.put(timing, chipsList);
-        }
-        toRemove.clear();
-        var lis = nbt.getList("toRemove", Tag.TAG_STRING);
-        for(int i = 0; i < lis.size(); i++)
-        {
-            toRemove.add(RlHelper.parse(lis.getString(i)));
-        }
+        );
+        Optional.ofNullable(nbt.get("triggered")).map(CompoundTag.class::cast).ifPresent(
+            triggeredNbt->{
+                triggeredChips.clear();
+                for(ChipTiming timing : ChipTiming.values())
+                {
+                    var chipsList = new ArrayList<ResourceLocation>();
+                    var lt = triggeredNbt.getList(timing.name(), Tag.TAG_STRING);
+                    for(int i = 0; i < lt.size(); i++) {
+                        chipsList.add(RlHelper.parse(lt.getString(i)));
+                    }
+                    triggeredChips.put(timing, chipsList);
+                }
+            }
+        );
+        try {
+            var lis = nbt.getList("toRemove", Tag.TAG_STRING);
+            toRemove.clear();
+            for(int i = 0; i < lis.size(); i++)
+            {
+                toRemove.add(RlHelper.parse(lis.getString(i)));
+            }
+        }catch (Exception ignored) {}
         volumeTake = nbt.getInt("volumeTake");
     }
 

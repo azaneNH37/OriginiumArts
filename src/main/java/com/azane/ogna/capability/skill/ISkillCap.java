@@ -2,13 +2,13 @@ package com.azane.ogna.capability.skill;
 
 import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.genable.item.skill.ISkill;
+import com.azane.ogna.lib.ISyncNBTSerializable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -17,7 +17,7 @@ import java.util.Set;
  * 含义为贴附在武器上的一个Skill，所以其应当在skill修改时被重新初始化
  * @author azaneNH37 (2025-07-25)
  */
-public interface ISkillCap extends INBTSerializable<CompoundTag>
+public interface ISkillCap extends ISyncNBTSerializable<CompoundTag>
 {
     ISkillCap FALLBACK = new ISkillCap()
     {
@@ -71,6 +71,9 @@ public interface ISkillCap extends INBTSerializable<CompoundTag>
         {
             return null;
         }
+
+        @Override
+        public CompoundTag serializeSyncNBT() {return new CompoundTag();}
 
         @Override
         public CompoundTag serializeNBT() { return new CompoundTag(); }

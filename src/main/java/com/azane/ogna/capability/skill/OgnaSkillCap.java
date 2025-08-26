@@ -5,26 +5,21 @@ import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.combat.chip.ChipTiming;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
-import com.azane.ogna.network.to_client.SyncWeaponCapPacket;
 import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.resource.service.CommonDataService;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -121,27 +116,19 @@ public class OgnaSkillCap implements ISkillCap
     }
 
     @Override
-    public void modifySP(double val, boolean needSync, Player player, ItemStack stack)
+    public void modifySP(double val, boolean needSync, Player player,@NotNull ItemStack stack)
     {
         if(skill == null)
             return;
         SP = Mth.clamp(SP + val, 0, skill.getSkillData().getStorage()*weaponCap.submitAttrVal(ModAttribute.SKILL_SP.get(),player, stack,skill.getSkillData().getSP()));
-        if(!needSync || player == null || stack == null)
-            return;
-        if(player instanceof ServerPlayer serverPlayer)
-            SyncWeaponCapPacket.trySend(serverPlayer,stack, SyncWeaponCapPacket.CapData.SKILL_SP, SP);
     }
 
     @Override
-    public void modifyRD(double val, boolean needSync, Player player, ItemStack stack)
+    public void modifyRD(double val, boolean needSync, Player player,@NotNull ItemStack stack)
     {
         if(skill == null)
             return;
         RD = Mth.clamp(RD + val, 0, weaponCap.submitAttrVal(ModAttribute.SKILL_DURATION.get(),player, stack,skill.getSkillData().getDuration()));
-        if(!needSync || player == null || stack == null)
-            return;
-        if(player instanceof ServerPlayer serverPlayer)
-            SyncWeaponCapPacket.trySend(serverPlayer,stack, SyncWeaponCapPacket.CapData.SKILL_RD, RD);
     }
 
     @Override
@@ -171,6 +158,18 @@ public class OgnaSkillCap implements ISkillCap
     }
 
     @Override
+    public CompoundTag serializeSyncNBT()
+    {
+        var tag = new CompoundTag();
+        if(skillRL != null)
+            tag.putString("skill", skillRL.toString());
+        tag.putDouble("SP", SP);
+        tag.putDouble("RD", RD);
+        tag.putBoolean("active", active);
+        return tag;
+    }
+
+    @Override
     public void deserializeNBT(CompoundTag nbt)
     {
         if(nbt.contains("skill"))
@@ -181,7 +180,7 @@ public class OgnaSkillCap implements ISkillCap
         SP = nbt.getDouble("SP");
         RD = nbt.getDouble("RD");
         active = nbt.getBoolean("active");
-        baseAttrMap.deserializeNBT(nbt.getCompound("baseAttrMap"));
-        skillAttrMap.deserializeNBT(nbt.getCompound("skillAttrMap"));
+        Optional.ofNullable(nbt.get("baseAttrMap")).map(CompoundTag.class::cast).ifPresent(baseAttrMap::deserializeNBT);
+        Optional.ofNullable(nbt.get("skillAttrMap")).map(CompoundTag.class::cast).ifPresent(skillAttrMap::deserializeNBT);
     }
 }

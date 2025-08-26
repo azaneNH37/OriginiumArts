@@ -74,8 +74,10 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
     @Override
     public void tickDuration(Level level, Player player, ItemStack stack)
     {
-         ISkillCap skillCap = getWeaponCap(stack).getSkillCap();
-         skillCap.modifyRD(-1D,false,player,stack);
+        if(level.isClientSide())
+            return;
+        ISkillCap skillCap = getWeaponCap(stack).getSkillCap();
+        skillCap.modifyRD(-1D,false,player,stack);
         //DebugLogger.log("Weapon %s ticked RD, now is %s".formatted(this.getStackUUID(stack), skillCap.getRD()));
         if(skillCap.getRD() <= 0)
              skillCap.end(level,player,stack);
@@ -84,6 +86,8 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
     @Override
     public void tickSP(Level level, Player player, ItemStack stack)
     {
+        if(level.isClientSide())
+            return;
         ISkillCap skillCap = getWeaponCap(stack).getSkillCap();
         skillCap.modifySP(getWeaponCap(stack).submitAttrVal(ModAttribute.SKILL_SP_RATE.get(),player,stack,1D),false,player,stack);
         //DebugLogger.log("Weapon %s ticked SP, now is %s".formatted(this.getStackUUID(stack), skillCap.getSP()));
@@ -112,6 +116,8 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
     @Override
     public boolean onSkillInvoke(Level level, Player player, ItemStack stack)
     {
+        if(level.isClientSide())
+            return false;
         ISkillCap skillCap = getWeaponCap(stack).getSkillCap();
         if (skillCap.canStart(level, player, stack))
         {
@@ -137,7 +143,8 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
             return null;
         //TODO:太神秘了（
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        GeoItem.getOrAssignId(stack,server.getLevel(Level.OVERWORLD));
+        if(server != null)
+            GeoItem.getOrAssignId(stack,server.getLevel(Level.OVERWORLD));
         this.getOrCreateStackUUID(stack);
         return stack;
     }

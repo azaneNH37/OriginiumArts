@@ -23,14 +23,14 @@ import java.util.UUID;
 public class SyncEPTWeaponStackCapPacket implements IOgnmPacket
 {
     final UUID stackUUID;
-    final CompoundTag capNBT;
+    final CompoundTag stackNBT;
     final BlockPos blockPos;
     final int slotIndex;
 
     public SyncEPTWeaponStackCapPacket(FriendlyByteBuf buf)
     {
         this.stackUUID = buf.readUUID();
-        this.capNBT = buf.readNbt();
+        this.stackNBT = buf.readNbt();
         this.blockPos = buf.readBlockPos();
         this.slotIndex = buf.readInt();
     }
@@ -39,7 +39,7 @@ public class SyncEPTWeaponStackCapPacket implements IOgnmPacket
     public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeUUID(stackUUID);
-        buffer.writeNbt(capNBT);
+        buffer.writeNbt(stackNBT);
         buffer.writeBlockPos(blockPos);
         buffer.writeInt(slotIndex);
     }

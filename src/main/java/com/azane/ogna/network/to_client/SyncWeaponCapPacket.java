@@ -4,7 +4,6 @@ import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.network.IOgnmPacket;
-import com.azane.ogna.network.OgnmChannel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -78,9 +77,11 @@ public class SyncWeaponCapPacket implements IOgnmPacket
 
     public static void trySend(ServerPlayer player,ItemStack stack,CapData data,double val)
     {
+        /*
         if(!IOgnaWeapon.isWeapon(stack))
             return;
         IOgnaWeapon weapon = (IOgnaWeapon) stack.getItem();
         OgnmChannel.DEFAULT.sendTo(new SyncWeaponCapPacket(UUID.fromString(weapon.getOrCreateStackUUID(stack)), data,val),player);
+        */
     }
 }
