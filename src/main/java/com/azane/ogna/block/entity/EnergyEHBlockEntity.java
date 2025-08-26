@@ -408,7 +408,7 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
         @Override
         public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate)
         {
-            DebugLogger.log("slot:{}, stack:{},simulate:{}", slot, stack,simulate);
+            //DebugLogger.log("slot:{}, stack:{},simulate:{}", slot, stack,simulate);
             if(slot == 1)
                 return stack;
             if (stack.isEmpty())

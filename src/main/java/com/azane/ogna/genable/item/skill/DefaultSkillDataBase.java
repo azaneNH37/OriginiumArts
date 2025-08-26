@@ -69,19 +69,19 @@ public class DefaultSkillDataBase implements ISkill
     @Override
     public void onSkillStart(Level level, Player player, IOgnaWeapon weapon, ItemStack stack)
     {
-        DebugLogger.log("Skill %s started for player %s".formatted(id, player.getName().getString()));
+        //DebugLogger.log("Skill %s started for player %s".formatted(id, player.getName().getString()));
     }
 
     @Override
     public void onSkillEnd(Level level, Player player, IOgnaWeapon weapon, ItemStack stack)
     {
-        DebugLogger.log("Skill %s ended for player %s".formatted(id, player.getName().getString()));
+        //DebugLogger.log("Skill %s ended for player %s".formatted(id, player.getName().getString()));
     }
 
     @Override
     public boolean onServerAttack(ServerLevel level, ServerPlayer player, IOgnaWeapon weapon, ItemStack stack, AttackType attackType, long chargeTime, boolean isOpen)
     {
-        DebugLogger.log("Skill %s executed by player %s with attack type %s".formatted(id, player.getName().getString(), attackType));
+        //DebugLogger.log("Skill %s executed by player %s with attack type %s".formatted(id, player.getName().getString(), attackType));
         CombatFirer.fireDefault(level,player,weapon,weapon.getWeaponCap(stack),stack,"skill","skill");
         return true;
     }

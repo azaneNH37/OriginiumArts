@@ -47,7 +47,7 @@ public class ItemStackListener
         {
             if(!CACHED.contains(serverPlayer.inventoryMenu))
             {
-                DebugLogger.log("Listening to inventoryMenu with its id {}",serverPlayer.inventoryMenu.containerId);
+                DebugLogger.log("Listening to inventoryMenu of Player {} with its id {}",serverPlayer.getName().getString(),serverPlayer.inventoryMenu.containerId);
                 CACHED.add(serverPlayer.inventoryMenu);
                 serverPlayer.inventoryMenu.addSlotListener(LISTENER_FACTORY.apply(serverPlayer));
             }
