@@ -78,9 +78,9 @@ public class ActiveOriginiumBlock extends Block
             BlockState state =
                 aognmState.getValue(AOGNM_LEVEL) > 20 ? inactive.CORE :
                 aognmState.getValue(AOGNM_LEVEL) > 16 ? inactive.MIX4 :
-                aognmState.getValue(AOGNM_LEVEL) > 14 ? inactive.MIX3 :
-                aognmState.getValue(AOGNM_LEVEL) > 10 ? inactive.MIX2 :
-                aognmState.getValue(AOGNM_LEVEL) > 6 ? inactive.MIX1 :
+                aognmState.getValue(AOGNM_LEVEL) > 12 ? inactive.MIX3 :
+                aognmState.getValue(AOGNM_LEVEL) > 8 ? inactive.MIX2 :
+                aognmState.getValue(AOGNM_LEVEL) > 4 ? inactive.MIX1 :
                 inactive.SHELL;
             pLevel.setBlock(pPos, state,3);
         }

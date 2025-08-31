@@ -1,5 +1,6 @@
 package com.azane.ogna.block;
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,5 +44,11 @@ public class InactiveOriginiumBlock extends Block
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
     {
         pBuilder.add(IOGNM_LEVEL);
+    }
+
+    @Override
+    public boolean skipRendering(BlockState pState, BlockState pAdjacentState, Direction pDirection)
+    {
+        return pAdjacentState.is(this) && pAdjacentState.getValue(IOGNM_LEVEL).equals(pState.getValue(IOGNM_LEVEL));
     }
 }
