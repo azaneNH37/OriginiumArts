@@ -7,7 +7,7 @@
     },
     {
       "type": "rarity_filter",
-      "chance": 40
+      "chance": 120
     },
     {
       "type": "heightmap",

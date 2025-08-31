@@ -9,6 +9,7 @@
   "block.ognmarts.aognm_l": "Large Active Originium Crystal Embryo",
   "block.ognmarts.aognm_m": "Medium Active Originium Crystal Embryo",
   "block.ognmarts.aognm_s": "Small Active Originium Crystal Embryo",
+  "block.ognmarts.ognm_crystal": "Originium Crystal Cluster",
 
   "item.ognmarts.ognm_shard": "Originium Shard",
   "item.ognmarts.ognm_shard.desp": "An Originium shard collected from heavily contaminated regions. \nAnyone who touches it has a high chance to get infected and even mutate. Therefore, it is a hazardous material as indicated in the Columbia CDC toxicity database.",

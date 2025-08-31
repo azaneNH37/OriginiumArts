@@ -16,6 +16,8 @@ public class OgnaConfig
 {
     private static ForgeConfigSpec.BooleanValue DEBUG_HITBOX;
 
+    private static ForgeConfigSpec.DoubleValue WORLDGEN_OGNM_DENSITY;
+
     public static void register(ModLoadingContext context)
     {
         context.registerConfig(ModConfig.Type.COMMON,init(), OriginiumArts.MOD_ID+"/common.toml");
@@ -23,12 +25,15 @@ public class OgnaConfig
 
     @Getter
     private static boolean debughitbox;
+    @Getter
+    private static double worldgenOgnmDensity;
 
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
     {
         debughitbox = DEBUG_HITBOX.get();
+        worldgenOgnmDensity = WORLDGEN_OGNM_DENSITY.get();
     }
 
     private static ForgeConfigSpec init()
@@ -37,6 +42,7 @@ public class OgnaConfig
 
         DEBUG_HITBOX = builder.comment("Whether to render hitboxes in the client").define("debug.hitbox", false);
 
+        WORLDGEN_OGNM_DENSITY = builder.comment("Density of Originium Feature in the world").defineInRange("worldgen.ognm_density", 1.0, 0.0, 1.0);
         return builder.build();
     }
 

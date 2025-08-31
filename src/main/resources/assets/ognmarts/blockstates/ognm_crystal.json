@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "clevel=0": [
+      {
+        "model": "ognmarts:block/ognm_crystal_1"
+      }
+    ],
+    "clevel=1": [
+      {
+        "model": "ognmarts:block/ognm_crystal_2"
+      }
+    ],
+    "clevel=2": [
+      {
+        "model": "ognmarts:block/ognm_crystal_3"
+      }
+    ],
+    "clevel=3": [
+      {
+        "model": "ognmarts:block/ognm_crystal_4"
+      }
+    ],
+    "clevel=4": [
+      {
+        "model": "ognmarts:block/ognm_crystal_5"
+      }
+    ],
+    "clevel=5": [
+        {
+            "model": "ognmarts:block/ognm_crystal_6"
+        }
+    ]
+  }
+}

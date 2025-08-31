@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "ognmarts:block/ogn_mix_3"
+  },
+  "ambientocclusion": false,
+  "render_type": "minecraft:translucent"
+}

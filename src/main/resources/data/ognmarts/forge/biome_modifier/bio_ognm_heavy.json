@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#ognmarts:is_ognm_heavy",
+  "features": "ognmarts:ognm_place_heavy",
+  "step": "underground_decoration"
+}

@@ -1,0 +1,83 @@
+{
+  "type": "minecraft:random_patch",
+  "config": {
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "data": {
+                  "Name": "ognmarts:ognm_crystal",
+                  "Properties": {
+                    "clevel": "3"
+                  }
+                },
+                "weight": 3
+              },
+              {
+                "data": {
+                  "Name": "ognmarts:ognm_crystal",
+                  "Properties": {
+                    "clevel": "4"
+                  }
+                },
+                "weight": 3
+              },
+              {
+                "data": {
+                  "Name": "ognmarts:ognm_crystal",
+                  "Properties": {
+                    "clevel": "5"
+                  }
+                },
+                "weight": 3
+              },
+              {
+                "data": {
+                  "Name": "ognmarts:ognm_crystal",
+                  "Properties": {
+                    "clevel": "0"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "ognmarts:ognm_crystal",
+                  "Properties": {
+                    "clevel": "1"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "ognmarts:ognm_crystal",
+                  "Properties": {
+                    "clevel": "2"
+                  }
+                },
+                "weight": 1
+              }
+            ]
+          }
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:air"
+          }
+        }
+      ]
+    },
+    "tries": 64,
+    "xz_spread": 8,
+    "y_spread": 2
+  }
+}

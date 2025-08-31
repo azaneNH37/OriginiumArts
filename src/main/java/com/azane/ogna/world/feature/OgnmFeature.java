@@ -1,5 +1,7 @@
 package com.azane.ogna.world.feature;
 
+import com.azane.ogna.OgnaConfig;
+import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -26,19 +28,24 @@ public class OgnmFeature extends Feature<OgnmFeature.Config>
         RandomSource random = context.random();
         Config config = context.config();
 
-        //DebugLogger.log("place Feature");
-        // 获取上方方块
-        BlockState topBlock = config.topBlock().getState(random, origin);
-        // 获取下方方块
-        BlockState bottomBlock = config.bottomBlock().getState(random, origin);
+        OriginiumArts.LOGGER.warn(OgnaConfig.getWorldgenOgnmDensity());
+        OriginiumArts.LOGGER.warn(random.nextDouble());
+        if(OgnaConfig.getWorldgenOgnmDensity() >= random.nextDouble())
+        {
+            OriginiumArts.LOGGER.warn("Generating Ognm at " + origin);
+            // 获取上方方块
+            BlockState topBlock = config.topBlock().getState(random, origin);
+            // 获取下方方块
+            BlockState bottomBlock = config.bottomBlock().getState(random, origin);
 
-        // 在原点放置上方方块
-        setBlock(level, origin, topBlock);
-        level.scheduleTick(origin, topBlock.getBlock(), level.getRandom().nextInt(10,30));
-        //DebugLogger.log("scheduleTick at " + origin + " for " + topBlock.getBlock());
-        // 在原点下方放置下方方块
-        setBlock(level, origin.below(), bottomBlock);
-        level.scheduleTick(origin.below(), bottomBlock.getBlock(), level.getRandom().nextInt(10,30));
+            // 在原点放置上方方块
+            setBlock(level, origin, topBlock);
+            level.scheduleTick(origin, topBlock.getBlock(), level.getRandom().nextInt(10,30));
+            //DebugLogger.log("scheduleTick at " + origin + " for " + topBlock.getBlock());
+            // 在原点下方放置下方方块
+            setBlock(level, origin.below(), bottomBlock);
+            level.scheduleTick(origin.below(), bottomBlock.getBlock(), level.getRandom().nextInt(10,30));
+        }
 
         return true;
     }

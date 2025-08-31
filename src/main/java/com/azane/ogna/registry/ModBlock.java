@@ -31,6 +31,7 @@ public class ModBlock
     public static final ItemBlock AOGNM_M = registerBlockItem("aognm_m", ()->new ActiveOriginiumBlock(15,0.12D));
     public static final ItemBlock AOGNM_S = registerBlockItem("aognm_s", ()->new ActiveOriginiumBlock(7,0.05D));
     public static final ItemBlock IOGNM = registerBlockItem("iognm", InactiveOriginiumBlock::new);
+    public static final ItemBlock OGNM_CRYSTAL = registerBlockItem("ognm_crystal", OgnmCrystalBlock::new);
 
     public static RegistryObject<Block> register(String name, Supplier<? extends Block> supplier)
     {

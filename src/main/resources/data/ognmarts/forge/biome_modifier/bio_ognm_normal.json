@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#ognmarts:is_ognm_normal",
+  "features": "ognmarts:ognm_place_normal",
+  "step": "underground_decoration"
+}
