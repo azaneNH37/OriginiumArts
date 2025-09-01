@@ -56,7 +56,7 @@
     "cooldown": 500,
     "max_charge_time": 3000,
     "reload_time": 4000,
-    "energy_max": 320,
+    "energy_max": 360,
     "energy_consume": 4,
     "chip_set_volume": 40,
     "dmg_dataset": {

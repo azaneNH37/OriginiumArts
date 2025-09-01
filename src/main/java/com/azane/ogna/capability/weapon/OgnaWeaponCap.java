@@ -20,6 +20,7 @@ import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.util.SyncUtil;
 import lombok.Getter;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +30,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 import org.jetbrains.annotations.NotNull;
@@ -227,6 +230,7 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag)
     {
         if(getSkillCap().getSkill() != null)
