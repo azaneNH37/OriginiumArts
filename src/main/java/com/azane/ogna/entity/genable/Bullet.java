@@ -1,12 +1,7 @@
 package com.azane.ogna.entity.genable;
 
-import com.azane.ogna.combat.data.ArkDamageSource;
-import com.azane.ogna.combat.data.CombatUnit;
-import com.azane.ogna.combat.data.MoveUnit;
-import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.data.*;
 import com.azane.ogna.combat.util.SelectRule;
-import com.azane.ogna.combat.util.SelectorType;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.data.SoundKeyData;
 import com.azane.ogna.genable.entity.IBullet;
@@ -19,14 +14,12 @@ import com.azane.ogna.util.OgnaFxHelper;
 import com.lowdragmc.photon.client.fx.EntityEffect;
 import com.lowdragmc.photon.client.fx.FXHelper;
 import lombok.Getter;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -58,6 +51,8 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
 
     @Getter
     private IBullet dataBase;
+    @Getter
+    private CastContext castContext;
 
     //geckolib
     @Getter
@@ -65,45 +60,33 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     private static final RawAnimation ANIM_BULLET = RawAnimation.begin().thenPlay("bullet.active");
 
     private int life;
-    private Vec3 startPos;
-
     private final Set<UUID> hitEntities = new HashSet<>();
 
-    private Vec3 targetPos;
-    private Entity targetEntity;
-    private float minTrackingDistance = 0.2F;
-    private float turnRate = 0.35F;
+    private MoveUnit moveUnit;
 
-    private CombatUnit combatUnit;
-    private SelectorUnit selectorUnit;
-
-
-    public Bullet(EntityType<? extends Bullet> entityType, Level level) {
+    private Bullet(EntityType<? extends Bullet> entityType, Level level) {
         super(entityType, level);
         this.setNoGravity(true);
         this.noPhysics = true;
     }
 
-    public Bullet(LivingEntity shooter, Level level,ResourceLocation dataBase,CombatUnit combatUnit,SelectorUnit selectorUnit) {
-        this(ModEntity.BULLET.get(), level);
-        this.setPos(shooter.getX(), shooter.getEyeY(), shooter.getZ());
-        this.setOwner(shooter);
-        this.dataBase = CommonDataService.get().getBullet(dataBase);
-        this.startPos = this.position();
-        this.combatUnit = combatUnit;
-        this.selectorUnit = selectorUnit;
-    }
-    //TODO: 将运动信息收集至MoveUnit中
-    public Bullet(LivingEntity shooter, Level level, ResourceLocation dataBase, CombatUnit combatUnit, SelectorUnit selectorUnit, MoveUnit moveUnit)
+    public Bullet(CastContext castContext)
     {
-        this(shooter, level, dataBase, combatUnit, selectorUnit);
-        this.targetEntity = moveUnit.getTargetEntity();
+        this(ModEntity.BULLET.get(), castContext.getServerLevel());
+        castContext.setLinkedAttackEntity(this);
+        this.setPos(castContext.getMoveUnit().getInitialPos());
+        this.setOwner(castContext.getCaster());
+        this.dataBase = CommonDataService.get().getBullet(castContext.getAtkEntityUnit().getId());
+        this.moveUnit = castContext.getMoveUnit();
+        this.castContext = castContext;
+        this.shoot();
     }
 
-    @Override
-    public AABB getBoundingBox()
+    public void shoot()
     {
-        return super.getBoundingBox();
+        shootFromRotation(castContext.getCaster(),
+            (float) moveUnit.getXRot(), (float) moveUnit.getYRot(),
+            0, dataBase.getSpeed(), 0);
     }
 
     @Override
@@ -112,10 +95,10 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     @Nullable
     public Vec3 getActualTarget()
     {
-        if (targetEntity != null && targetEntity.isAlive()) {
-            return targetEntity.position();
+        if (moveUnit.getTargetEntity() != null && moveUnit.getTargetEntity().isAlive()) {
+            return moveUnit.getTargetEntity().position();
         }
-        return targetPos;
+        return moveUnit.getTargetPos();
     }
 
     @Override
@@ -148,12 +131,12 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
         }
 
         // 距离检查
-        if (this.startPos != null && this.position().distanceTo(this.startPos) > getDataBase().getRange()) {
+        if (this.moveUnit.getInitialPos() != null && this.position().distanceTo(this.moveUnit.getInitialPos()) > getDataBase().getRange()) {
             this.discard();
             return;
         }
         //DebugLogger.log("side:{}entity:{}",this.level().isClientSide,targetEntity != null);
-        this.setDeltaMovement(updateDeltaMovement(this.getDeltaMovement(), this.position(), minTrackingDistance, turnRate));
+        this.setDeltaMovement(updateDeltaMovement(this.getDeltaMovement(), this.position(), this.moveUnit.getMinTrackingDistance(), this.moveUnit.getTurnRate()));
 
         // 移动和碰撞检测
         Vec3 currentPos = this.position();
@@ -228,20 +211,9 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
                 //DebugLogger.log(unit.getSoundKey());
             }
 
-            var dmgSource = new ArkDamageSource(combatUnit,this,this.getOwner(),null);
-
-            if(selectorUnit.getType() == SelectorType.SINGLE)
-            {
-                if(result.getEntity() instanceof LivingEntity living)
-                {
-                    if(selectorUnit.getFilter().test(living))
-                        combatUnit.onHitEntity((ServerLevel) this.level(), living, selectorUnit, dmgSource);
-                }
-            }
-            else {
-                selectorUnit.gatherMultiTargets((ServerLevel) this.level(),this.getBoundingBox(), SelectRule.NULL.getFilter())
-                    .forEach(living -> combatUnit.onHitEntity((ServerLevel) this.level(), living, selectorUnit, dmgSource));
-            }
+            castContext.gatherMultiTargets((ServerLevel) this.level(),this.getBoundingBox(), SelectRule.NULL.getFilter(),
+                result.getEntity() instanceof LivingEntity living ? living : null)
+                .forEach(castContext::onHitEntity);
         }
         if(!dataBase.isPenetrate())
             this.discard();
@@ -265,16 +237,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     public void writeSpawnData(FriendlyByteBuf buffer)
     {
         buffer.writeResourceLocation(dataBase.getId());
-        buffer.writeBlockPos(BlockPos.containing(startPos));
-        if(targetEntity != null)
-        {
-            buffer.writeBoolean(true);
-            buffer.writeInt(targetEntity.getId());
-        }
-        else
-        {
-            buffer.writeBoolean(false);
-        }
+        moveUnit.toBuffer(buffer);
     }
 
     @Override
@@ -282,14 +245,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     {
         ResourceLocation id = additionalData.readResourceLocation();
         dataBase = CommonDataService.get().getBullet(id);
-        startPos = Vec3.atCenterOf(additionalData.readBlockPos());
-        if(additionalData.readBoolean())
-        {
-            int targetId = additionalData.readInt();
-            targetEntity = this.level().getEntity(targetId);
-            if(targetEntity == null || !targetEntity.isAlive())
-                targetEntity = null;
-        }
+        moveUnit = MoveUnit.fromBuffer(additionalData, this.level());
     }
 
     @Override

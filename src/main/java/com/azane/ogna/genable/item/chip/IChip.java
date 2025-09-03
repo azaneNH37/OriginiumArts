@@ -5,9 +5,7 @@ import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.combat.chip.ChipArg;
 import com.azane.ogna.combat.chip.ChipSet;
 import com.azane.ogna.combat.chip.ChipTiming;
-import com.azane.ogna.combat.data.ArkDamageSource;
-import com.azane.ogna.combat.data.CombatUnit;
-import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.data.CastContext;
 import com.azane.ogna.genable.data.display.ChipDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;
 import com.azane.ogna.lib.IComponentDisplay;
@@ -16,7 +14,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -51,7 +48,7 @@ public interface IChip extends IresourceLocation, IGenItemDatabase, IComponentDi
 
     default void onRemove(ChipSet chipSet, ChipArg arg){}
 
-    default void onImpactEntity(ServerLevel level, LivingEntity target, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource){}
+    default void onImpactEntity(LivingEntity target, CastContext castContext){}
 
     default void onSkillEnd(Level level, Player player, ItemStack stack, IOgnaWeaponCap cap, ISkillCap skillCap){}
 

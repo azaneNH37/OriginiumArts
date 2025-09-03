@@ -2,10 +2,7 @@ package com.azane.ogna.genable.item.skill;
 
 import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.combat.data.ArkDamageSource;
-import com.azane.ogna.combat.data.CombatUnit;
-import com.azane.ogna.combat.data.SelectorUnit;
-import com.azane.ogna.combat.data.OgnaSkillData;
+import com.azane.ogna.combat.data.*;
 import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.AtkEntityData;
@@ -82,12 +79,12 @@ public class DefaultSkillDataBase implements ISkill
     public boolean onServerAttack(ServerLevel level, ServerPlayer player, IOgnaWeapon weapon, ItemStack stack, AttackType attackType, long chargeTime, boolean isOpen)
     {
         //DebugLogger.log("Skill %s executed by player %s with attack type %s".formatted(id, player.getName().getString(), attackType));
-        CombatFirer.fireDefault(level,player,weapon,weapon.getWeaponCap(stack),stack,"skill","skill");
+        CombatFirer.fireDefault(level,player,stack,"skill","skill");
         return true;
     }
 
     @Override
-    public void onImpactEntity(ServerLevel level, LivingEntity entity, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource)
+    public void onImpactEntity(LivingEntity target, CastContext castContext)
     {
     }
 

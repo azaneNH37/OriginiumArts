@@ -3,14 +3,11 @@ package com.azane.ogna.genable.item.chip.chips;
 import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.combat.chip.ChipTiming;
-import com.azane.ogna.combat.data.ArkDamageSource;
-import com.azane.ogna.combat.data.CombatUnit;
-import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.data.CastContext;
 import com.azane.ogna.combat.util.ArkDmgTypes;
 import com.azane.ogna.genable.item.chip.ItemChip;
 import com.azane.ogna.registry.ModAttribute;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -29,11 +26,11 @@ public class TLEThresherChip extends ItemChip
     public List<ChipTiming> registerTiming() {return List.of(ChipTiming.ON_HIT_ENTITY);}
 
     @Override
-    public void onImpactEntity(ServerLevel level, LivingEntity target, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource)
+    public void onImpactEntity(LivingEntity target, CastContext castContext)
     {
         double armor = target.getAttributeValue(Attributes.ARMOR);
         double armorToughness = target.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
-        target.hurt(new DamageSource(ArkDmgTypes.getHolder(ArkDmgTypes.DOT, target.level().isClientSide())), (float) combatUnit.getMatrices().get(ModAttribute.DAMAGE_ARTS.get()).submit(calculateArmorPenaltyDamage(armor,armorToughness)));
+        target.hurt(new DamageSource(ArkDmgTypes.getHolder(ArkDmgTypes.DOT, target.level().isClientSide())), (float) castContext.getMatrix(ModAttribute.DAMAGE_ARTS.get()).submit(calculateArmorPenaltyDamage(armor,armorToughness)));
     }
 
     public double calculateArmorPenaltyDamage(double armor, double armorToughness)

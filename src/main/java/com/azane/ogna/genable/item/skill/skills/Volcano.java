@@ -3,20 +3,13 @@ package com.azane.ogna.genable.item.skill.skills;
 import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.capability.skill.ISkillCap;
-import com.azane.ogna.combat.data.ArkDamageSource;
-import com.azane.ogna.combat.data.CombatUnit;
 import com.azane.ogna.combat.data.MoveUnit;
-import com.azane.ogna.combat.data.SelectorUnit;
 import com.azane.ogna.combat.util.CombatFirer;
 import com.azane.ogna.combat.util.SelectRule;
-import com.azane.ogna.debug.log.DebugLogger;
-import com.azane.ogna.genable.entity.ITargetable;
 import com.azane.ogna.genable.item.skill.DefaultSkillDataBase;
-import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -47,8 +40,8 @@ public class Volcano extends DefaultSkillDataBase
                     Collections.shuffle(entities);
                     for(int i=0;i<Math.min(2,entities.size());i++)
                     {
-                        CombatFirer.fireTargetBullet(serverLevel,serverPlayer,weapon,weapon.getWeaponCap(stack),stack,"skill","skill",
-                            new MoveUnit.Builder().targetEntity(entities.get(i)).xRot(-45).yRot(serverLevel.random.nextInt(0,360)).build());
+                        CombatFirer.fireDefault(serverLevel,serverPlayer,stack,"skill","skill",
+                            new MoveUnit.Builder().initialPos(player.getEyePosition()).targetEntity(entities.get(i)).xRot(-45).yRot(serverLevel.random.nextInt(0,360)).build());
                     }
                 }
             }

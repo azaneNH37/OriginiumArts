@@ -1,9 +1,6 @@
 package com.azane.ogna.genable.item.skill;
 
-import com.azane.ogna.combat.data.ArkDamageSource;
-import com.azane.ogna.combat.data.CombatUnit;
-import com.azane.ogna.combat.data.SelectorUnit;
-import com.azane.ogna.combat.data.OgnaSkillData;
+import com.azane.ogna.combat.data.*;
 import com.azane.ogna.genable.data.AtkEntityData;
 import com.azane.ogna.genable.data.display.SkillDisplayContext;
 import com.azane.ogna.genable.item.base.IGenItemDatabase;
@@ -43,5 +40,5 @@ public interface ISkill extends IGenItemDatabase, IComponentDisplay
 
     boolean onServerAttack(ServerLevel level, ServerPlayer player, IOgnaWeapon weapon, ItemStack stack, AttackType attackType, long chargeTime, boolean isOpen);
 
-    void onImpactEntity(ServerLevel level, LivingEntity entity, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource);
+    void onImpactEntity(LivingEntity target, CastContext castContext);
 }

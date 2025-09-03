@@ -1,10 +1,7 @@
 package com.azane.ogna.entity.genable;
 
 import com.azane.ogna.OgnaConfig;
-import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.combat.data.ArkDamageSource;
-import com.azane.ogna.combat.data.CombatUnit;
-import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.data.CastContext;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.data.SoundKeyData;
 import com.azane.ogna.genable.entity.IBladeEffect;
@@ -15,7 +12,6 @@ import com.azane.ogna.registry.ModEntity;
 import com.azane.ogna.resource.service.CommonDataService;
 import com.azane.ogna.util.OgnaFxHelper;
 import com.lowdragmc.photon.client.fx.EntityEffect;
-import com.lowdragmc.photon.client.fx.FX;
 import com.lowdragmc.photon.client.fx.FXHelper;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
@@ -30,7 +26,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -41,8 +36,6 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -50,7 +43,7 @@ import java.util.UUID;
  */
 public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
 {
-    public static final EntityType<BladeEffect> TYPE = EntityType.Builder.of(BladeEffect::new, MobCategory.MISC).noSummon().noSave().fireImmune().sized(0.1F, 0.1F).clientTrackingRange(5).updateInterval(5).setShouldReceiveVelocityUpdates(false).build("blade_effect");
+    public static final EntityType<BladeEffect> TYPE = EntityType.Builder.<BladeEffect>of(BladeEffect::new, MobCategory.MISC).noSummon().noSave().fireImmune().sized(0.1F, 0.1F).clientTrackingRange(5).updateInterval(5).setShouldReceiveVelocityUpdates(false).build("blade_effect");
     public static final String FAILSAFE_ID = "ogna:default_blade_effect";
     //geckolib
     @Getter
@@ -59,6 +52,8 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
 
     //self-build data
     private IBladeEffect sharedDataBase = null;
+    @Getter
+    private CastContext castContext;
 
     //S data
     @Nullable
@@ -66,8 +61,6 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     @Nullable
     private Entity cachedOwner = null;
 
-    private CombatUnit combatUnit;
-    private SelectorUnit selectorUnit;
 
     @Getter
     private int age = 0;
@@ -82,31 +75,25 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     public static final EntityDataAccessor<AABB> ATTACK_AREA = SynchedEntityData.defineId(BladeEffect.class, EdataSerializer.AA_BB);
 
 
-    public BladeEffect(EntityType<?> pEntityType, Level pLevel)
+    private BladeEffect(EntityType<? extends BladeEffect> pEntityType, Level pLevel)
     {
         super(pEntityType, pLevel);
         this.setNoGravity(true);
         this.noPhysics = true;
     }
 
-    public static BladeEffect createBlade(Level pLevel, @NotNull Entity owner, ResourceLocation rl,
-                                          CombatUnit combatUnit,SelectorUnit selectorUnit)
+    public BladeEffect(CastContext castContext)
     {
-        return createBlade(pLevel, owner, rl, 0,combatUnit,selectorUnit);
+        this(ModEntity.BLADE_EFFECT.get(), castContext.getServerLevel());
+        this.castContext = castContext;
+        castContext.setLinkedAttackEntity(this);
+        setOwner(castContext.getCaster());
+        setDataBase(castContext.getAtkEntityUnit().getId());
+        updateTransform(this);
+        this.getEntityData().set(DELAY,castContext.getAtkEntityUnit().getDelay());
+        this.setInvisible(true);
     }
-    public static BladeEffect createBlade(Level pLevel, @NotNull Entity owner, ResourceLocation rl,int delay,
-                                          CombatUnit combatUnit,SelectorUnit selectorUnit)
-    {
-        BladeEffect blade = new BladeEffect(ModEntity.BLADE_EFFECT.get(), pLevel);
-        blade.setOwner(owner);
-        blade.setDataBase(rl);
-        blade.combatUnit = combatUnit;
-        blade.selectorUnit = selectorUnit;
-        updateTransform(blade);
-        blade.getEntityData().set(DELAY,delay);
-        blade.setInvisible(true);
-        return blade;
-    }
+
     public static void createTransform(BladeEffect blade)
     {
         blade.transform = blade.getDataBase().generateTransform(blade.getOwner());
@@ -179,9 +166,7 @@ public class BladeEffect extends Entity implements GeoEntity, TraceableEntity
     {
         if(this.level().isClientSide())
             return;
-        var dmgSource = new ArkDamageSource(combatUnit,this,this.getOwner(),null);
-        selectorUnit.gatherMultiTargets((ServerLevel) this.level(),getOrCreateTransform().aabb(),(living)->living != getOwner())
-                .forEach(living -> combatUnit.onHitEntity((ServerLevel) level(),living,selectorUnit,dmgSource));
+        castContext.gatherMultiTargets((ServerLevel) this.level(),getOrCreateTransform().aabb(),(living)->living != getOwner(),null).forEach(castContext::onHitEntity);
     }
 
     public void setDataBase(@Nullable ResourceLocation rl)

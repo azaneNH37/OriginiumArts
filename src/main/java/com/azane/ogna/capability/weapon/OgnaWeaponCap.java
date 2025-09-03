@@ -17,10 +17,9 @@ import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.NbtHelper;
 import com.azane.ogna.registry.ModAttribute;
-import com.azane.ogna.util.SyncUtil;
+import com.azane.ogna.util.ModUtil;
 import lombok.Getter;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -204,7 +203,7 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     public CompoundTag serializeSyncNBT()
     {
         var nbt = new CompoundTag();
-        nbt.put("attrMap", attrMap.serializeNBTFiltered(SyncUtil.SYNC_ATTRIBUTES));
+        nbt.put("attrMap", attrMap.serializeNBTFiltered(ModUtil.SYNC_ATTRIBUTES));
         nbt.put("skillCap", skillCap.serializeSyncNBT());
         nbt.put("chipSet", chipSet.serializeSyncNBT());
         nbt.putDouble("currentEnergy", currentEnergy);

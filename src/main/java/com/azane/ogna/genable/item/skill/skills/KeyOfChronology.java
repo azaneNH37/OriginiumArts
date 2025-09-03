@@ -2,14 +2,8 @@ package com.azane.ogna.genable.item.skill.skills;
 
 import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.combat.data.ArkDamageSource;
-import com.azane.ogna.combat.data.CombatUnit;
-import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.data.CastContext;
 import com.azane.ogna.genable.item.skill.DefaultSkillDataBase;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
@@ -19,15 +13,15 @@ import net.minecraft.world.entity.LivingEntity;
 public class KeyOfChronology extends DefaultSkillDataBase
 {
     @Override
-    public void onImpactEntity(ServerLevel level, LivingEntity entity, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource)
+    public void onImpactEntity(LivingEntity target, CastContext castContext)
     {
-        var attacker = damageSource.getEntity();
+        var attacker = castContext.getCaster();
         if (attacker != null)
         {
-            double deltaX = entity.getX() - attacker.getX();
-            double deltaZ = entity.getZ() - attacker.getZ();
+            double deltaX = target.getX() - attacker.getX();
+            double deltaZ = target.getZ() - attacker.getZ();
             double knockbackStrength = 0.2D;
-            entity.knockback(knockbackStrength, deltaX, deltaZ);
+            target.knockback(knockbackStrength, deltaX, deltaZ);
         }
     }
 }

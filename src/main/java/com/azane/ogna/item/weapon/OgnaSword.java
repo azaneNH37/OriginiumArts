@@ -190,7 +190,7 @@ public class OgnaSword extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
                 serverLevel, pPlayer,
                 this, stack, attackType, chargeTime, true)))
             {
-                CombatFirer.fireDefault(serverLevel, pPlayer,this, cap, stack, "normal"+hitSuffix, "normal");
+                CombatFirer.fireDefault(serverLevel, pPlayer,stack, "normal"+hitSuffix, "normal");
             }
         }
     }

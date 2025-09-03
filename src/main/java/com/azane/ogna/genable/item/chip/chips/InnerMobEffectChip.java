@@ -5,25 +5,20 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.combat.chip.ChipArg;
 import com.azane.ogna.combat.chip.ChipSet;
 import com.azane.ogna.combat.chip.ChipTiming;
-import com.azane.ogna.combat.data.ArkDamageSource;
-import com.azane.ogna.combat.data.CombatUnit;
-import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.data.CastContext;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.item.chip.NonItemChip;
 import com.azane.ogna.network.OgnmChannel;
-import com.azane.ogna.network.to_client.FxBlockEffectTriggerPacket;
 import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
 import com.azane.ogna.registry.ModAttribute;
 import com.azane.ogna.util.OgnaFxHelper;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -59,7 +54,7 @@ public class InnerMobEffectChip extends NonItemChip
     public List<ChipTiming> registerTiming() {return List.of(ChipTiming.ON_HIT_ENTITY);}
 
     @Override
-    public void onImpactEntity(ServerLevel level, LivingEntity target, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource)
+    public void onImpactEntity(LivingEntity target, CastContext castContext)
     {
         MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(rl);
         if(effect == null)
@@ -73,7 +68,7 @@ public class InnerMobEffectChip extends NonItemChip
                 .map(FxData.FxUnit::getId).ifPresent(rl->{
                     OgnmChannel.DEFAULT.sendToWithinRange(
                         new FxEntityEffectTriggerPacket(rl,target.getId(),false),
-                        level,
+                        castContext.getServerLevel(),
                         target.getOnPos(),
                         128
                     );
@@ -81,8 +76,8 @@ public class InnerMobEffectChip extends NonItemChip
         }
         target.forceAddEffect(
             new MobEffectInstance(effect,
-                (int) combatUnit.getMatrices().get(ModAttribute.EFFECT_TICK.get()).submit(duration),
-                (int) (combatUnit.getMatrices().get(ModAttribute.EFFECT_LEVEL.get()).submit(effect_level)-1),
+                (int) castContext.getMatrix(ModAttribute.EFFECT_TICK.get()).submit(duration),
+                (int) (castContext.getMatrix(ModAttribute.EFFECT_LEVEL.get()).submit(effect_level)-1),
                 false,visible,false),null);
     }
 

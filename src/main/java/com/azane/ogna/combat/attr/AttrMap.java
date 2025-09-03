@@ -50,6 +50,11 @@ public class AttrMap implements INBTSerializable<CompoundTag>
             getAttribute(attribute).removeModifier(modifier);
     }
 
+    public void clear()
+    {
+        attributes.clear();
+    }
+
     public Matrices extractMatrices(Set<Attribute> requirement)
     {
         return new Matrices(this, requirement);

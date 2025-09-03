@@ -2,16 +2,11 @@ package com.azane.ogna.genable.item.chip.chips;
 
 import com.azane.cjsop.annotation.JsonClassTypeBinder;
 import com.azane.ogna.OriginiumArts;
-import com.azane.ogna.combat.chip.ChipArg;
-import com.azane.ogna.combat.chip.ChipSet;
 import com.azane.ogna.combat.chip.ChipTiming;
-import com.azane.ogna.combat.data.ArkDamageSource;
-import com.azane.ogna.combat.data.CombatUnit;
-import com.azane.ogna.combat.data.SelectorUnit;
+import com.azane.ogna.combat.data.CastContext;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.item.chip.ItemChip;
-import com.azane.ogna.genable.item.chip.NonItemChip;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_client.FxEntityEffectTriggerPacket;
 import com.azane.ogna.registry.ModAttribute;
@@ -22,7 +17,6 @@ import lombok.NoArgsConstructor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,7 +24,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //TODO: inner outer 业务逻辑混乱 下版本改
@@ -57,7 +50,7 @@ public class MobEffectChip extends ItemChip
     public List<ChipTiming> registerTiming() {return List.of(ChipTiming.ON_HIT_ENTITY);}
 
     @Override
-    public void onImpactEntity(ServerLevel level, LivingEntity target, CombatUnit combatUnit, SelectorUnit selectorUnit, ArkDamageSource damageSource)
+    public void onImpactEntity(LivingEntity target, CastContext castContext)
     {
         MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(rl);
         if(effect == null)
@@ -71,7 +64,7 @@ public class MobEffectChip extends ItemChip
                 .map(FxData.FxUnit::getId).ifPresent(rl->{
                     OgnmChannel.DEFAULT.sendToWithinRange(
                         new FxEntityEffectTriggerPacket(rl,target.getId(),false),
-                        level,
+                        castContext.getServerLevel(),
                         target.getOnPos(),
                         128
                     );
@@ -79,8 +72,8 @@ public class MobEffectChip extends ItemChip
         }
         target.forceAddEffect(
             new MobEffectInstance(effect,
-                (int) combatUnit.getMatrices().get(ModAttribute.EFFECT_TICK.get()).submit(duration),
-                (int) (combatUnit.getMatrices().get(ModAttribute.EFFECT_LEVEL.get()).submit(effect_level)-1),
+                (int) castContext.getMatrix(ModAttribute.EFFECT_TICK.get()).submit(duration),
+                (int) (castContext.getMatrix(ModAttribute.EFFECT_LEVEL.get()).submit(effect_level)-1),
                 false,visible,false),null);
     }
 

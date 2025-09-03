@@ -177,7 +177,7 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
                 serverLevel, pPlayer,
                 this, stack, attackType, chargeTime, true)))
             {
-                CombatFirer.fireDefault(serverLevel, pPlayer,this, cap, stack, "normal", "normal");
+                CombatFirer.fireDefault(serverLevel, pPlayer, stack, "normal", "normal");
             }
         }
     }

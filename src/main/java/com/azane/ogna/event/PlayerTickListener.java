@@ -1,11 +1,9 @@
 package com.azane.ogna.event;
 
-import com.azane.ogna.combat.util.SkillTracker;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.WeakHashMap;
