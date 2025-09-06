@@ -1,0 +1,20 @@
+{
+  "life": 150,
+  "range": 196,
+  "speed": 5,
+  "gravity": true,
+  "gecko_asset": {
+    "all": "ognmarts:bullet-default",
+    "texture": "ognmarts:bullet-default_gold"
+  },
+  "fx": {
+    "awake": {
+      "id": "ognmarts:arrow_trace1"
+    },
+    "end": {
+      "id": "ognmarts:arrow_hit1"
+    }
+  },
+  "sound": {
+  }
+}

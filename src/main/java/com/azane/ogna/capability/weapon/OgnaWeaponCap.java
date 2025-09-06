@@ -56,6 +56,11 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     @Getter
     private double currentEnergy = 100;
 
+    @Getter
+    private int wpLevel;
+    @Getter
+    private long wpExp;
+
     private AttrMap attrMap = new AttrMap(Attributes.ATTACK_DAMAGE);
 
     private int heartbeatTick = 0;
@@ -196,6 +201,8 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         nbt.putInt("heartbeatTick", heartbeatTick);
         nbt.put("chipSet", chipSet.serializeNBT());
         nbt.put("extraData", extraData.copy());
+        nbt.putInt("wpLevel", wpLevel);
+        nbt.putLong("wpExp", wpExp);
         return nbt;
     }
 
@@ -208,6 +215,8 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         nbt.put("chipSet", chipSet.serializeSyncNBT());
         nbt.putDouble("currentEnergy", currentEnergy);
         nbt.putInt("heartbeatTick", heartbeatTick);
+        nbt.putInt("wpLevel", wpLevel);
+        nbt.putLong("wpExp", wpExp);
         return nbt;
     }
 
@@ -220,6 +229,8 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         heartbeatTick = nbt.getInt("heartbeatTick");
         Optional.ofNullable(nbt.get("chipSet")).map(CompoundTag.class::cast).ifPresent(chipSet::deserializeNBT);
         Optional.ofNullable(nbt.get("extraData")).map(CompoundTag.class::cast).ifPresent(tag->extraData = tag.copy());
+        wpLevel = nbt.getInt("wpLevel");
+        wpExp = nbt.getLong("wpExp");
     }
 
     private boolean versionCheck(ItemStack stack)
