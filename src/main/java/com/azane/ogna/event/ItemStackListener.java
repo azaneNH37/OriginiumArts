@@ -35,15 +35,27 @@ public class ItemStackListener
         @Override
         public void slotChanged(AbstractContainerMenu pContainerToSend, int pDataSlotIndex, ItemStack pStack)
         {
-            if(IOgnaWeapon.isWeapon(pStack))
-            {
+            if (IOgnaWeapon.isWeapon(pStack)) {
                 OgnmChannel.DEFAULT.sendTo(new SyncMenuSlotItemStackPacket(pContainerToSend.containerId,
-                    pDataSlotIndex,IOgnaWeapon.getSyncNbt(serverPlayer,pStack)),serverPlayer);
+                    pDataSlotIndex, IOgnaWeapon.getSyncNbt(serverPlayer, pStack)), serverPlayer);
             }
         }
+
         @Override
-        public void dataChanged(AbstractContainerMenu pContainerMenu, int pDataSlotIndex, int pValue) {}
+        public void dataChanged(AbstractContainerMenu pContainerMenu, int pDataSlotIndex, int pValue)
+        {
+        }
     };
+
+    public static void listenPlayerInventory(ServerPlayer serverPlayer)
+    {
+        if(!CACHED.contains(serverPlayer.inventoryMenu))
+        {
+            DebugLogger.info(MARKER,"Listening to inventoryMenu of Player {} with its id {}",serverPlayer.getName().getString(),serverPlayer.inventoryMenu.containerId);
+            CACHED.add(serverPlayer.inventoryMenu);
+            serverPlayer.inventoryMenu.addSlotListener(LISTENER_FACTORY.apply(serverPlayer));
+        }
+    }
 
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event)
@@ -51,12 +63,17 @@ public class ItemStackListener
         if(event.getEntity() instanceof ServerPlayer serverPlayer)
         {
             DebugLogger.info(MARKER,"Player {} logged in with Connection Type {}",serverPlayer.getName().getString(), ConnectionUtil.isLocalConnection(serverPlayer) ? "Local" : "Remote");
-            if(!CACHED.contains(serverPlayer.inventoryMenu))
-            {
-                DebugLogger.info(MARKER,"Listening to inventoryMenu of Player {} with its id {}",serverPlayer.getName().getString(),serverPlayer.inventoryMenu.containerId);
-                CACHED.add(serverPlayer.inventoryMenu);
-                serverPlayer.inventoryMenu.addSlotListener(LISTENER_FACTORY.apply(serverPlayer));
-            }
+            listenPlayerInventory(serverPlayer);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event)
+    {
+        if(event.getEntity() instanceof ServerPlayer serverPlayer)
+        {
+            DebugLogger.info(MARKER,"Player {} cloned",serverPlayer.getName().getString());
+            listenPlayerInventory(serverPlayer);
         }
     }
 
@@ -65,6 +82,7 @@ public class ItemStackListener
     {
         if(event.getEntity() instanceof ServerPlayer serverPlayer)
         {
+            listenPlayerInventory(serverPlayer);
             if(!CACHED.contains(event.getContainer()))
             {
                 DebugLogger.info(MARKER,"Listening to container {} with its id {}",event.getContainer(),event.getContainer().containerId);
