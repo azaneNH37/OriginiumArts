@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "ognmarts:iognm"
+    "ognmarts:iognm",
+    "ognmarts:ognm_crystal"
   ]
 }

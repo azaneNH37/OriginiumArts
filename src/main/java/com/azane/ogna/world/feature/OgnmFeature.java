@@ -28,11 +28,11 @@ public class OgnmFeature extends Feature<OgnmFeature.Config>
         RandomSource random = context.random();
         Config config = context.config();
 
-        OriginiumArts.LOGGER.warn(OgnaConfig.getWorldgenOgnmDensity());
-        OriginiumArts.LOGGER.warn(random.nextDouble());
+        //OriginiumArts.LOGGER.warn(OgnaConfig.getWorldgenOgnmDensity());
+        //OriginiumArts.LOGGER.warn(random.nextDouble());
         if(OgnaConfig.getWorldgenOgnmDensity() >= random.nextDouble())
         {
-            OriginiumArts.LOGGER.warn("Generating Ognm at " + origin);
+            //OriginiumArts.LOGGER.warn("Generating Ognm at " + origin);
             // 获取上方方块
             BlockState topBlock = config.topBlock().getState(random, origin);
             // 获取下方方块

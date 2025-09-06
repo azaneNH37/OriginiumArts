@@ -33,6 +33,7 @@ public class DataServiceInit
                     .sorted()
                     .reduce((a, b) -> a + ", " + b)
                     .orElse("No data found"));
+        /*
         if(IComponentDisplay.class.isAssignableFrom(jm.getDataClass()))
         {
             jm.getAllDataEntries().stream()
@@ -44,6 +45,7 @@ public class DataServiceInit
                     tooltip.stream().map(Component::getString).reduce((a, b) -> a + "\n" + b).ifPresent(s -> DebugLogger.info(jm.getMarker(), "\n{}", s));
                 });
         }
+         */
     };
 
     public static Consumer<JsonDataManager<IBladeEffect>> bladeEffectInit = debugRl::accept;

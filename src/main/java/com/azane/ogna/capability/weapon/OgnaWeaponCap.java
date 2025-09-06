@@ -201,8 +201,8 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         nbt.putInt("heartbeatTick", heartbeatTick);
         nbt.put("chipSet", chipSet.serializeNBT());
         nbt.put("extraData", extraData.copy());
-        nbt.putInt("wpLevel", wpLevel);
-        nbt.putLong("wpExp", wpExp);
+        //nbt.putInt("wpLevel", wpLevel);
+        //nbt.putLong("wpExp", wpExp);
         return nbt;
     }
 
@@ -215,8 +215,8 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         nbt.put("chipSet", chipSet.serializeSyncNBT());
         nbt.putDouble("currentEnergy", currentEnergy);
         nbt.putInt("heartbeatTick", heartbeatTick);
-        nbt.putInt("wpLevel", wpLevel);
-        nbt.putLong("wpExp", wpExp);
+        //nbt.putInt("wpLevel", wpLevel);
+        //nbt.putLong("wpExp", wpExp);
         return nbt;
     }
 
@@ -229,8 +229,8 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         heartbeatTick = nbt.getInt("heartbeatTick");
         Optional.ofNullable(nbt.get("chipSet")).map(CompoundTag.class::cast).ifPresent(chipSet::deserializeNBT);
         Optional.ofNullable(nbt.get("extraData")).map(CompoundTag.class::cast).ifPresent(tag->extraData = tag.copy());
-        wpLevel = nbt.getInt("wpLevel");
-        wpExp = nbt.getLong("wpExp");
+        //wpLevel = nbt.getInt("wpLevel");
+        //wpExp = nbt.getLong("wpExp");
     }
 
     private boolean versionCheck(ItemStack stack)
@@ -240,7 +240,6 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag)
     {
         if(getSkillCap().getSkill() != null)

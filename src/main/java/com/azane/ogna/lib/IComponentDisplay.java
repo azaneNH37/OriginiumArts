@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * @author azaneNH37 (2025-07-13)
  */
-@OnlyIn(Dist.CLIENT)
 public interface IComponentDisplay
 {
     void appendHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag);

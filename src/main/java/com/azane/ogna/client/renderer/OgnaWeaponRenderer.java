@@ -76,12 +76,14 @@ public class OgnaWeaponRenderer<T extends OgnaWeapon> extends GeoItemRenderer<T>
         poseStack.popPose();
         poseStack.pushPose();
 
+        /*
         poseStack.pushPose();
         poseStack.translate(-0.5F, -0.5F, 0.0F);
         RenderUtils.renderRectTexture(poseStack, bufferSource, LEVEL,
             0.0F, 0.0F, 1.0F, 1.0F, -0.01F,
             new int[]{255, 100, 100, 255}, packedLight, packedOverlay);
         poseStack.popPose();
+         */
 
         itemRenderer.render(currentItemStack, transformType, false,poseStack, bufferSource, packedLight, packedOverlay, bakedModel);
     }
