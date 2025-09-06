@@ -159,6 +159,23 @@ public class CastContext
         target.hurt(dmgSource, (float) matrix.submit(baseVal));
     }
 
+    /**
+     * 用于解决一些神秘实现喜欢绕开livingEntity用entity写生物
+     * @param target
+     */
+    public void onHitEntity(Entity target)
+    {
+        var dmgSource = new ArkDamageSource(dmgDataSet.getDmgTypeHolder(false), linkedAttackEntity,caster, null);
+        var unit = weaponCap.extractMatrices(ModUtil.COMBAT_ATTRIBUTES);
+        AttrMatrix matrix = AttrMatrix.combine(true,
+            unit.get(Attributes.ATTACK_DAMAGE),
+            dmgDataSet.getDmgCategory() == DmgCategory.PHYSICS ? unit.get(ModAttribute.DAMAGE_PHYSICS.get()) :
+                dmgDataSet.getDmgCategory() == DmgCategory.ARTS ? unit.get(ModAttribute.DAMAGE_ARTS.get()) :
+                    AttrMatrix.UNIT_MATRIX
+        );
+        target.hurt(dmgSource, (float) matrix.submit(baseVal)*3.25f);
+    }
+
 
     public static class Builder
     {

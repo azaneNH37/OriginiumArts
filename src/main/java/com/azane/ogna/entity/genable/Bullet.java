@@ -211,6 +211,8 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
                 //DebugLogger.log(unit.getSoundKey());
             }
 
+            if(!(result.getEntity() instanceof LivingEntity))
+                castContext.onHitEntity(result.getEntity());
             castContext.gatherMultiTargets((ServerLevel) this.level(),this.getBoundingBox(), SelectRule.NULL.getFilter(),
                 result.getEntity() instanceof LivingEntity living ? living : null)
                 .forEach(castContext::onHitEntity);
