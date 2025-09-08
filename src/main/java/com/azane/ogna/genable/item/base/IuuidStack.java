@@ -47,6 +47,16 @@ public interface IuuidStack
         return nbt.getString(STACK_UUID_KEY);
     }
 
+    default String regainStackUUID(ItemStack stack) {
+        if (stack.isEmpty())
+            return null;
+
+        CompoundTag nbt = stack.getOrCreateTag();
+        String uuid = UUID.randomUUID().toString();
+        nbt.putString(STACK_UUID_KEY, uuid);
+        return nbt.getString(STACK_UUID_KEY);
+    }
+
     /**
      * 验证武器是否匹配指定UUID
      */
