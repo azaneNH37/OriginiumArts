@@ -61,12 +61,14 @@ public class OgnaWeaponRenderer<T extends OgnaWeapon> extends GeoItemRenderer<T>
     @Override
     public void actuallyRender(PoseStack poseStack, T animatable, BakedGeoModel model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
     {
-        if(!isReRender && needFreeTransform(renderPerspective))
+        PoseStack copyPose = poseStack;
+        if(needFreeTransform(renderPerspective))
         {
-            applyFreeItemTransform(poseStack, renderPerspective, getCurrentDatums(animatable,currentItemStack,renderPerspective));
-            preRender(poseStack, animatable, model, bufferSource, buffer, false, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+            copyPose = RenderUtils.copyPoseStack(poseStack);
+            applyFreeItemTransform(copyPose, renderPerspective, getCurrentDatums(animatable,currentItemStack,renderPerspective));
+            preRender(copyPose, animatable, model, bufferSource, buffer, false, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
         }
-        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.actuallyRender(copyPose, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     @Override

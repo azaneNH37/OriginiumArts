@@ -9,6 +9,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author azaneNH37 (2025/8/31)
  */
@@ -103,5 +106,58 @@ public class RenderUtils {
                                          float zOffset, int packedLight, int packedOverlay) {
         renderRectTexture(poseStack, bufferSource, texture, -width/2, -height/2,
             width, height, zOffset, packedLight, packedOverlay);
+    }
+
+    // 辅助类用于存储矩阵对
+    private record MatrixPair(Matrix4f pose, Matrix3f normal) { }
+
+    public static PoseStack copyPoseStack(PoseStack original) {
+        if (original == null) {
+            return null;
+        }
+
+        // 存储原始栈所有层的矩阵副本（从栈底到栈顶）
+        List<MatrixPair> matrices = new ArrayList<>();
+
+        // 临时弹出原始栈的 pose 并记录矩阵副本
+        while (!original.clear()) {
+            PoseStack.Pose topPose = original.last();
+            // 创建矩阵的深拷贝
+            Matrix4f poseMatrix = new Matrix4f(topPose.pose());
+            Matrix3f normalMatrix = new Matrix3f(topPose.normal());
+            // 将拷贝添加到列表开头（以保持栈底到栈顶的顺序）
+            matrices.add(0, new MatrixPair(poseMatrix, normalMatrix));
+            original.popPose();
+        }
+
+        // 记录最后一个（初始）pose 的矩阵
+        PoseStack.Pose bottomPose = original.last();
+        matrices.add(0, new MatrixPair(new Matrix4f(bottomPose.pose()), new Matrix3f(bottomPose.normal())));
+
+        // 还原原始栈：首先设置初始 pose 的矩阵
+        original.last().pose().set(matrices.get(0).pose);
+        original.last().normal().set(matrices.get(0).normal);
+
+        // 然后 pushPose 并设置后续矩阵
+        for (int i = 1; i < matrices.size(); i++) {
+            original.pushPose();
+            original.last().pose().set(matrices.get(i).pose);
+            original.last().normal().set(matrices.get(i).normal);
+        }
+
+        // 创建新的 PoseStack 副本
+        PoseStack copy = new PoseStack();
+        // 设置初始 pose 的矩阵
+        copy.last().pose().set(matrices.get(0).pose);
+        copy.last().normal().set(matrices.get(0).normal);
+
+        // pushPose 并设置后续矩阵
+        for (int i = 1; i < matrices.size(); i++) {
+            copy.pushPose();
+            copy.last().pose().set(matrices.get(i).pose);
+            copy.last().normal().set(matrices.get(i).normal);
+        }
+
+        return copy;
     }
 }
