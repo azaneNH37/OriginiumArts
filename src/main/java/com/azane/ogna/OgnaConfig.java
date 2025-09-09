@@ -18,6 +18,8 @@ public class OgnaConfig
 
     private static ForgeConfigSpec.DoubleValue WORLDGEN_OGNM_DENSITY;
 
+    private static ForgeConfigSpec.IntValue SYNC_HEARTBEAT_INTERVAL;
+
     public static void register(ModLoadingContext context)
     {
         context.registerConfig(ModConfig.Type.COMMON,init(), OriginiumArts.MOD_ID+"/common.toml");
@@ -27,6 +29,8 @@ public class OgnaConfig
     private static boolean debughitbox;
     @Getter
     private static double worldgenOgnmDensity;
+    @Getter
+    private static int syncHeartbeatInterval;
 
 
     @SubscribeEvent
@@ -34,6 +38,7 @@ public class OgnaConfig
     {
         debughitbox = DEBUG_HITBOX.get();
         worldgenOgnmDensity = WORLDGEN_OGNM_DENSITY.get();
+        syncHeartbeatInterval = SYNC_HEARTBEAT_INTERVAL.get();
     }
 
     private static ForgeConfigSpec init()
@@ -43,6 +48,8 @@ public class OgnaConfig
         DEBUG_HITBOX = builder.comment("Whether to render hitboxes in the client").define("debug.hitbox", false);
 
         WORLDGEN_OGNM_DENSITY = builder.comment("Density of Originium Feature in the world").defineInRange("worldgen.ognm_density", 1.0, 0.0, 1.0);
+
+        SYNC_HEARTBEAT_INTERVAL = builder.comment("Interval (in ticks) for server-client synchronization heartbeat").defineInRange("sync.heartbeat_interval", 100, 20, Integer.MAX_VALUE);
         return builder.build();
     }
 

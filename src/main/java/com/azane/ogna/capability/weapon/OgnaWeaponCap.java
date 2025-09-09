@@ -1,5 +1,6 @@
 package com.azane.ogna.capability.weapon;
 
+import com.azane.ogna.OgnaConfig;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.capability.skill.OgnaSkillCap;
@@ -185,7 +186,7 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     @Override
     public void innerHeartbeatSync(int tick)
     {
-        if(tick % 100 == 0)
+        if(tick % OgnaConfig.getSyncHeartbeatInterval() == 0)
         {
             heartbeatTick = tick;
         }
