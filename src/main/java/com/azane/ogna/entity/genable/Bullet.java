@@ -2,10 +2,13 @@ package com.azane.ogna.entity.genable;
 
 import com.azane.ogna.combat.data.*;
 import com.azane.ogna.combat.util.SelectRule;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.data.SoundKeyData;
 import com.azane.ogna.genable.entity.IBullet;
 import com.azane.ogna.genable.entity.ITargetable;
+import com.azane.ogna.lib.AABBHelper;
+import com.azane.ogna.lib.ProjectileHelper;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_client.FxBlockEffectTriggerPacket;
 import com.azane.ogna.registry.ModEntity;
@@ -20,12 +23,15 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.level.ClipContext;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
@@ -41,6 +47,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author azaneNH37 (2025-08-09)
@@ -86,7 +94,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     {
         shootFromRotation(castContext.getCaster(),
             (float) moveUnit.getXRot(), (float) moveUnit.getYRot(),
-            0, dataBase.getSpeed(), 0);
+            0, dataBase.getSpeed()*moveUnit.getSpeedAmplifier(), 0);
     }
 
     @Override
@@ -105,6 +113,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
     public void tick() {
         super.tick();
 
+        // 初始特效音效附加
         if(life == 0)
         {
             if(this.level().isClientSide())
@@ -116,26 +125,20 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
                         effect.start();
                     });
             else
-            {
-                SoundKeyData.SoundKeyUnit unit = getDataBase().getSoundData() == null ? null : getDataBase().getSoundData().getAwakeSound();
-                if(unit != null)
-                    SoundKeyData.getSound(unit).ifPresent(soundEvent ->
-                        this.level().playSound(null,this.position().x, this.position().y, this.position().z,
-                            soundEvent, SoundSource.PLAYERS, unit.getVolume(), unit.getPitch()));
-            }
+                playSound(SoundKeyData::getAwakeSound);
         }
 
+        //生命周期和距离检测
         if (++this.life >= getDataBase().getLife()) {
             this.discard();
             return;
         }
-
-        // 距离检查
         if (this.moveUnit.getInitialPos() != null && this.position().distanceTo(this.moveUnit.getInitialPos()) > getDataBase().getRange()) {
             this.discard();
             return;
         }
-        //DebugLogger.log("side:{}entity:{}",this.level().isClientSide,targetEntity != null);
+
+        // 追踪
         this.setDeltaMovement(updateDeltaMovement(this.getDeltaMovement(), this.position(), this.moveUnit.getMinTrackingDistance(), this.moveUnit.getTurnRate()));
 
         // 移动和碰撞检测
@@ -155,19 +158,20 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
             nextPos = hitResult.getLocation();
         }
 
-        // 实体碰撞检测
-        EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
+        var entityHits = ProjectileHelper.getEntitiesAlongPath(
             this.level(), this, currentPos, nextPos,
-            this.getBoundingBox().expandTowards(deltaMovement).inflate(3.0D),
+            AABBHelper.cube(Vec3.ZERO, moveUnit.getSize()),
             this::canHitEntity
-        );
+            );
 
-        if (entityHit != null) {
-            hitResult = entityHit;
+        if(!entityHits.isEmpty())
+        {
+            entityHits.forEach(this::onHitEntity);
+            this.level().gameEvent(GameEvent.PROJECTILE_LAND, entityHits.get(0).position(), GameEvent.Context.of(this, null));
+            if(!dataBase.isPenetrate())
+                this.discard();
         }
-
-        // 处理碰撞
-        if (hitResult.getType() != HitResult.Type.MISS) {
+        else if (hitResult.getType() != HitResult.Type.MISS) {
             this.onHit(hitResult);
         }
 
@@ -182,57 +186,53 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
         this.updateRotation();
     }
 
-    @Override
-    protected void onHitEntity(EntityHitResult result)
+    protected void onHitEntity(Entity result)
     {
-        if(hitEntities.contains(result.getEntity().getUUID()))
+        if(this.isRemoved())
             return;
-        hitEntities.add(result.getEntity().getUUID());
-        //DebugLogger.log("Bullet hit entity: " + result.getEntity().getName().getString());
+        if(hitEntities.contains(result.getUUID()))
+            return;
+        hitEntities.add(result.getUUID());
         //TODO:网络包合并
         if(!this.level().isClientSide())
         {
             OgnaFxHelper.extractFxUnit(getDataBase().getFxData(),dataBase.isPenetrate() ? FxData::getHitFx : FxData::getEndFx)
                 .map(FxData.FxUnit::getId).ifPresent(rl->{
                     OgnmChannel.DEFAULT.sendToWithinRange(
-                        new FxBlockEffectTriggerPacket(rl,result.getEntity().getOnPos().above(),false),
+                        new FxBlockEffectTriggerPacket(rl,result.getOnPos().above(),false),
                         (ServerLevel) level(),
                         this.getOnPos(),
                         128
                     );
                 });
 
-            SoundKeyData.SoundKeyUnit unit = getDataBase().getSoundData() == null ? null : getDataBase().getSoundData().getHitSound();
-            if(unit != null)
-            {
-                SoundKeyData.getSound(unit).ifPresent(soundEvent ->
-                    this.level().playSound(null,this.position().x, this.position().y, this.position().z,
-                        soundEvent, SoundSource.PLAYERS, unit.getVolume(), unit.getPitch()));
-                //DebugLogger.log(unit.getSoundKey());
-            }
+            playSound(SoundKeyData::getHitSound);
 
-            if(!(result.getEntity() instanceof LivingEntity))
-                castContext.onHitEntity(result.getEntity());
-            castContext.gatherMultiTargets((ServerLevel) this.level(),this.getBoundingBox(), SelectRule.NULL.getFilter(),
-                result.getEntity() instanceof LivingEntity living ? living : null)
+            if(!(result instanceof LivingEntity))
+                castContext.onHitEntity(result);
+            castContext.gatherMultiTargets((ServerLevel) this.level(),AABBHelper.cube(result.position(), moveUnit.getSize()), SelectRule.NULL.getFilter(),
+                    result instanceof LivingEntity living ? living : null)
                 .forEach(castContext::onHitEntity);
         }
-        if(!dataBase.isPenetrate())
-            this.discard();
     }
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
         //DebugLogger.log("Bullet hit block at: " + result.getBlockPos());
+        playSound(SoundKeyData::getHitSound);
+        this.discard();
+    }
+
+    protected void playSound(Function<SoundKeyData, SoundKeyData.SoundKeyUnit> func)
+    {
         if(!this.level().isClientSide())
         {
-            SoundKeyData.SoundKeyUnit unit = getDataBase().getSoundData() == null ? null : getDataBase().getSoundData().getHitSound();
+            SoundKeyData.SoundKeyUnit unit = getDataBase().getSoundData() == null ? null : func.apply(getDataBase().getSoundData());
             if(unit != null)
                 SoundKeyData.getSound(unit).ifPresent(soundEvent ->
                     this.level().playSound(null,this.position().x, this.position().y, this.position().z,
                         soundEvent, SoundSource.PLAYERS, unit.getVolume(), unit.getPitch()));
         }
-        this.discard();
     }
 
     @Override
