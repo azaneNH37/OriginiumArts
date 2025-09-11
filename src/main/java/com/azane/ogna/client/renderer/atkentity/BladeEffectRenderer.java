@@ -32,10 +32,10 @@ public class BladeEffectRenderer extends GeoEntityRenderer<BladeEffect>
     public void render(BladeEffect entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight)
     {
 
-        Vector3f scale = entity.getEntityData().get(BladeEffect.SCALE);
+        Vector3f scale = entity.getRenderScale();
         if(OgnaConfig.isDebughitbox())
         {
-            AABB box = entity.getEntityData().get(BladeEffect.ATTACK_AREA);
+            AABB box = entity.getAttackArea();
             //OriginiumArts.LOGGER.warn("{}", box);
             LevelRenderer.renderLineBox(
                 poseStack,
@@ -63,7 +63,7 @@ public class BladeEffectRenderer extends GeoEntityRenderer<BladeEffect>
         {
             int lifetime = entity.getDataBase().getLife();
             double deathTime = lifetime;
-            baseAlpha = (Math.min(deathTime, Math.max(0, (lifetime - (entity.tickCount) - partialTick + entity.getEntityData().get(BladeEffect.DELAY)))) / deathTime);
+            baseAlpha = (Math.min(deathTime, Math.max(0, (lifetime - (entity.tickCount) - partialTick))) / deathTime);
             baseAlpha = -Math.pow(baseAlpha - 1, 4.0)+1.0;
             //DebugLogger.log("RENDER:tick:{},delay:{},alpha:{}", entity.tickCount, entity.getEntityData().get(BladeEffect.DELAY), baseAlpha);
         }

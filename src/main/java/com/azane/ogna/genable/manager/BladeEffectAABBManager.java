@@ -1,5 +1,6 @@
 package com.azane.ogna.genable.manager;
 
+import com.azane.ogna.combat.data.MoveUnit;
 import com.google.gson.annotations.SerializedName;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -52,22 +53,7 @@ public class BladeEffectAABBManager
         // 偏移参数
         public Vec3 offset = Vec3.ZERO;           // 额外偏移
 
-        // 形态类型
-        @SerializedName("shapeType")
-        public ShapeType shapeType = ShapeType.LINEAR;   // 刀光形态
-
         public BladeConfig() {}
-    }
-
-    /**
-     * 刀光形态类型
-     */
-    public enum ShapeType {
-        LINEAR,     // 线状
-        ARC,        // 弧状
-        RING,       // 环状
-        WAVE,       // 波浪状
-        CUSTOM      // 自定义
     }
 
     /**
@@ -87,7 +73,7 @@ public class BladeEffectAABBManager
     /**
      * 根据玩家状态和配置创建刀光变换
      */
-    public static BladeTransform createBladeTransform(Entity entity, BladeConfig config) {
+    public static BladeTransform createBladeTransform(Entity entity, BladeConfig config, MoveUnit moveUnit) {
         Vec3 entityPos = entity.position().add(0, entity.getEyeHeight() * 0.6, 0);
 
         // 获取实体的旋转角度（度数）
@@ -152,13 +138,10 @@ public class BladeEffectAABBManager
         }
 
         // 应用缩放到基础尺寸
-        double scaledLengthHalf = config.lengthHalf * config.naturalScale;
-        double scaledWidthHalf = config.widthHalf * config.crossScale;
-        double scaledHeightHalf = config.heightHalf * config.heightScale;
+        double scaledLengthHalf = config.lengthHalf * config.naturalScale * moveUnit.getSizeAmplifier();
+        double scaledWidthHalf = config.widthHalf * config.crossScale * moveUnit.getSizeAmplifier();
+        double scaledHeightHalf = config.heightHalf * config.heightScale * moveUnit.getSizeAmplifier();
 
-
-        // 根据形态类型调整参数
-        //adjustForShapeType(config, scaledLengthHalf, scaledWidthHalf, scaledHeightHalf);
 
         // 创建AABB
         AABB aabb = createRotatedAABB(center, forward, right, up,
@@ -167,38 +150,7 @@ public class BladeEffectAABBManager
         // 计算渲染缩放向量
         Vec3 renderScale = calculateRenderScale(config, forward, right, up);
 
-        return new BladeTransform(aabb, center, renderScale, forward, right, up,entityXRot+ config.xRot, entityYRot + config.yRot);
-    }
-
-    /**
-     * 根据形态类型调整参数
-     */
-    private static void adjustForShapeType(BladeConfig config, double lengthHalf,
-                                           double widthHalf, double heightHalf) {
-        switch (config.shapeType) {
-            case ARC:
-                // 弧状：增加宽度，减少长度
-                config.widthHalf = widthHalf * 1.5;
-                config.lengthHalf = lengthHalf * 0.8;
-                break;
-            case RING:
-                // 环状：所有方向等长
-                double avgSize = (lengthHalf + widthHalf + heightHalf) / 3.0;
-                config.lengthHalf = avgSize;
-                config.widthHalf = avgSize;
-                config.heightHalf = avgSize * 0.3; // 环状通常较扁
-                break;
-            case WAVE:
-                // 波浪状：增加高度变化
-                config.heightHalf = heightHalf * 1.3;
-                config.lengthHalf = lengthHalf * 1.2;
-                break;
-            case LINEAR:
-            case CUSTOM:
-            default:
-                // 保持原始参数
-                break;
-        }
+        return new BladeTransform(aabb, center, renderScale.scale(moveUnit.getSizeAmplifier()), forward, right, up,entityXRot+ config.xRot, entityYRot + config.yRot);
     }
 
     /**
@@ -260,150 +212,5 @@ public class BladeEffectAABBManager
             Math.abs(heightDir.z) * config.heightScale;
 
         return new Vec3(xScale, yScale, zScale);
-    }
-
-    /**
-     * 创建实体过滤器（用于getEntitiesOfClass方法）
-     */
-    public static <T extends Entity> Predicate<T> createEntityFilter(BladeTransform transform, BladeConfig config) {
-        return entity -> isEntityInBlade(entity, transform, config);
-    }
-
-    /**
-     * 检查实体是否在刀光范围内（用于Predicate过滤）
-     */
-    public static boolean isEntityInBlade(Entity entity, BladeTransform transform, BladeConfig config) {
-        // 获取实体的碰撞箱和中心点
-        AABB entityAABB = entity.getBoundingBox();
-        Vec3 entityCenter = entityAABB.getCenter();
-
-        // 对于特殊形态，进行精确检测
-        return switch (config.shapeType) {
-            case RING -> isEntityInRing(entity, entityAABB, entityCenter, transform, config);
-            case ARC -> isEntityInArc(entity, entityAABB, entityCenter, transform, config);
-            default -> true; // 已经通过AABB预筛选，直接返回true
-        };
-    }
-
-    /**
-     * 环状刀光的实体检测
-     * 策略：检测实体中心点和边界点，确保不漏检
-     */
-    private static boolean isEntityInRing(Entity entity, AABB entityAABB, Vec3 entityCenter,
-                                          BladeTransform transform, BladeConfig config) {
-        double innerRadius = config.lengthHalf * 0.6;
-        double outerRadius = config.lengthHalf;
-
-        // 1. 快速检测：实体中心点
-        Vec3 relative = entityCenter.subtract(transform.center);
-        double centerDistance = new Vec3(relative.x, 0, relative.z).length(); // 水平距离
-
-        // 如果中心点在环内，直接返回true
-        if (centerDistance >= innerRadius && centerDistance <= outerRadius) {
-            return true;
-        }
-
-        // 2. 边界检测：检查实体AABB的8个角点
-        Vec3[] corners = getAABBCorners(entityAABB);
-        for (Vec3 corner : corners) {
-            Vec3 cornerRelative = corner.subtract(transform.center);
-            double cornerDistance = new Vec3(cornerRelative.x, 0, cornerRelative.z).length();
-            if (cornerDistance >= innerRadius && cornerDistance <= outerRadius) {
-                return true;
-            }
-        }
-
-        // 3. 跨越检测：实体跨越环形区域
-        double minDistance = centerDistance - entityAABB.getXsize() * 0.5;
-        double maxDistance = centerDistance + entityAABB.getXsize() * 0.5;
-        return (minDistance <= innerRadius && maxDistance >= outerRadius) ||
-            (minDistance <= outerRadius && maxDistance >= innerRadius);
-    }
-
-    /**
-     * 弧状刀光的实体检测
-     */
-    private static boolean isEntityInArc(Entity entity, AABB entityAABB, Vec3 entityCenter,
-                                         BladeTransform transform, BladeConfig config) {
-        // 弧形参数
-        double arcAngle = Math.PI * 0.75; // 135度弧
-        Vec3 arcDirection = transform.forward; // 弧形朝向
-
-        // 1. 中心点检测
-        if (isPointInArcRange(entityCenter, transform.center, arcDirection, arcAngle, config.lengthHalf)) {
-            return true;
-        }
-
-        // 2. 角点检测
-        Vec3[] corners = getAABBCorners(entityAABB);
-        for (Vec3 corner : corners) {
-            if (isPointInArcRange(corner, transform.center, arcDirection, arcAngle, config.lengthHalf)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * 检查点是否在弧形范围内
-     */
-    private static boolean isPointInArcRange(Vec3 point, Vec3 center, Vec3 direction, double arcAngle, double radius) {
-        Vec3 relative = point.subtract(center);
-        Vec3 projected = new Vec3(relative.x, 0, relative.z); // 投影到水平面
-
-        // 距离检测
-        if (projected.length() > radius) {
-            return false;
-        }
-
-        // 角度检测
-        Vec3 dirProjected = new Vec3(direction.x, 0, direction.z).normalize();
-        double dot = projected.normalize().dot(dirProjected);
-        double angle = Math.acos(Mth.clamp(dot, -1.0, 1.0));
-
-        return angle <= arcAngle / 2;
-    }
-
-    /**
-     * 获取AABB的8个角点
-     */
-    private static Vec3[] getAABBCorners(AABB aabb) {
-        return new Vec3[] {
-            new Vec3(aabb.minX, aabb.minY, aabb.minZ),
-            new Vec3(aabb.minX, aabb.minY, aabb.maxZ),
-            new Vec3(aabb.minX, aabb.maxY, aabb.minZ),
-            new Vec3(aabb.minX, aabb.maxY, aabb.maxZ),
-            new Vec3(aabb.maxX, aabb.minY, aabb.minZ),
-            new Vec3(aabb.maxX, aabb.minY, aabb.maxZ),
-            new Vec3(aabb.maxX, aabb.maxY, aabb.minZ),
-            new Vec3(aabb.maxX, aabb.maxY, aabb.maxZ)
-        };
-    }
-
-
-    /**
-     * 从方向向量提取 yRot 和 xRot
-     * @param forward 标准化的前向向量
-     * @return float数组 [yRot(度), xRot(度)]
-     */
-    public static float[] extractRotationFromDirection(Vec3 forward) {
-        // 计算水平方向的投影长度
-        double horizontalLength = Math.sqrt(forward.x * forward.x + forward.z * forward.z);
-
-        // 计算俯仰角（xRot）
-        float xRot = (float) Math.toDegrees(-Math.asin(forward.y));
-
-        // 计算偏航角（yRot）
-        float yRot;
-        if (horizontalLength > 1e-6) { // 避免除零
-            // atan2(x, z) 在 Minecraft 坐标系中计算偏航角
-            yRot = (float) Math.toDegrees(Math.atan2(-forward.x, forward.z));
-        } else {
-            // 垂直向上或向下时，保持当前yRot
-            yRot = 0;
-        }
-
-        return new float[]{yRot, xRot};
     }
 }

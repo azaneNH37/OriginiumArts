@@ -32,6 +32,9 @@ public class BulletDatabase implements IBullet
     @SerializedName("speed")
     private float speed = 1.0f;
 
+    @SerializedName("size")
+    private float size = 0.25f;
+
     @SerializedName("gravity")
     private boolean gravity = true;
 

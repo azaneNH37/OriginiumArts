@@ -15,6 +15,7 @@ public interface IBullet extends IresourceLocation
     int getLife();
     float getRange();
     float getSpeed();
+    float getSize();
     boolean isGravity();
     boolean isPenetrate();
     @Nullable

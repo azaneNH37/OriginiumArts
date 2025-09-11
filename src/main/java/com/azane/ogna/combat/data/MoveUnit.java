@@ -23,7 +23,7 @@ public class MoveUnit
     private final double yRot;
 
     private final float speedAmplifier;
-    private final float size;
+    private final float sizeAmplifier;
 
     private final float minTrackingDistance;
     private final float turnRate;
@@ -51,7 +51,7 @@ public class MoveUnit
             .xRot(xRot)
             .yRot(yRot)
             .speedAmplifier(speedAmplifier)
-            .size(size)
+            .sizeAmplifier(size)
             .minTrackingDistance(minTrackingDistance)
             .turnRate(turnRate)
             .build();
@@ -74,7 +74,7 @@ public class MoveUnit
             buf.writeBoolean(false);
 
         buf.writeFloat(speedAmplifier);
-        buf.writeFloat(size);
+        buf.writeFloat(sizeAmplifier);
         buf.writeFloat(minTrackingDistance);
         buf.writeFloat(turnRate);
     }
@@ -87,7 +87,7 @@ public class MoveUnit
         private double xRot = 0;
         private double yRot = 0;
         private float speedAmplifier = 1.0f;
-        private float size = 8F;
+        private float sizeAmplifier = 3F;
         private float minTrackingDistance = 0.2F;
         private float turnRate = 0.35F;
 
@@ -121,9 +121,9 @@ public class MoveUnit
             this.speedAmplifier = speedAmplifier;
             return this;
         }
-        public Builder size(float size)
+        public Builder sizeAmplifier(float size)
         {
-            this.size = size;
+            this.sizeAmplifier = size;
             return this;
         }
         public Builder minTrackingDistance(float minTrackingDistance)
@@ -140,7 +140,7 @@ public class MoveUnit
         public MoveUnit build()
         {
             return new MoveUnit(initialPos,targetEntity, targetPos, xRot, yRot,
-                speedAmplifier, size, minTrackingDistance, turnRate);
+                speedAmplifier, sizeAmplifier, minTrackingDistance, turnRate);
         }
     }
 }

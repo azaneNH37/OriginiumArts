@@ -2,7 +2,6 @@ package com.azane.ogna.entity.genable;
 
 import com.azane.ogna.combat.data.*;
 import com.azane.ogna.combat.util.SelectRule;
-import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.FxData;
 import com.azane.ogna.genable.data.SoundKeyData;
 import com.azane.ogna.genable.entity.IBullet;
@@ -28,9 +27,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.level.ClipContext;
@@ -48,7 +45,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * @author azaneNH37 (2025-08-09)
@@ -160,7 +156,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
 
         var entityHits = ProjectileHelper.getEntitiesAlongPath(
             this.level(), this, currentPos, nextPos,
-            AABBHelper.cube(Vec3.ZERO, moveUnit.getSize()),
+            AABBHelper.cube(Vec3.ZERO, dataBase.getSize()*moveUnit.getSizeAmplifier()),
             this::canHitEntity
             );
 
@@ -210,7 +206,7 @@ public class Bullet extends Projectile implements GeoEntity, IEntityAdditionalSp
 
             if(!(result instanceof LivingEntity))
                 castContext.onHitEntity(result);
-            castContext.gatherMultiTargets((ServerLevel) this.level(),AABBHelper.cube(result.position(), moveUnit.getSize()), SelectRule.NULL.getFilter(),
+            castContext.gatherMultiTargets((ServerLevel) this.level(),AABBHelper.cube(result.position(), moveUnit.getSizeAmplifier()), SelectRule.NULL.getFilter(),
                     result instanceof LivingEntity living ? living : null)
                 .forEach(castContext::onHitEntity);
         }

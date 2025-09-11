@@ -53,6 +53,7 @@ public class BladeEffectDatabase implements IBladeEffect
     private GeckoAssetData geckoAsset;
 
     @SerializedName("transform")
+    @Getter
     private BladeConfig config = BladeConfig.DEFAULT;
 
     @SerializedName("fx")
@@ -64,17 +65,4 @@ public class BladeEffectDatabase implements IBladeEffect
     @Getter
     @Nullable
     private SoundKeyData soundData;
-
-    //TODO: allow user to temporarily change the config
-    @Override
-    public BladeTransform generateTransform(Entity owner)
-    {
-        return createBladeTransform(owner,this.config);
-    }
-
-    @Override
-    public <T extends Entity> Predicate<T> generateFilter(BladeTransform transform)
-    {
-        return createEntityFilter(transform, this.config);
-    }
 }

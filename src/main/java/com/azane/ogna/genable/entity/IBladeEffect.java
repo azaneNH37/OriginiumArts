@@ -23,16 +23,12 @@ public interface IBladeEffect extends IresourceLocation
 
     Set<Integer> getHitFrame();
 
+    BladeConfig getConfig();
+
     @Nullable
     GeckoAssetData getGeckoAsset();
     @Nullable
     FxData getFxData();
     @Nullable
     SoundKeyData getSoundData();
-
-
-    //BladeEffectAABBManager.BladeConfig getTransform();
-    BladeTransform generateTransform(Entity owner);
-
-    <T extends Entity> Predicate<T> generateFilter(BladeTransform transform);
 }
