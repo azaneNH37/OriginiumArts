@@ -3,6 +3,7 @@ package com.azane.ogna.client.gameplay;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.client.gui.hud.OgnaHuds;
+import com.azane.ogna.combat.util.AttrMatrixHelper;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
@@ -128,9 +129,11 @@ public class AttackInputHandler
 
         // 开始蓄力
         String weaponUUID = weapon.getOrCreateStackUUID(mainHand);
-        stateManager.startCharging(playerId, weaponUUID,(long) weapon.getWeaponCap(mainHand).submitAttrVal(
-            ModAttribute.WEAPON_MAX_CHARGE_TIME.get(), player, mainHand,
-            weapon.getWeaponCap(mainHand).getBaseAttrVal(ModAttribute.WEAPON_MAX_CHARGE_TIME.get(), mainHand)));
+        stateManager.startCharging(playerId,weaponUUID,(long) AttrMatrixHelper.commonSubmit(
+            ModAttribute.WEAPON_MAX_CHARGE_TIME.get(),
+            weapon.getWeaponCap(mainHand).getBaseAttrVal(ModAttribute.WEAPON_MAX_CHARGE_TIME.get(), mainHand),
+            weapon.getWeaponCap(mainHand)
+        ));
     }
 
     private static void onMouseReleased(Player player) {
@@ -152,9 +155,11 @@ public class AttackInputHandler
 
         // 判断攻击类型
         AttackType attackType;
-        long maxChargeTime = (long) weapon.getWeaponCap(mainHand).submitAttrVal(
-            ModAttribute.WEAPON_MAX_CHARGE_TIME.get(), player, mainHand,
-            weapon.getWeaponCap(mainHand).getBaseAttrVal(ModAttribute.WEAPON_MAX_CHARGE_TIME.get(), mainHand));
+        long maxChargeTime = (long) AttrMatrixHelper.commonSubmit(
+            ModAttribute.WEAPON_MAX_CHARGE_TIME.get(),
+            weapon.getWeaponCap(mainHand).getBaseAttrVal(ModAttribute.WEAPON_MAX_CHARGE_TIME.get(), mainHand),
+            weapon.getWeaponCap(mainHand)
+        );
 
         if (holdTime < 200) {
             attackType = AttackType.SIMPLE;
@@ -220,8 +225,11 @@ public class AttackInputHandler
         IOgnaWeaponCap weaponCap = weaponImpl.getWeaponCap(weapon);
 
         // 设置客户端冷却
-        long cooldown = (long) weaponCap.submitAttrVal(ModAttribute.WEAPON_ATTACK_CD.get(), player, weapon,
-            weaponCap.getBaseAttrVal(ModAttribute.WEAPON_ATTACK_CD.get(), weapon));
+        long cooldown = (long) AttrMatrixHelper.commonSubmit(
+            ModAttribute.WEAPON_ATTACK_CD.get(),
+            weaponCap.getBaseAttrVal(ModAttribute.WEAPON_ATTACK_CD.get(), weapon),
+            weaponCap
+        ) ;
         //DebugLogger.log("{}",cooldown);
         stateManager.setAttackCooldown(playerId, cooldown);
 
@@ -237,8 +245,11 @@ public class AttackInputHandler
         IOgnaWeaponCap weaponCap = weaponImpl.getWeaponCap(weapon);
 
         // 获取重装时间和武器UUID
-        long reloadTime = (long) weaponCap.submitAttrVal(ModAttribute.WEAPON_RELOAD_CD.get(), player, weapon,
-            weaponCap.getBaseAttrVal(ModAttribute.WEAPON_RELOAD_CD.get(), weapon));
+        long reloadTime = (long) AttrMatrixHelper.commonSubmit(
+            ModAttribute.WEAPON_RELOAD_CD.get(),
+            weaponCap.getBaseAttrVal(ModAttribute.WEAPON_RELOAD_CD.get(), weapon),
+            weaponCap
+        ) ;
         String weaponUUID = weaponImpl.getOrCreateStackUUID(weapon);
 
         // 设置重装状态

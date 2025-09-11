@@ -3,6 +3,7 @@ package com.azane.ogna.client.gui.hud;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
+import com.azane.ogna.combat.util.AttrMatrixHelper;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.lib.RlHelper;
@@ -76,7 +77,7 @@ public class SkillHud extends OgnaHud
         boolean isActive = skillCap.isActive();
         if(!isActive)
         {
-            double maxSP = weapon.submitAttrVal(ModAttribute.SKILL_SP.get(), mc.player, mainHandItem,skill.getSkillData().getSP());
+            double maxSP = AttrMatrixHelper.commonSubmit(ModAttribute.SKILL_SP.get(),skill.getSkillData().getSP(),weapon);
             double chargeProgress = (skillCap.getSP() % maxSP) / maxSP;
             int chargeTicks = (int) (chargeProgress * ICON_SIZE);
             graphics.blit(CHARGE, 0, ICON_SIZE-chargeTicks,0,ICON_SIZE - chargeTicks, ICON_SIZE, chargeTicks,ICON_SIZE,ICON_SIZE);
@@ -97,7 +98,7 @@ public class SkillHud extends OgnaHud
         }
         else
         {
-            double maxDuration = weapon.submitAttrVal(ModAttribute.SKILL_DURATION.get(), mc.player, mainHandItem, skill.getSkillData().getDuration());
+            double maxDuration = AttrMatrixHelper.commonSubmit(ModAttribute.SKILL_DURATION.get(),skill.getSkillData().getDuration(),weapon);
             double durationProgress = (skillCap.getRD() % maxDuration) / maxDuration;
             int durationTicks = (int) (durationProgress * ICON_SIZE);
             graphics.setColor(1f,1f,1f,0.45f);

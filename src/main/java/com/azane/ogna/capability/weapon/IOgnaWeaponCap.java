@@ -4,6 +4,7 @@ import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.combat.chip.ChipSet;
 import com.azane.ogna.combat.data.AttrModifier;
+import com.azane.ogna.combat.util.AttrMatrixHelper;
 import com.azane.ogna.item.weapon.AttackType;
 import com.azane.ogna.lib.IComponentDisplay;
 import com.azane.ogna.lib.ISyncNBTSerializable;
@@ -50,10 +51,7 @@ public interface IOgnaWeaponCap extends ISyncNBTSerializable<CompoundTag>, IComp
         public double getBaseAttrVal(Attribute attribute, ItemStack stack) {return Double.NaN;}
 
         @Override
-        public double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack, double baseValue) {return Double.NaN;}
-
-        @Override
-        public AttrMap.Matrices extractMatrices(Set<Attribute> requirement)
+        public AttrMap.Matrices extractMatrices(Iterable<Attribute> requirement)
         {
             return null;
         }
@@ -94,14 +92,14 @@ public interface IOgnaWeaponCap extends ISyncNBTSerializable<CompoundTag>, IComp
 
     double getBaseAttrVal(Attribute attribute,ItemStack stack);
 
-    double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack,double baseValue);
+    //double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack,double baseValue);
 
     default double submitBaseAttrVal(Attribute attribute,@Nullable Player player, ItemStack stack)
     {
-        return submitAttrVal(attribute,player,stack,getBaseAttrVal(attribute,stack));
+        return AttrMatrixHelper.commonSubmit(attribute,getBaseAttrVal(attribute,stack),this);
     }
 
-    AttrMap.Matrices extractMatrices(Set<Attribute> requirement);
+    AttrMap.Matrices extractMatrices(Iterable<Attribute> requirement);
 
     double getCurrentEnergy();
 

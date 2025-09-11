@@ -57,11 +57,6 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
     @Getter
     private double currentEnergy = 100;
 
-    @Getter
-    private int wpLevel;
-    @Getter
-    private long wpExp;
-
     private AttrMap attrMap = new AttrMap(Attributes.ATTACK_DAMAGE);
 
     private int heartbeatTick = 0;
@@ -148,27 +143,8 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         return baseData.getBaseValue(attribute);
     }
 
-    /**
-     * 此处绝对不能调用stack的getCapability，因为会导致死循环<br>
-     * 不过话又说回来了，谁会在cap里面再找自己
-     * @param attribute
-     * @param player
-     * @param stack
-     * @param baseValue
-     * @return
-     */
     @Override
-    public double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack, double baseValue)
-    {
-        return AttrMatrix.combine(true,
-            attrMap.getAttribute(attribute).extractMatrix(),
-            skillCap.getBaseAttrMap().getAttribute(attribute).extractMatrix(),
-            skillCap.isActive() ? skillCap.getSkillAttrMap().getAttribute(attribute).extractMatrix() : null
-            ).submit(baseValue);
-    }
-
-    @Override
-    public AttrMap.Matrices extractMatrices(Set<Attribute> requirement)
+    public AttrMap.Matrices extractMatrices(Iterable<Attribute> requirement)
     {
         return AttrMap.Matrices.combine(
             attrMap.extractMatrices(requirement),
@@ -202,8 +178,6 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         nbt.putInt("heartbeatTick", heartbeatTick);
         nbt.put("chipSet", chipSet.serializeNBT());
         nbt.put("extraData", extraData.copy());
-        //nbt.putInt("wpLevel", wpLevel);
-        //nbt.putLong("wpExp", wpExp);
         return nbt;
     }
 
@@ -216,8 +190,7 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         nbt.put("chipSet", chipSet.serializeSyncNBT());
         nbt.putDouble("currentEnergy", currentEnergy);
         nbt.putInt("heartbeatTick", heartbeatTick);
-        //nbt.putInt("wpLevel", wpLevel);
-        //nbt.putLong("wpExp", wpExp);
+        nbt.put("extraData", NbtHelper.filterCompound(extraData, ModUtil.SYNC_EXTRA_DATA));
         return nbt;
     }
 
@@ -230,8 +203,6 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
         heartbeatTick = nbt.getInt("heartbeatTick");
         Optional.ofNullable(nbt.get("chipSet")).map(CompoundTag.class::cast).ifPresent(chipSet::deserializeNBT);
         Optional.ofNullable(nbt.get("extraData")).map(CompoundTag.class::cast).ifPresent(tag->extraData = tag.copy());
-        //wpLevel = nbt.getInt("wpLevel");
-        //wpExp = nbt.getLong("wpExp");
     }
 
     private boolean versionCheck(ItemStack stack)

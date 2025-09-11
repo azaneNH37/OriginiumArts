@@ -4,6 +4,7 @@ import com.azane.ogna.capability.skill.ISkillCap;
 import com.azane.ogna.client.lib.IDynamicAssetItem;
 import com.azane.ogna.client.lib.IOffHandItem;
 import com.azane.ogna.combat.chip.ChipTiming;
+import com.azane.ogna.combat.util.AttrMatrixHelper;
 import com.azane.ogna.genable.data.SoundKeyData;
 import com.azane.ogna.genable.item.base.IGenItem;
 import com.azane.ogna.genable.item.skill.ISkill;
@@ -91,7 +92,7 @@ public abstract class OgnaWeapon extends Item implements GeoItem, IOffHandItem, 
         if(level.isClientSide())
             return;
         ISkillCap skillCap = getWeaponCap(stack).getSkillCap();
-        skillCap.modifySP(getWeaponCap(stack).submitAttrVal(ModAttribute.SKILL_SP_RATE.get(),player,stack,1D),false,player,stack);
+        skillCap.modifySP(AttrMatrixHelper.commonSubmit(ModAttribute.SKILL_SP_RATE.get(),1D,getWeaponCap(stack)),false,player,stack);
         //DebugLogger.log("Weapon %s ticked SP, now is %s".formatted(this.getStackUUID(stack), skillCap.getSP()));
     }
 

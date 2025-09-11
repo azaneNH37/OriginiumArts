@@ -25,4 +25,9 @@ public class ModUtil
         ModAttribute.DAMAGE_PHYSICS.get(),
         ModAttribute.DAMAGE_ARTS.get()
     );
+
+    public static final Set<String> SYNC_EXTRA_DATA = Set.of(
+        NBTConstants.WP_EXP,
+        NBTConstants.WP_LEVEL
+    );
 }

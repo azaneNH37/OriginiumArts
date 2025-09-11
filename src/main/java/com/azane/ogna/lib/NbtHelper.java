@@ -126,4 +126,17 @@ public class NbtHelper
         if (type == Short.class) return Tag.TAG_SHORT;
         return Tag.TAG_END; // 未知类型
     }
+
+    public static CompoundTag filterCompound(CompoundTag original, Iterable<String> keysToKeep)
+    {
+        CompoundTag filtered = new CompoundTag();
+        for(String key : keysToKeep)
+        {
+            if(original.contains(key))
+            {
+                filtered.put(key, original.get(key).copy());
+            }
+        }
+        return filtered;
+    }
 }

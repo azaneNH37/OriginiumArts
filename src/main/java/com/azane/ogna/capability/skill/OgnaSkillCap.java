@@ -3,6 +3,7 @@ package com.azane.ogna.capability.skill;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.combat.chip.ChipTiming;
+import com.azane.ogna.combat.util.AttrMatrixHelper;
 import com.azane.ogna.genable.item.skill.ISkill;
 import com.azane.ogna.item.weapon.IOgnaWeapon;
 import com.azane.ogna.registry.ModAttribute;
@@ -62,7 +63,8 @@ public class OgnaSkillCap implements ISkillCap
     {
         if(skill == null || active)
             return false;
-        double need = weaponCap.submitAttrVal(ModAttribute.SKILL_SP.get(), player, stack, skill.getSkillData().getSP());
+        double need = AttrMatrixHelper.commonSubmit(ModAttribute.SKILL_SP.get(),skill.getSkillData().getSP(),weaponCap);
+        //weaponCap.submitAttrVal(, player, stack, skill.getSkillData().getSP());
         return need <= SP;
     }
 
@@ -71,8 +73,10 @@ public class OgnaSkillCap implements ISkillCap
     {
         if(skill == null)
             return;
-        double consume = weaponCap.submitAttrVal(ModAttribute.SKILL_SP.get(),player,stack,skill.getSkillData().getSP());
-        double duration = weaponCap.submitAttrVal(ModAttribute.SKILL_DURATION.get(),player,stack,skill.getSkillData().getDuration());
+        double consume = AttrMatrixHelper.commonSubmit(ModAttribute.SKILL_SP.get(),skill.getSkillData().getSP(),weaponCap);
+            //weaponCap.submitAttrVal(ModAttribute.SKILL_SP.get(),player,stack,skill.getSkillData().getSP());
+        double duration = AttrMatrixHelper.commonSubmit(ModAttribute.SKILL_DURATION.get(),skill.getSkillData().getDuration(),weaponCap);
+            //weaponCap.submitAttrVal(ModAttribute.SKILL_DURATION.get(),player,stack,skill.getSkillData().getDuration());
         SP = Mth.clamp(SP - consume, 0, Double.MAX_VALUE);
         RD = Mth.clamp(duration,0,Double.MAX_VALUE);
         active = true;
@@ -121,7 +125,7 @@ public class OgnaSkillCap implements ISkillCap
     {
         if(skill == null)
             return;
-        SP = Mth.clamp(SP + val, 0, skill.getSkillData().getStorage()*weaponCap.submitAttrVal(ModAttribute.SKILL_SP.get(),player, stack,skill.getSkillData().getSP()));
+        SP = Mth.clamp(SP + val, 0, skill.getSkillData().getStorage()*AttrMatrixHelper.commonSubmit(ModAttribute.SKILL_SP.get(),skill.getSkillData().getSP(),weaponCap));
     }
 
     @Override
@@ -129,17 +133,17 @@ public class OgnaSkillCap implements ISkillCap
     {
         if(skill == null)
             return;
-        RD = Mth.clamp(RD + val, 0, weaponCap.submitAttrVal(ModAttribute.SKILL_DURATION.get(),player, stack,skill.getSkillData().getDuration()));
+        RD = Mth.clamp(RD + val, 0, AttrMatrixHelper.commonSubmit(ModAttribute.SKILL_DURATION.get(),skill.getSkillData().getDuration(),weaponCap));
     }
 
     @Override
-    public AttrMap.Matrices extractBaseMatrices(Set<Attribute> requirement)
+    public AttrMap.Matrices extractBaseMatrices(Iterable<Attribute> requirement)
     {
         return baseAttrMap.extractMatrices(requirement);
     }
 
     @Override
-    public AttrMap.Matrices extractSkillMatrices(Set<Attribute> requirement)
+    public AttrMap.Matrices extractSkillMatrices(Iterable<Attribute> requirement)
     {
         return skillAttrMap.extractMatrices(requirement);
     }

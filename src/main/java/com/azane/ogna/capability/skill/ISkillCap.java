@@ -55,10 +55,10 @@ public interface ISkillCap extends ISyncNBTSerializable<CompoundTag>
         public void modifyRD(double val, boolean needSync, Player player, ItemStack stack) {}
 
         @Override
-        public AttrMap.Matrices extractBaseMatrices(Set<Attribute> requirement) {return null;}
+        public AttrMap.Matrices extractBaseMatrices(Iterable<Attribute> requirement) {return null;}
 
         @Override
-        public AttrMap.Matrices extractSkillMatrices(Set<Attribute> requirement) {return null;}
+        public AttrMap.Matrices extractSkillMatrices(Iterable<Attribute> requirement) {return null;}
 
         @Override
         public AttrMap getBaseAttrMap()
@@ -105,9 +105,9 @@ public interface ISkillCap extends ISyncNBTSerializable<CompoundTag>
 
     void modifyRD(double val, boolean needSync, Player player, ItemStack stack);
 
-    AttrMap.Matrices extractBaseMatrices(Set<Attribute> requirement);
+    AttrMap.Matrices extractBaseMatrices(Iterable<Attribute> requirement);
 
-    AttrMap.Matrices extractSkillMatrices(Set<Attribute> requirement);
+    AttrMap.Matrices extractSkillMatrices(Iterable<Attribute> requirement);
 
     AttrMap getBaseAttrMap();
     AttrMap getSkillAttrMap();

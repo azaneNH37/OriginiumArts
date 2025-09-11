@@ -55,7 +55,7 @@ public class AttrMap implements INBTSerializable<CompoundTag>
         attributes.clear();
     }
 
-    public Matrices extractMatrices(Set<Attribute> requirement)
+    public Matrices extractMatrices(Iterable<Attribute> requirement)
     {
         return new Matrices(this, requirement);
     }
@@ -97,49 +97,57 @@ public class AttrMap implements INBTSerializable<CompoundTag>
     {
         public static final Matrices EMPTY = new Matrices();
 
-        private final ImmutableMap<Attribute,AttrMatrix> matrices;
+        private final Map<Attribute,AttrMatrix> matrices;
 
-        private Matrices()
+        public Matrices()
         {
-            matrices = ImmutableMap.of();
+            matrices = new HashMap<>();
         }
 
-        private Matrices(ImmutableMap.Builder<Attribute, AttrMatrix> builder){matrices = builder.build();}
-
-        private Matrices(AttrMap attrMap, Set<Attribute> requirement)
+        private Matrices(AttrMap attrMap, Iterable<Attribute> requirement)
         {
-            ImmutableMap.Builder<Attribute, AttrMatrix> builder = ImmutableMap.builder();
+            matrices = new HashMap<>();
             requirement.forEach(attribute -> {
                 AttrMatrix matrix = attrMap.getAttribute(attribute).extractMatrix();
                 if (matrix != null) {
-                    builder.put(attribute, matrix);
+                    matrices.put(attribute, matrix);
                 }
             });
-            matrices = builder.build();
         }
 
         public static Matrices combine(Matrices... matrices)
         {
-            Map<Attribute, AttrMatrix> tmp = new HashMap<>();
-            ImmutableMap.Builder<Attribute, AttrMatrix> builder = ImmutableMap.builder();
+            Matrices result = new Matrices();
             for (Matrices matrix : matrices)
             {
-                if (matrix == null || matrix.matrices.isEmpty()) continue;
-                matrix.matrices.forEach((attribute, attrMatrix) -> {
-                    if (tmp.containsKey(attribute))
-                        tmp.get(attribute).absorb(attrMatrix);
-                    else
-                        tmp.put(attribute, attrMatrix.copy());
-                });
+                if (matrix != null)
+                    result.absorb(matrix);
             }
-            tmp.forEach((a,am)-> am.lock());
-            tmp.forEach(builder::put);
-            return new Matrices(builder);
+            return result;
+        }
+
+        public void absorb(Matrices other)
+        {
+            if (other == null || other.matrices.isEmpty())
+                return;
+            other.matrices.forEach((attribute, attrMatrix) -> {
+                if (matrices.containsKey(attribute))
+                    matrices.get(attribute).absorb(attrMatrix);
+                else
+                    matrices.put(attribute, attrMatrix.copy());
+            });
         }
 
         public AttrMatrix get(Attribute attribute)
         {
             return matrices.getOrDefault(attribute,AttrMatrix.UNIT_MATRIX);
         }
+
+        public Set<Map.Entry<Attribute, AttrMatrix>> entrySet()
+        {
+            return ImmutableMap.copyOf(matrices).entrySet();
+        }
+
+        public void clear() {matrices.clear();}
     }
 }
