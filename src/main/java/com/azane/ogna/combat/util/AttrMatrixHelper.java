@@ -3,7 +3,9 @@ package com.azane.ogna.combat.util;
 import com.azane.ogna.capability.weapon.IOgnaWeaponCap;
 import com.azane.ogna.combat.attr.AttrMap;
 import com.azane.ogna.combat.attr.AttrMatrix;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
 import java.util.List;
 
@@ -15,6 +17,9 @@ public class AttrMatrixHelper
 {
     private final AttrMap.Matrices matrices = new AttrMap.Matrices();
     private AttrMatrix cache = null;
+
+    private double minValue = 0;
+    private double maxValue = Double.MAX_VALUE;
 
     private Iterable<Attribute> attributes;
 
@@ -70,9 +75,20 @@ public class AttrMatrixHelper
         return cache(attributes);
     }
 
+    public AttrMatrixHelper clampMin(double minValue)
+    {
+        this.minValue = minValue;
+        return this;
+    }
+    public AttrMatrixHelper clampMax(double maxValue)
+    {
+        this.maxValue = maxValue;
+        return this;
+    }
+
     public double submit(double baseValue)
     {
-        return cache == null ? baseValue : cache.submit(baseValue);
+        return Mth.clamp(cache == null ? baseValue : cache.submit(baseValue),minValue,maxValue);
     }
 
     public static double commonSubmit(Attribute attribute, double baseValue,IOgnaWeaponCap weaponCap)

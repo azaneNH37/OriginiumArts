@@ -172,10 +172,6 @@ public class OgnaSword extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
         {
             IOgnaWeaponCap cap = getWeaponCap(stack);
             boolean isInSkill = cap.getSkillCap().isActive();
-            cap.modifyCurrentEnergy(
-                -cap.submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_CONSUME.get(), pPlayer, stack),
-                true,pPlayer,stack
-            );
             ISwordDataBase dataBase = getDataBaseForStack(stack);
             int curHit = NbtHelper.getOrCreate(cap.getExtraData(),"ognaCurHit",0);
             NbtHelper.put(cap.getExtraData(), "ognaCurHit", (curHit + 1)%(isInSkill ? dataBase.getSkillCombo() : dataBase.getNormalCombo()));

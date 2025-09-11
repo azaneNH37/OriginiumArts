@@ -164,10 +164,6 @@ public class OgnaStaff extends DefaultOgnaPolyWeapon implements IPolyItemDataBas
         {
             IOgnaWeaponCap cap = getWeaponCap(stack);
             boolean isInSkill = cap.getSkillCap().isActive();
-            cap.modifyCurrentEnergy(
-                -cap.submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_CONSUME.get(), pPlayer, stack),
-                true,pPlayer,stack
-            );
             if(isInSkill)
                 triggerAnim(pPlayer, GeoItem.getOrAssignId(pPlayer.getMainHandItem(), serverLevel), "default","attack.skill");
             else

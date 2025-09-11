@@ -88,4 +88,17 @@ public final class ColorHelper
 
         return (255 << 24) | (r << 16) | (g << 8) | b;
     }
+
+    public static int getBrighter(int color,float factor,float base)
+    {
+        int r = (color >> 16) & 0xFF;
+        int g = (color >> 8) & 0xFF;
+        int b = color & 0xFF;
+
+        r = Math.min(255, (int) (r * factor + base));
+        g = Math.min(255, (int) (g * factor + base));
+        b = Math.min(255, (int) (b * factor + base));
+
+        return (255 << 24) | (r << 16) | (g << 8) | b;
+    }
 }

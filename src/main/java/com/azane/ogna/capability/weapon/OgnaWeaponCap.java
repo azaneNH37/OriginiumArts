@@ -37,9 +37,8 @@ import org.apache.logging.log4j.MarkerManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Consumer;
 
 //TODO: 注意C/S端数据同步！(狠狠回旋镖啊狠狠回旋镖)
 /**
@@ -226,5 +225,20 @@ public class OgnaWeaponCap implements IOgnaWeaponCap
             chipSet.appendHoverText(stack,tooltip,flag);
             tooltip.add(Component.empty());
         }
+    }
+
+    //好丑陋的硬编码，藏到最底下www
+    private static final Map<Integer, Consumer<OgnaWeaponCap>> EXTRA_EFFECTS = Map.ofEntries(
+        Map.entry(5,weaponCap -> {
+            weaponCap.baseData.getAttrModifiers().forEach(weaponCap.attrMap::acceptModifier);
+            weaponCap.baseData.getInnerChips().stream().map(OgnaChip::getChip).forEach(i->weaponCap.chipSet.insertChip(i,ChipArg.of(null,null,weaponCap)));
+        })
+    );
+
+    @Override
+    public void onPotentialLevel(int level)
+    {
+        if(EXTRA_EFFECTS.containsKey(level))
+            EXTRA_EFFECTS.get(level).accept(this);
     }
 }

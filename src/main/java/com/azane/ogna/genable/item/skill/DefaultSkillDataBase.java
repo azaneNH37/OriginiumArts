@@ -18,6 +18,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -116,19 +117,24 @@ public class DefaultSkillDataBase implements ISkill
         tooltip.add(Component.translatable(displayContext.getName()).withStyle(Style.EMPTY.withColor(displayContext.getColor())));
         tooltip.add(Component.translatable(displayContext.getDescription()).withStyle(ChatFormatting.DARK_GRAY,ChatFormatting.ITALIC));
         tooltip.add(Component.empty());
-        tooltip.add(Component.translatable("attribute.name.ognmarts.skill.sp").append(" %d".formatted(skillData.getSP()/10)).withStyle(ChatFormatting.GREEN,ChatFormatting.BOLD)
+        if(Screen.hasAltDown())
+        {
+            tooltip.add(Component.translatable("attribute.name.ognmarts.skill.sp").append(" %d".formatted(skillData.getSP()/10)).withStyle(ChatFormatting.GREEN,ChatFormatting.BOLD)
                 .append("  ")
                 .append(Component.translatable("attribute.name.ognmarts.skill.duration").append(" %ds".formatted(skillData.getDuration()/10)).withStyle(ChatFormatting.GOLD,ChatFormatting.BOLD)));
-        tooltip.add(Component.empty());
-        appendSkillDetailHoverText(stack,tooltip,flag);
-        tooltip.add(Component.empty());
-        if(!skillData.getBaseAttrModifiers().isEmpty())
-            tooltip.add(Component.translatable("ogna.tip.skill.base.attr").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-        skillData.getBaseAttrModifiers().forEach(attrModifier -> attrModifier.appendHoverText(stack,tooltip,flag));
-        if(!skillData.getSkillAttrModifiers().isEmpty())
-            tooltip.add(Component.translatable("ogna.tip.skill.skill.attr").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-        skillData.getSkillAttrModifiers().forEach(attrModifier -> attrModifier.appendHoverText(stack,tooltip,flag));
+            tooltip.add(Component.empty());
+            appendSkillDetailHoverText(stack,tooltip,flag);
+            tooltip.add(Component.empty());
+            if(!skillData.getBaseAttrModifiers().isEmpty())
+                tooltip.add(Component.translatable("ogna.tip.skill.base.attr").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+            skillData.getBaseAttrModifiers().forEach(attrModifier -> attrModifier.appendHoverText(stack,tooltip,flag));
+            if(!skillData.getSkillAttrModifiers().isEmpty())
+                tooltip.add(Component.translatable("ogna.tip.skill.skill.attr").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+            skillData.getSkillAttrModifiers().forEach(attrModifier -> attrModifier.appendHoverText(stack,tooltip,flag));
 
+        }
+        else
+            tooltip.add(Component.translatable("ogna.tip.expand.alt").withStyle(ChatFormatting.YELLOW));
     }
 
     public void appendSkillDetailHoverText(ItemStack stack, List<Component> tooltip, TooltipFlag flag)

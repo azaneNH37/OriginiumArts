@@ -87,7 +87,7 @@ public class MoveUnit
         private double xRot = 0;
         private double yRot = 0;
         private float speedAmplifier = 1.0f;
-        private float sizeAmplifier = 3F;
+        private float sizeAmplifier = 1F;
         private float minTrackingDistance = 0.2F;
         private float turnRate = 0.35F;
 

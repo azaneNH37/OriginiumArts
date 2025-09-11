@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.UnaryOperator;
 
 /**
  * @author azaneNH37 (2025-08-04)
@@ -138,5 +139,24 @@ public class NbtHelper
             }
         }
         return filtered;
+    }
+
+    /**
+     * 修改 CompoundTag 中的值,如果不存在则使用默认值
+     * @param tag
+     * @param key
+     * @param type
+     * @param modifier
+     * @return
+     * @param <T>
+     */
+    public static <T> T modifyValue(CompoundTag tag, String key, Class<T> type, UnaryOperator<T> modifier,T defaultValue)
+    {
+        T currentValue = get(tag,key,type);
+        if(currentValue == null)
+            currentValue = defaultValue;
+        T newValue = modifier.apply(currentValue);
+        put(tag,key,newValue);
+        return newValue;
     }
 }

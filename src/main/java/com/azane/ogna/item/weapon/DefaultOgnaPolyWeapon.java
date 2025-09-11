@@ -5,18 +5,22 @@ import com.azane.ogna.capability.weapon.OgnaWeaponCapProvider;
 import com.azane.ogna.client.gameplay.ReloadState;
 import com.azane.ogna.client.lib.Datums;
 import com.azane.ogna.combat.util.EnergyConsumer;
+import com.azane.ogna.combat.util.WeaponPotential;
 import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.genable.data.GeckoAssetData;
 import com.azane.ogna.genable.item.weapon.IDefaultOgnaWeaponDataBase;
+import com.azane.ogna.lib.NbtHelper;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.network.OgnmChannel;
 import com.azane.ogna.network.to_client.SyncReloadStatePacket;
 import com.azane.ogna.registry.ModCapability;
 import com.azane.ogna.registry.ModAttribute;
+import com.azane.ogna.util.NBTConstants;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -119,6 +123,8 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
         IDefaultOgnaWeaponDataBase weaponDataBase = getDefaultDatabase(pStack);
         weaponDataBase.appendHoverText(pStack, pTooltipComponents, pIsAdvanced);
         pTooltipComponents.add(Component.empty());
+        WeaponPotential.appendHoverText(pStack, pTooltipComponents, pIsAdvanced);
+        pTooltipComponents.add(Component.empty());
         getWeaponCap(pStack).appendHoverText(pStack, pTooltipComponents, pIsAdvanced);
     }
 
@@ -126,6 +132,14 @@ public abstract class DefaultOgnaPolyWeapon extends OgnaWeapon
     public void onServerAttack(ItemStack stack, ServerPlayer player, AttackType attackType, long chargeTime)
     {
         //DebugLogger.log("Server attack");
+        IOgnaWeaponCap cap = getWeaponCap(stack);
+        if (player.level() instanceof ServerLevel serverLevel)
+        {
+            double consume = cap.submitBaseAttrVal(ModAttribute.WEAPON_ENERGY_CONSUME.get(), player, stack);
+            cap.modifyCurrentEnergy(-consume, true,player,stack);
+            NbtHelper.modifyValue(cap.getExtraData(), NBTConstants.WP_EXP,Double.class, val->val+consume*0.1D+1D,0.0);
+            WeaponPotential.applyPotential(cap);
+        }
     }
 
     @Override

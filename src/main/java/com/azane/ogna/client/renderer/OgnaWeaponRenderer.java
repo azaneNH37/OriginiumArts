@@ -5,7 +5,10 @@ import com.azane.ogna.client.lib.RenderUtils;
 import com.azane.ogna.client.renderer.layer.GlowingLayer;
 import com.azane.ogna.client.model.weapon.OgnaWeaponModel;
 import com.azane.ogna.item.weapon.OgnaWeapon;
+import com.azane.ogna.lib.ColorHelper;
+import com.azane.ogna.lib.NbtHelper;
 import com.azane.ogna.lib.RlHelper;
+import com.azane.ogna.util.NBTConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -79,11 +82,19 @@ public class OgnaWeaponRenderer<T extends OgnaWeapon> extends GeoItemRenderer<T>
         poseStack.pushPose();
 
         /*
+        int lv = NbtHelper.getOrCreate(animatable.getWeaponCap(currentItemStack).getExtraData(), NBTConstants.WP_LEVEL, 0);
+        int color = ColorHelper.getBrighter(ColorHelper.getGradientColor(lv*4),1f,128f);
+        int[] colors = new int[]{
+            (color >> 16) & 0xFF,
+            (color >> 8) & 0xFF,
+            color & 0xFF,
+            255
+        };
         poseStack.pushPose();
         poseStack.translate(-0.5F, -0.5F, 0.0F);
         RenderUtils.renderRectTexture(poseStack, bufferSource, LEVEL,
             0.0F, 0.0F, 1.0F, 1.0F, -0.01F,
-            new int[]{255, 100, 100, 255}, packedLight, packedOverlay);
+            colors, packedLight, packedOverlay);
         poseStack.popPose();
          */
 

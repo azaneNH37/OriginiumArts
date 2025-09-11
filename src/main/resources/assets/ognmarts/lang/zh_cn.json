@@ -130,6 +130,10 @@
   "ogna.genable.chip.inner.attr-sword.lwd.name": "熔火",
   "ogna.genable.chip.inner.attr-staff.lockkey.name": "技力光环·术师",
   "ogna.genable.chip.inner.attr-staff.lockkey.2.name": "主观缓时",
+  "ogna.tip.separator": "============================================",
+  "ogna.tip.expand.shift": "> 按下 SHIFT 展开详细描述",
+  "ogna.tip.expand.ctrl": "> 按下 CTRL 展开详细描述",
+  "ogna.tip.expand.alt": "> 按下 ALT 展开详细描述",
   "ogna.tip.chip.volume": "基础容量占用: ",
   "ogna.tip.chip.size": "基础最大堆叠: ",
   "ogna.tip.chip.timing.skill.end": "当技能结束时, ",
@@ -138,5 +142,7 @@
   "ogna.tip.weapon.cap.skill": "装配技能:",
   "ogna.tip.weapon.cap.chipset": "装配模块:",
   "ogna.tip.sp.gain.range": "获得 %d ~ %d SP",
+  "ogna.tip.weapon.potential": "POTENTIAL %s",
+  "ogna.tip.weapon.potential.level.5": "再次获得施术单元初始携带的所有属性修正和模块。",
   "ogna.tip.chip.inner.mobEffect": "对目标施加 %s (等级%d) 效果， 持续时间%.1fs."
 }

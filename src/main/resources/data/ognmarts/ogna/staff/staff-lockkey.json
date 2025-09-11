@@ -69,7 +69,7 @@
         "id": "a3e05a6c-6ece-4894-b930-5d61a76c87c4",
         "bucket": "DIRECT_ADD",
         "amount": 9,
-        "stack_size": 1
+        "stack_size": 5
       }
     ],
     "inner_chips": [

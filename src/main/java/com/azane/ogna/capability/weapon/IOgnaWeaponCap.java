@@ -69,6 +69,9 @@ public interface IOgnaWeaponCap extends ISyncNBTSerializable<CompoundTag>, IComp
         public void innerHeartbeatSync(int tick) {}
 
         @Override
+        public void onPotentialLevel(int level) {}
+
+        @Override
         public CompoundTag serializeSyncNBT() {return new CompoundTag();}
 
         @Override
@@ -92,8 +95,6 @@ public interface IOgnaWeaponCap extends ISyncNBTSerializable<CompoundTag>, IComp
 
     double getBaseAttrVal(Attribute attribute,ItemStack stack);
 
-    //double submitAttrVal(Attribute attribute, @Nullable Player player, ItemStack stack,double baseValue);
-
     default double submitBaseAttrVal(Attribute attribute,@Nullable Player player, ItemStack stack)
     {
         return AttrMatrixHelper.commonSubmit(attribute,getBaseAttrVal(attribute,stack),this);
@@ -109,4 +110,6 @@ public interface IOgnaWeaponCap extends ISyncNBTSerializable<CompoundTag>, IComp
 
     //必要性存疑，但可以干掉状态机枚举不完全的神秘情况
     void innerHeartbeatSync(int tick);
+
+    void onPotentialLevel(int level);
 }

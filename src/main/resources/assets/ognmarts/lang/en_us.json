@@ -139,6 +139,10 @@
   "ogna.genable.chip.inner.attr-staff.lockkey.name": "Skill Aura - Caster",
   "ogna.genable.chip.inner.attr-staff.lockkey.2.name": "Subjective Time Dilation",
 
+  "ogna.tip.separator": "============================================",
+  "ogna.tip.expand.shift": "> Press SHIFT for details",
+  "ogna.tip.expand.ctrl": "> Press CTRL for details",
+  "ogna.tip.expand.alt": "> Press ALT for details",
   "ogna.tip.chip.volume": "Base Volume: ",
   "ogna.tip.chip.size": "Base Stack Count: ",
   "ogna.tip.chip.timing.skill.end": "when the skill ends, ",
@@ -147,6 +151,8 @@
   "ogna.tip.weapon.cap.skill": "Skill Equipped:",
   "ogna.tip.weapon.cap.chipset": "Module Equipped:",
   "ogna.tip.sp.gain.range": "gain %d ~ %d SP",
+  "ogna.tip.weapon.potential": "POTENTIAL %s",
+  "ogna.tip.weapon.potential.level.5": "Regain all the attribute modifiers and modules initialized with the arts unit.",
 
   "ogna.tip.chip.inner.mobEffect": "Apply Effect %s (Lv%d) to the target with duration %.1fs."
 }
