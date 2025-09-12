@@ -4,6 +4,9 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
 import com.azane.ogna.craft.oe.OECRecipe;
 import com.azane.ogna.craft.oe.OEGRecipe;
+import com.azane.ogna.inventory.ArrayContainer;
+import com.azane.ogna.inventory.ArrayItemHandler;
+import com.azane.ogna.inventory.SlotType;
 import com.azane.ogna.lib.NumStrHelper;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlockEntity;
@@ -375,131 +378,12 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
     }
 
     //===== Container methods =====
-    public final Container container = new Container()
-    {
-        @Override
-        public int getContainerSize() {return stacks.length;}
-        @Override
-        public boolean isEmpty()
-        {
-            for(ItemStack itemstack : stacks)
-                if (!itemstack.isEmpty())
-                    return false;
-            return true;
-        }
-        @Override
-        public ItemStack getItem(int pSlot) {
-            return pSlot >= 0 && pSlot < stacks.length ? stacks[pSlot] : ItemStack.EMPTY;
-        }
-        @Override
-        public ItemStack removeItem(int pSlot, int pAmount) {
-            ItemStack result = ContainerHelper.removeItem(Arrays.asList(stacks), pSlot, pAmount);
-            if (!result.isEmpty()) {
-                setChanged();
-            }
-            return result;
-        }
-        @Override
-        public ItemStack removeItemNoUpdate(int pSlot) {
-            return ContainerHelper.takeItem(Arrays.asList(stacks), pSlot);
-        }
-        @Override
-        public void setItem(int pSlot, ItemStack pStack)
-        {
-            if (pSlot >= 0 && pSlot < stacks.length) {
-                stacks[pSlot] = pStack;
-                if (pStack.getCount() > this.getMaxStackSize()) {
-                    pStack.setCount(this.getMaxStackSize());
-                }
-                setChanged();
-            }
-        }
-        @Override
-        public void setChanged() {EnergyEHBlockEntity.this.setChanged();}
-        @Override
-        public boolean stillValid(Player pPlayer) {
-            return pPlayer.distanceToSqr(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5) <= 64.0;
-        }
-        @Override
-        public void clearContent() {
-            Arrays.fill(stacks, ItemStack.EMPTY);
-            setChanged();
-        }
-    };
+    public final Container container = new ArrayContainer(this,stacks);
 
     // ==== Container methods end =====
 
     // ==== Forge ItemHandler methods ====
-    private final IItemHandler itemHandler = new IItemHandler()
-    {
-        @Override
-        public int getSlots() {return 2;}
-        @Override
-        public @NotNull ItemStack getStackInSlot(int slot) {return stacks[slot];}
-        @Override
-        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate)
-        {
-            if(slot == 1)
-                return stack;
-            if (stack.isEmpty())
-                return ItemStack.EMPTY;
-            ItemStack existing = stacks[slot];
-            int limit = getSlotLimit(slot);
-            if (!existing.isEmpty())
-            {
-                if (!ItemHandlerHelper.canItemStacksStack(stack, existing))
-                    return stack;
-                limit -= existing.getCount();
-            }
-            if (limit <= 0)
-                return stack;
-            boolean reachedLimit = stack.getCount() > limit;
-            if (!simulate)
-            {
-                if (existing.isEmpty())
-                    stacks[slot] = reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack;
-                else
-                    existing.grow(reachedLimit ? limit : stack.getCount());
-                setChanged();
-            }
-            return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount()- limit) : ItemStack.EMPTY;
-        }
-
-        @Override
-        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate)
-        {
-            if(slot == 0)
-                return ItemStack.EMPTY;
-            ItemStack existing = stacks[slot];
-            if (existing.isEmpty())
-                return ItemStack.EMPTY;
-            int toExtract = Math.min(amount, existing.getMaxStackSize());
-            if (existing.getCount() <= toExtract)
-            {
-                if (!simulate)
-                {
-                    stacks[slot] = ItemStack.EMPTY;
-                    setChanged();
-                    return existing;
-                }
-                else
-                    return existing.copy();
-            }
-            else
-            {
-                if (!simulate)
-                {
-                    stacks[slot] = ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract);
-                    setChanged();
-                }
-                return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
-            }
-        }
-        @Override
-        public int getSlotLimit(int slot) {return Math.min(stacks[slot].getMaxStackSize(), 64);}
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {return true;}
-    };
+    private final IItemHandler itemHandler = new ArrayItemHandler(this,stacks).setType(0, SlotType.INPUT).setType(1,SlotType.OUTPUT);
 
     // ==== Forge capabilities methods ====
     private final LazyOptional<IItemHandler> itemHandlerLazy = LazyOptional.of(() -> itemHandler);
