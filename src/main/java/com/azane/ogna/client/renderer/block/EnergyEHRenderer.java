@@ -1,6 +1,5 @@
 package com.azane.ogna.client.renderer.block;
 
-import com.azane.ogna.OgnaConfig;
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.block.entity.EnergyEHBlockEntity;
 import com.azane.ogna.client.renderer.layer.GlowingLayer;
@@ -13,7 +12,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 /**
  * @author azaneNH37 (2025-08-11)

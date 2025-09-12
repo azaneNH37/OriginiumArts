@@ -2,6 +2,7 @@ package com.azane.ogna.registry;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.block.*;
+import com.azane.ogna.fluid.OriginiumEnergyFluid;
 import com.azane.ogna.item.geoblock.CraftOCCBlockItem;
 import com.azane.ogna.item.geoblock.EnergyEHBlockItem;
 import com.azane.ogna.item.geoblock.InjectEPTBlockItem;
@@ -9,6 +10,10 @@ import com.lowdragmc.lowdraglib.test.TestJava;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -32,6 +37,8 @@ public class ModBlock
     public static final ItemBlock AOGNM_S = registerBlockItem("aognm_s", ()->new ActiveOriginiumBlock(7,0.05D));
     public static final ItemBlock IOGNM = registerBlockItem("iognm", InactiveOriginiumBlock::new);
     public static final ItemBlock OGNM_CRYSTAL = registerBlockItem("ognm_crystal", OgnmCrystalBlock::new);
+
+    public static final RegistryObject<Block> OE_FLUID = register(OriginiumEnergyFluid.NAME,()-> new LiquidBlock(ModFluid.FLOWING_ORIGINIUM_ENERGY, BlockBehaviour.Properties.of().noCollission().strength(100.0F).noLootTable().replaceable().pushReaction(PushReaction.DESTROY).liquid().mapColor(MapColor.GOLD)));
 
     public static RegistryObject<Block> register(String name, Supplier<? extends Block> supplier)
     {

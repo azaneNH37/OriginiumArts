@@ -1,13 +1,16 @@
 package com.azane.ogna.registry;
 
 import com.azane.ogna.OriginiumArts;
+import com.azane.ogna.fluid.OriginiumEnergyFluid;
 import com.azane.ogna.item.ArkMaterial;
 import com.azane.ogna.item.EnergyUnit;
 import com.azane.ogna.item.OgnaChip;
 import com.azane.ogna.item.skill.OgnaSkill;
 import com.azane.ogna.item.weapon.OgnaStaff;
 import com.azane.ogna.item.weapon.OgnaSword;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,6 +40,8 @@ public class ModItem
 
     public static final RegistryObject<Item> ENERGY_UNIT_SIMPLE = register("eu_simple",()->new EnergyUnit(10));
     public static final RegistryObject<Item> ENERGY_UNIT_SIMPLE_EMPTY = register("eu_simple_empty",()->new EnergyUnit(0));
+
+    //public static final RegistryObject<Item> OE_BUCKET = register(OriginiumEnergyFluid.NAME+"_bucket", ()->new BucketItem(ModFluid.FLOWING_ORIGINIUM_ENERGY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(16).rarity(Rarity.UNCOMMON)));
 
     public static final List<RegistryObject<Item>> GENABLE_ITEMS = List.of(
       OGNA_STAFF,OGNA_SWORD,OGNA_SKILL,OGNA_CHIP

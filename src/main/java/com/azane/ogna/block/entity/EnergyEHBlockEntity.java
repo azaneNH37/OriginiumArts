@@ -7,6 +7,7 @@ import com.azane.ogna.craft.oe.OEGRecipe;
 import com.azane.ogna.lib.NumStrHelper;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlockEntity;
+import com.azane.ogna.registry.ModFluid;
 import com.azane.ogna.registry.ModRecipe;
 import com.azane.ogna.util.GeoAnimations;
 import com.lowdragmc.lowdraglib.gui.factory.BlockEntityUIFactory;
@@ -27,6 +28,7 @@ import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -40,6 +42,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
@@ -88,14 +93,20 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
     }
     //===== GeckoLib end =======
 
-    public static final double MAX_ENERGY = 1e4;
+    public static final int MAX_ENERGY = 10000;
 
-    // Getter方法供UI使用
     @Getter
-    @DropSaved
+    private final FluidTank energyTank = new FluidTank(MAX_ENERGY) {
+        @Override
+        public boolean isFluidValid(FluidStack stack) {return stack.getFluid() == ModFluid.SOURCE_ORIGINIUM_ENERGY.get();}
+        @Override
+        protected void onContentsChanged() {EnergyEHBlockEntity.this.setChanged();}
+    };
+    public double getEnergy() {return syncEnergy;}
+
     @DescSynced
-    @Persisted
-    private double energy;
+    private double syncEnergy = 0D;
+
     @DropSaved
     @DescSynced
     @Persisted
@@ -161,8 +172,10 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
 
         inSlot.setContainerSlot(container,0);
         outSlot.setContainerSlot(container,1);
-        energyBar.setDynamicHoverTips(p->Component.translatable("ogna.gui.energy.energy", NumStrHelper.FORMAT2.format(energy), NumStrHelper.FORMAT2.format(MAX_ENERGY)).getString());
-        energyBar.setProgressSupplier(()-> energy / MAX_ENERGY);
+        energyBar.setDynamicHoverTips(d->Component.translatable("ogna.gui.energy.energy",
+            NumStrHelper.FORMAT2.format(syncEnergy),
+            NumStrHelper.FORMAT2.format(MAX_ENERGY)).getString());
+        energyBar.setProgressSupplier(()-> (double) energyTank.getFluidAmount() / MAX_ENERGY);
         progressBar.setProgressSupplier(()-> maxProcessTime > 0 ? (double)processTime / maxProcessTime : 0.0);
 
         return ui;
@@ -205,8 +218,9 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
                 }
                 break;
         }
-
+        syncEnergy = energyTank.getFluidAmount();
         if (dirty) {
+
             setChanged();
         }
     }
@@ -229,21 +243,21 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
         if (inputStack.isEmpty()) return false;
 
         OEGRecipe recipe = findOEGRecipe(inputStack);
-        return recipe != null && recipe.canProcess(inputStack) && energy < MAX_ENERGY;
+        return recipe != null && recipe.canProcess(inputStack) && energyTank.getFluidAmount() < MAX_ENERGY;
     }
 
     private boolean canStartCrafting(ItemStack inputStack, ItemStack outputStack) {
         if (inputStack.isEmpty()) return false;
 
         OECRecipe recipe = findOECRecipe(inputStack);
-        return recipe != null && recipe.canProcess(inputStack, outputStack, energy);
+        return recipe != null && recipe.canProcess(inputStack, outputStack, energyTank.getFluidAmount());
     }
 
     private boolean processEnergyGeneration() {
         ItemStack inputStack = stacks[0];
         OEGRecipe recipe = findOEGRecipe(inputStack);
 
-        if (recipe == null || !recipe.canProcess(inputStack) || energy >= MAX_ENERGY) {
+        if (recipe == null || !recipe.canProcess(inputStack) || energyTank.getFluidAmount() >= MAX_ENERGY) {
             return false;
         }
 
@@ -256,8 +270,10 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
         if (processTime >= maxProcessTime) {
             // 完成发电过程
             inputStack.shrink(recipe.getIngredient().getCount());
-            energy = Math.min(energy + recipe.getEnergyOutput(), MAX_ENERGY);
-            //refreshEnergyBar();
+
+            // 注入流体而不是增加能量值
+            FluidStack energyFluid = new FluidStack(ModFluid.SOURCE_ORIGINIUM_ENERGY.get(), (int) recipe.getEnergyOutput());
+            energyTank.fill(energyFluid, IFluidHandler.FluidAction.EXECUTE);
 
             processTime = 0;
             maxProcessTime = 0;
@@ -272,7 +288,7 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
         ItemStack outputStack = stacks[1];
         OECRecipe recipe = findOECRecipe(inputStack);
 
-        if (recipe == null || !recipe.canProcess(inputStack, outputStack, energy)) {
+        if (recipe == null || !recipe.canProcess(inputStack, outputStack, energyTank.getFluidAmount())) {
             return false;
         }
 
@@ -285,8 +301,9 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
         if (processTime >= maxProcessTime) {
             // 完成制造过程
             inputStack.shrink(recipe.getIngredient().getCount());
-            energy -= recipe.getEnergyCost();
-            //refreshEnergyBar();
+
+            // 消耗流体而不是减少能量值
+            energyTank.drain((int) recipe.getEnergyCost(), IFluidHandler.FluidAction.EXECUTE);
 
             ItemStack result = recipe.getResult().copy();
             if (outputStack.isEmpty()) {
@@ -333,12 +350,28 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
             RecipeManager recipeManager = level.getRecipeManager();
             cachedOECRecipe = recipeManager.getAllRecipesFor(ModRecipe.OEC_TYPE.get())
                 .stream()
-                .filter(recipe -> recipe.canProcess(inputStack, stacks[1], energy))
+                .filter(recipe -> recipe.canProcess(inputStack, stacks[1], energyTank.getFluidAmount()))
                 .findFirst()
                 .orElse(null);
         }
 
         return cachedOECRecipe;
+    }
+
+    // ===== Custom Persist Methods =====
+    @Override
+    public void saveCustomPersistedData(CompoundTag tag, boolean forDrop) {
+        CompoundTag fluidTag = new CompoundTag();
+        energyTank.writeToNBT(fluidTag);
+        tag.put("energy", fluidTag);
+    }
+
+    @Override
+    public void loadCustomPersistedData(CompoundTag tag) {
+        if (tag.contains("energy")) {
+            CompoundTag fluidTag = tag.getCompound("energy");
+            energyTank.readFromNBT(fluidTag);
+        }
     }
 
     //===== Container methods =====
@@ -397,7 +430,6 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
     // ==== Container methods end =====
 
     // ==== Forge ItemHandler methods ====
-    //TODO:等把ldlib的自动持久化修了一切都会好起来的
     private final IItemHandler itemHandler = new IItemHandler()
     {
         @Override
@@ -407,7 +439,6 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
         @Override
         public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate)
         {
-            //DebugLogger.log("slot:{}, stack:{},simulate:{}", slot, stack,simulate);
             if(slot == 1)
                 return stack;
             if (stack.isEmpty())
@@ -469,18 +500,27 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {return true;}
     };
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+
+    // ==== Forge capabilities methods ====
+    private final LazyOptional<IItemHandler> itemHandlerLazy = LazyOptional.of(() -> itemHandler);
+    private final LazyOptional<IFluidHandler> fluidHandlerLazy = LazyOptional.of(() -> energyTank);
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return handler.cast();
+            return itemHandlerLazy.cast();
+        }
+        if (cap == ForgeCapabilities.FLUID_HANDLER) {
+            return fluidHandlerLazy.cast();
         }
         return super.getCapability(cap, side);
     }
+
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        handler.invalidate();
+        itemHandlerLazy.invalidate();
+        fluidHandlerLazy.invalidate();
     }
-    // ==== Forge ItemHandler methods end ====
+    // ==== Forge capabilities methods end ====
 }

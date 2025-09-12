@@ -21,7 +21,6 @@ import org.apache.logging.log4j.Logger;
 @Mod(OriginiumArts.MOD_ID)
 public class OriginiumArts
 {
-
     public static final String MOD_ID = "ognmarts";
     public static final String VERSION = "0.1.3";
 
@@ -46,6 +45,8 @@ public class OriginiumArts
         ModBlock.BLOCKS.register(modEventBus);
         ModBlockEntity.BLOCK_ENTITIES.register(modEventBus);
         ModItem.ITEMS.register(modEventBus);
+        ModFluid.FLUID_TYPES.register(modEventBus);
+        ModFluid.FLUIDS.register(modEventBus);
         ModCreativeTab.TABS.register(modEventBus);
         ModWorldGen.FEATURES.register(modEventBus);
         ModEffect.EFFECTS.register(modEventBus);
