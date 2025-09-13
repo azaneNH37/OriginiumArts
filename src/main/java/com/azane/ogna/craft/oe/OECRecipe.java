@@ -1,9 +1,12 @@
 package com.azane.ogna.craft.oe;
 
 import com.azane.ogna.craft.QuantifiedIngredient;
+import com.azane.ogna.craft.catalyst.CatalystRequirement;
+import com.azane.ogna.craft.catalyst.CatalystScanner;
 import com.azane.ogna.registry.ModRecipe;
 import com.google.gson.JsonObject;
 import lombok.Getter;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -15,22 +18,26 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @author azaneNH37 (2025-08-09)
+ * 增强的制造配方，支持催化剂需求
+ * @author azaneNH37 (2025-09-12)
  */
 @Getter
-public class OECRecipe implements Recipe<Container> {
+public class OECRecipe implements Recipe<Container>, Comparable<OECRecipe> {
     private final ResourceLocation id;
     private final QuantifiedIngredient ingredient;
     private final ItemStack result;
     private final double energyCost;
     private final int processingTime;
+    private final CatalystRequirement catalystRequirement;
 
-    public OECRecipe(ResourceLocation id, QuantifiedIngredient ingredient, ItemStack result, double energyCost, int processingTime) {
+    public OECRecipe(ResourceLocation id, QuantifiedIngredient ingredient, ItemStack result,
+                     double energyCost, int processingTime, CatalystRequirement catalystRequirement) {
         this.id = id;
         this.ingredient = ingredient;
         this.result = result;
         this.energyCost = energyCost;
         this.processingTime = processingTime;
+        this.catalystRequirement = catalystRequirement != null ? catalystRequirement : new CatalystRequirement();
     }
 
     @Override
@@ -73,13 +80,37 @@ public class OECRecipe implements Recipe<Container> {
         return ModRecipe.OEC_SERIALIZER.get();
     }
 
-    public boolean canProcess(ItemStack input, ItemStack output, double availableEnergy) {
+    /**
+     * 检查是否可以处理（包括催化剂检查）
+     */
+    public boolean canProcess(ItemStack input, ItemStack output, double availableEnergy, Level level, BlockPos pos) {
         boolean inputMatches = ingredient.test(input) && input.getCount() >= ingredient.getCount();
         boolean energyEnough = availableEnergy >= energyCost;
         boolean outputValid = output.isEmpty() ||
             (ItemStack.isSameItem(output, result) && output.getCount() + result.getCount() <= output.getMaxStackSize());
+        boolean catalystValid = catalystRequirement.isEmpty() ||
+            CatalystScanner.checkRequirement(level, pos, catalystRequirement);
 
-        return inputMatches && energyEnough && outputValid;
+        return inputMatches && energyEnough && outputValid && catalystValid;
+    }
+
+    /**
+     * 兼容旧版本的canProcess方法
+     */
+    public boolean canProcess(ItemStack input, ItemStack output, double availableEnergy) {
+        return ingredient.test(input) && input.getCount() >= ingredient.getCount() &&
+            availableEnergy >= energyCost &&
+            (output.isEmpty() || (ItemStack.isSameItem(output, result) &&
+                output.getCount() + result.getCount() <= output.getMaxStackSize()));
+    }
+
+    /**
+     * 配方优先级比较：所需催化剂数量越多，优先级越高
+     */
+    @Override
+    public int compareTo(OECRecipe other) {
+        return Integer.compare(other.catalystRequirement.getTotalRequiredCount(),
+            this.catalystRequirement.getTotalRequiredCount());
     }
 
     public static class Serializer implements RecipeSerializer<OECRecipe> {
@@ -93,7 +124,10 @@ public class OECRecipe implements Recipe<Container> {
             double energyCost = GsonHelper.getAsDouble(json, "energy_cost");
             int processingTime = GsonHelper.getAsInt(json, "processing_time", 200);
 
-            return new OECRecipe(recipeId, new QuantifiedIngredient(ingredient, count), result, energyCost, processingTime);
+            CatalystRequirement catalystRequirement = CatalystRequirement.fromJson(json.get("catalysts"));
+
+            return new OECRecipe(recipeId, new QuantifiedIngredient(ingredient, count),
+                result, energyCost, processingTime, catalystRequirement);
         }
 
         @Override
@@ -103,8 +137,10 @@ public class OECRecipe implements Recipe<Container> {
             ItemStack result = buffer.readItem();
             double energyCost = buffer.readDouble();
             int processingTime = buffer.readVarInt();
+            CatalystRequirement catalystRequirement = CatalystRequirement.fromNetwork(buffer);
 
-            return new OECRecipe(recipeId, new QuantifiedIngredient(ingredient, count), result, energyCost, processingTime);
+            return new OECRecipe(recipeId, new QuantifiedIngredient(ingredient, count),
+                result, energyCost, processingTime, catalystRequirement);
         }
 
         @Override
@@ -114,6 +150,7 @@ public class OECRecipe implements Recipe<Container> {
             buffer.writeItem(recipe.result);
             buffer.writeDouble(recipe.energyCost);
             buffer.writeVarInt(recipe.processingTime);
+            recipe.catalystRequirement.toNetwork(buffer);
         }
     }
 }

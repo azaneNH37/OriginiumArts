@@ -38,6 +38,10 @@ public class ModBlock
     public static final ItemBlock IOGNM = registerBlockItem("iognm", InactiveOriginiumBlock::new);
     public static final ItemBlock OGNM_CRYSTAL = registerBlockItem("ognm_crystal", OgnmCrystalBlock::new);
 
+    public static final ItemBlock CATALYST_RED = registerBlockItem("catalyst_red", ()->new CatalystBlock(CatalystBlock.Type.RED));
+    public static final ItemBlock CATALYST_BLUE = registerBlockItem("catalyst_blue", ()->new CatalystBlock(CatalystBlock.Type.BLUE));
+    public static final ItemBlock CATALYST_GREEN = registerBlockItem("catalyst_green", ()->new CatalystBlock(CatalystBlock.Type.GREEN));
+
     public static final RegistryObject<Block> OE_FLUID = register(OriginiumEnergyFluid.NAME,()-> new LiquidBlock(ModFluid.FLOWING_ORIGINIUM_ENERGY, BlockBehaviour.Properties.of().noCollission().strength(100.0F).noLootTable().replaceable().pushReaction(PushReaction.DESTROY).liquid().mapColor(MapColor.GOLD)));
 
     public static RegistryObject<Block> register(String name, Supplier<? extends Block> supplier)

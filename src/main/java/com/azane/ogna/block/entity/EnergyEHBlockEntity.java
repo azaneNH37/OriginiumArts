@@ -4,6 +4,7 @@ import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
 import com.azane.ogna.craft.oe.OECRecipe;
 import com.azane.ogna.craft.oe.OEGRecipe;
+import com.azane.ogna.craft.oe.RecipeFinder;
 import com.azane.ogna.inventory.ArrayContainer;
 import com.azane.ogna.inventory.ArrayItemHandler;
 import com.azane.ogna.inventory.SlotType;
@@ -11,7 +12,6 @@ import com.azane.ogna.lib.NumStrHelper;
 import com.azane.ogna.lib.RlHelper;
 import com.azane.ogna.registry.ModBlockEntity;
 import com.azane.ogna.registry.ModFluid;
-import com.azane.ogna.registry.ModRecipe;
 import com.azane.ogna.util.GeoAnimations;
 import com.lowdragmc.lowdraglib.gui.factory.BlockEntityUIFactory;
 import com.lowdragmc.lowdraglib.gui.modular.IUIHolder;
@@ -35,10 +35,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,7 +47,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -64,10 +61,11 @@ import java.util.Optional;
 import static com.azane.ogna.lib.RegexHelper.*;
 
 /**
- * @author azaneNH37 (2025-08-11)
+ * 增强的能量方块实体，支持催化剂系统
+ * @author azaneNH37 (2025-09-12)
  */
-public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged, GeoBlockEntity
-{
+public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockEntityUI, IAsyncAutoSyncBlockEntity, IAutoPersistBlockEntity, IManaged, GeoBlockEntity {
+
     //===== LDLIB start ======
     protected static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(EnergyEHBlockEntity.class);
     @Getter
@@ -105,31 +103,30 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
         @Override
         protected void onContentsChanged() {EnergyEHBlockEntity.this.setChanged();}
     };
+
     public double getEnergy() {return syncEnergy;}
 
     @DescSynced
     private double syncEnergy = 0D;
 
-    @DropSaved
-    @DescSynced
-    @Persisted
+    @DropSaved @DescSynced @Persisted
     private ItemStack[] stacks = new ItemStack[2];
 
     // 工作状态
-    @Getter
-    @DescSynced @Persisted
+    @Getter @DescSynced @Persisted
     private WorkMode currentMode = WorkMode.IDLE;
-    @Getter
-    @DescSynced @Persisted
+    @Getter @DescSynced @Persisted
     private int processTime = 0;
-    @Getter
-    @DescSynced @Persisted
+    @Getter @DescSynced @Persisted
     private int maxProcessTime = 0;
 
     // 配方缓存
     private OEGRecipe cachedOEGRecipe;
     private OECRecipe cachedOECRecipe;
     private ItemStack lastInputStack = ItemStack.EMPTY;
+
+    // 缓存失效标记
+    private boolean recipeCacheInvalid = true;
 
     private ProgressWidget energyBar;
 
@@ -146,25 +143,21 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
     }
 
     @Override
-    public ModularUI createUI(Player player)
-    {
+    public ModularUI createUI(Player player) {
         var mui = new ModularUI(doCreateUI(player),this,player);
         isOpen = true;
         mui.registerCloseListener(()->isOpen = false);
         return mui;
     }
 
-    public void onPlayerUse(Player player)
-    {
+    public void onPlayerUse(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            if(isOpen)
-                return;
+            if(isOpen) return;
             BlockEntityUIFactory.INSTANCE.openUI(this, serverPlayer);
         }
     }
 
-    private WidgetGroup doCreateUI(Player player)
-    {
+    private WidgetGroup doCreateUI(Player player) {
         boolean isClient = player.level().isClientSide();
         WidgetGroup ui = Optional.ofNullable(UiHelper.getUISupplier(RlHelper.build(OriginiumArts.MOD_ID,"energy"),isClient)).orElseThrow().get();
 
@@ -189,14 +182,19 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
     // ===== 主要逻辑 =====
     public static void serverTick(Level level, BlockPos pos, BlockState state, EnergyEHBlockEntity blockEntity) {
         if (level.isClientSide) return;
-
         blockEntity.tick();
     }
 
     private void tick() {
         boolean dirty = false;
 
-        // 1. 确定工作模式
+        // 检查配方缓存是否需要刷新
+        if (shouldRefreshRecipeCache()) {
+            refreshRecipeCache();
+            dirty = true;
+        }
+
+        // 确定工作模式
         WorkMode newMode = determineWorkMode();
         if (newMode != currentMode) {
             currentMode = newMode;
@@ -205,7 +203,7 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
             dirty = true;
         }
 
-        // 2. 根据模式执行相应逻辑
+        // 根据模式执行相应逻辑
         switch (currentMode) {
             case GENERATING:
                 dirty |= processEnergyGeneration();
@@ -221,65 +219,92 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
                 }
                 break;
         }
+
         syncEnergy = energyTank.getFluidAmount();
         if (dirty) {
-
             setChanged();
         }
     }
 
+    private boolean shouldRefreshRecipeCache() {
+        ItemStack inputStack = stacks[0];
+
+        // 如果输入物品发生变化或强制刷新标记被设置
+        if (recipeCacheInvalid || !ItemStack.isSameItem(inputStack, lastInputStack)) {
+            return true;
+        }
+
+        // 每20tick检查一次催化剂变化（避免频繁扫描）
+        return level != null && level.getGameTime() % 20 == 0;
+    }
+
+    private void refreshRecipeCache() {
+        ItemStack inputStack = stacks[0];
+        lastInputStack = inputStack.copy();
+        recipeCacheInvalid = false;
+
+        if (inputStack.isEmpty() || level == null) {
+            cachedOEGRecipe = null;
+            cachedOECRecipe = null;
+            return;
+        }
+
+        // 查找最佳配方（考虑催化剂）
+        cachedOEGRecipe = RecipeFinder.findBestOEGRecipe(level, getBlockPos(), inputStack);
+        cachedOECRecipe = RecipeFinder.findBestOECRecipe(level, getBlockPos(), inputStack, stacks[1], energyTank.getFluidAmount());
+    }
+
     private WorkMode determineWorkMode() {
         ItemStack inputStack = stacks[0];
-        ItemStack outputStack = stacks[1];
+
+        if (inputStack.isEmpty()) {
+            return WorkMode.IDLE;
+        }
 
         // 优先级：制造 > 发电 > 空闲
-        if (canStartCrafting(inputStack, outputStack)) {
+        if (cachedOECRecipe != null && canStartCrafting()) {
             return WorkMode.CRAFTING;
-        } else if (canStartGenerating(inputStack)) {
+        } else if (cachedOEGRecipe != null && canStartGenerating()) {
             return WorkMode.GENERATING;
         } else {
             return WorkMode.IDLE;
         }
     }
 
-    private boolean canStartGenerating(ItemStack inputStack) {
-        if (inputStack.isEmpty()) return false;
-
-        OEGRecipe recipe = findOEGRecipe(inputStack);
-        return recipe != null && recipe.canProcess(inputStack) && energyTank.getFluidAmount() < MAX_ENERGY;
+    private boolean canStartGenerating() {
+        return cachedOEGRecipe != null &&
+            energyTank.getFluidAmount() < MAX_ENERGY &&
+            cachedOEGRecipe.canProcess(stacks[0], level, getBlockPos());
     }
 
-    private boolean canStartCrafting(ItemStack inputStack, ItemStack outputStack) {
-        if (inputStack.isEmpty()) return false;
-
-        OECRecipe recipe = findOECRecipe(inputStack);
-        return recipe != null && recipe.canProcess(inputStack, outputStack, energyTank.getFluidAmount());
+    private boolean canStartCrafting() {
+        return cachedOECRecipe != null &&
+            cachedOECRecipe.canProcess(stacks[0], stacks[1], energyTank.getFluidAmount(), level, getBlockPos());
     }
 
     private boolean processEnergyGeneration() {
-        ItemStack inputStack = stacks[0];
-        OEGRecipe recipe = findOEGRecipe(inputStack);
-
-        if (recipe == null || !recipe.canProcess(inputStack) || energyTank.getFluidAmount() >= MAX_ENERGY) {
+        if (cachedOEGRecipe == null || !canStartGenerating()) {
             return false;
         }
 
         if (maxProcessTime == 0) {
-            maxProcessTime = recipe.getProcessingTime();
+            maxProcessTime = cachedOEGRecipe.getProcessingTime();
         }
 
         processTime++;
 
         if (processTime >= maxProcessTime) {
             // 完成发电过程
-            inputStack.shrink(recipe.getIngredient().getCount());
+            stacks[0].shrink(cachedOEGRecipe.getIngredient().getCount());
 
-            // 注入流体而不是增加能量值
-            FluidStack energyFluid = new FluidStack(ModFluid.SOURCE_ORIGINIUM_ENERGY.get(), (int) recipe.getEnergyOutput());
+            // 注入流体
+            FluidStack energyFluid = new FluidStack(ModFluid.SOURCE_ORIGINIUM_ENERGY.get(),
+                (int) cachedOEGRecipe.getEnergyOutput());
             energyTank.fill(energyFluid, IFluidHandler.FluidAction.EXECUTE);
 
             processTime = 0;
             maxProcessTime = 0;
+            recipeCacheInvalid = true; // 标记需要重新检查配方
             return true;
         }
 
@@ -287,78 +312,38 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
     }
 
     private boolean processEnergyCrafting() {
-        ItemStack inputStack = stacks[0];
-        ItemStack outputStack = stacks[1];
-        OECRecipe recipe = findOECRecipe(inputStack);
-
-        if (recipe == null || !recipe.canProcess(inputStack, outputStack, energyTank.getFluidAmount())) {
+        if (cachedOECRecipe == null || !canStartCrafting()) {
             return false;
         }
 
         if (maxProcessTime == 0) {
-            maxProcessTime = recipe.getProcessingTime();
+            maxProcessTime = cachedOECRecipe.getProcessingTime();
         }
 
         processTime++;
 
         if (processTime >= maxProcessTime) {
             // 完成制造过程
-            inputStack.shrink(recipe.getIngredient().getCount());
+            stacks[0].shrink(cachedOECRecipe.getIngredient().getCount());
 
-            // 消耗流体而不是减少能量值
-            energyTank.drain((int) recipe.getEnergyCost(), IFluidHandler.FluidAction.EXECUTE);
+            // 消耗流体
+            energyTank.drain((int) cachedOECRecipe.getEnergyCost(), IFluidHandler.FluidAction.EXECUTE);
 
-            ItemStack result = recipe.getResult().copy();
-            if (outputStack.isEmpty()) {
+            // 输出结果
+            ItemStack result = cachedOECRecipe.getResult().copy();
+            if (stacks[1].isEmpty()) {
                 stacks[1] = result;
             } else {
-                outputStack.grow(result.getCount());
+                stacks[1].grow(result.getCount());
             }
 
             processTime = 0;
             maxProcessTime = 0;
+            recipeCacheInvalid = true; // 标记需要重新检查配方
             return true;
         }
 
         return processTime % 5 == 0; // 每5tick同步一次进度
-    }
-
-    private OEGRecipe findOEGRecipe(ItemStack inputStack) {
-        if (!ItemStack.isSameItem(inputStack, lastInputStack)) {
-            cachedOEGRecipe = null;
-            cachedOECRecipe = null;
-            lastInputStack = inputStack.copy();
-        }
-
-        if (cachedOEGRecipe == null && level != null) {
-            RecipeManager recipeManager = level.getRecipeManager();
-            cachedOEGRecipe = recipeManager.getAllRecipesFor(ModRecipe.OEG_TYPE.get())
-                .stream()
-                .filter(recipe -> recipe.canProcess(inputStack))
-                .findFirst()
-                .orElse(null);
-        }
-
-        return cachedOEGRecipe;
-    }
-
-    private OECRecipe findOECRecipe(ItemStack inputStack) {
-        if (!ItemStack.isSameItem(inputStack, lastInputStack)) {
-            cachedOEGRecipe = null;
-            cachedOECRecipe = null;
-            lastInputStack = inputStack.copy();
-        }
-
-        if (cachedOECRecipe == null && level != null) {
-            RecipeManager recipeManager = level.getRecipeManager();
-            cachedOECRecipe = recipeManager.getAllRecipesFor(ModRecipe.OEC_TYPE.get())
-                .stream()
-                .filter(recipe -> recipe.canProcess(inputStack, stacks[1], energyTank.getFluidAmount()))
-                .findFirst()
-                .orElse(null);
-        }
-
-        return cachedOECRecipe;
     }
 
     // ===== Custom Persist Methods =====
@@ -375,15 +360,16 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
             CompoundTag fluidTag = tag.getCompound("energy");
             energyTank.readFromNBT(fluidTag);
         }
+        recipeCacheInvalid = true; // 加载后需要重新检查配方
     }
 
     //===== Container methods =====
-    public final Container container = new ArrayContainer(this,stacks);
-
-    // ==== Container methods end =====
+    public final Container container = new ArrayContainer(this, stacks);
 
     // ==== Forge ItemHandler methods ====
-    private final IItemHandler itemHandler = new ArrayItemHandler(this,stacks).setType(0, SlotType.INPUT).setType(1,SlotType.OUTPUT);
+    private final IItemHandler itemHandler = new ArrayItemHandler(this, stacks)
+        .setType(0, SlotType.INPUT)
+        .setType(1, SlotType.OUTPUT);
 
     // ==== Forge capabilities methods ====
     private final LazyOptional<IItemHandler> itemHandlerLazy = LazyOptional.of(() -> itemHandler);
@@ -406,5 +392,4 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
         itemHandlerLazy.invalidate();
         fluidHandlerLazy.invalidate();
     }
-    // ==== Forge capabilities methods end ====
 }
