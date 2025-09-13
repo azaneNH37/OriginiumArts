@@ -2,9 +2,12 @@ package com.azane.ogna.block.entity;
 
 import com.azane.ogna.OriginiumArts;
 import com.azane.ogna.client.gui.ldlib.helper.UiHelper;
+import com.azane.ogna.craft.catalyst.CatalystRequirement;
+import com.azane.ogna.craft.catalyst.CatalystScanner;
 import com.azane.ogna.craft.oe.OECRecipe;
 import com.azane.ogna.craft.oe.OEGRecipe;
 import com.azane.ogna.craft.oe.RecipeFinder;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.inventory.ArrayContainer;
 import com.azane.ogna.inventory.ArrayItemHandler;
 import com.azane.ogna.inventory.SlotType;
@@ -123,6 +126,7 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
     // 配方缓存
     private OEGRecipe cachedOEGRecipe;
     private OECRecipe cachedOECRecipe;
+    private CatalystRequirement cachedCatalystProvide = new CatalystRequirement();
     private ItemStack lastInputStack = ItemStack.EMPTY;
 
     // 缓存失效标记
@@ -229,12 +233,10 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
     private boolean shouldRefreshRecipeCache() {
         ItemStack inputStack = stacks[0];
 
-        // 如果输入物品发生变化或强制刷新标记被设置
         if (recipeCacheInvalid || !ItemStack.isSameItem(inputStack, lastInputStack)) {
             return true;
         }
 
-        // 每20tick检查一次催化剂变化（避免频繁扫描）
         return level != null && level.getGameTime() % 20 == 0;
     }
 
@@ -250,8 +252,9 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
         }
 
         // 查找最佳配方（考虑催化剂）
-        cachedOEGRecipe = RecipeFinder.findBestOEGRecipe(level, getBlockPos(), inputStack);
-        cachedOECRecipe = RecipeFinder.findBestOECRecipe(level, getBlockPos(), inputStack, stacks[1], energyTank.getFluidAmount());
+        cachedCatalystProvide = new CatalystRequirement(CatalystScanner.scanCatalysts(level, getBlockPos()));
+        cachedOEGRecipe = RecipeFinder.findBestOEGRecipe(level, new OEGRecipe.ProcessContext(stacks[0], cachedCatalystProvide));
+        cachedOECRecipe = RecipeFinder.findBestOECRecipe(level, new OECRecipe.ProcessContext(stacks[0], stacks[1], energyTank.getFluidAmount(), cachedCatalystProvide));
     }
 
     private WorkMode determineWorkMode() {
@@ -274,12 +277,12 @@ public class EnergyEHBlockEntity extends BlockEntity implements IUIHolder.BlockE
     private boolean canStartGenerating() {
         return cachedOEGRecipe != null &&
             energyTank.getFluidAmount() < MAX_ENERGY &&
-            cachedOEGRecipe.canProcess(stacks[0], level, getBlockPos());
+            cachedOEGRecipe.canProcess(new OEGRecipe.ProcessContext(stacks[0], cachedCatalystProvide));
     }
 
     private boolean canStartCrafting() {
         return cachedOECRecipe != null &&
-            cachedOECRecipe.canProcess(stacks[0], stacks[1], energyTank.getFluidAmount(), level, getBlockPos());
+            cachedOECRecipe.canProcess(new OECRecipe.ProcessContext(stacks[0], stacks[1], energyTank.getFluidAmount(), cachedCatalystProvide));
     }
 
     private boolean processEnergyGeneration() {

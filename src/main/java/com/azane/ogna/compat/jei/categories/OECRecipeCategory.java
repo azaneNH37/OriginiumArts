@@ -47,7 +47,7 @@ public class OECRecipeCategory implements IRecipeCategory<OECRecipe>
 
     public OECRecipeCategory(IGuiHelper guiHelper)
     {
-        this.background = guiHelper.createDrawable(TEXTURE, 0, 0, 180, 36);
+        this.background = guiHelper.createDrawable(TEXTURE, 0, 150, 180, 48);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlock.ENERGY_EH.item.get()));
 
 
@@ -73,6 +73,7 @@ public class OECRecipeCategory implements IRecipeCategory<OECRecipe>
         builder.addSlot(RecipeIngredientRole.OUTPUT,92,10)
             .addItemStack(recipe.getResult())
             .setSlotName("output");
+        CatalystPlacer.placeCatalyst(builder, recipe.getCatalystRequirement(), 70, 32);
     }
 
     @Override

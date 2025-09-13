@@ -52,22 +52,6 @@ public class CatalystScanner
     }
 
     /**
-     * 检查催化剂需求是否被满足
-     * @param level 世界
-     * @param centerPos 中心位置
-     * @param requirement 催化剂需求
-     * @return 是否满足需求
-     */
-    public static boolean checkRequirement(Level level, BlockPos centerPos, CatalystRequirement requirement) {
-        if (requirement.isEmpty()) {
-            return true;
-        }
-
-        Map<CatalystBlock.Type, Integer> available = scanCatalysts(level, centerPos);
-        return requirement.isSatisfiedBy(available);
-    }
-
-    /**
      * 获取扫描区域的信息（用于调试）
      */
     public static String getScanAreaInfo() {

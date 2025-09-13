@@ -5,5 +5,19 @@
     "count": 1
   },
   "energy_output": 80.0,
-  "processing_time": 15
+  "processing_time": 15,
+  "catalysts": [
+    {
+      "type": "red",
+      "count": 2
+    },
+    {
+      "type": "blue",
+      "count": 2
+    },
+    {
+      "type": "green",
+      "count": 2
+    }
+  ]
 }

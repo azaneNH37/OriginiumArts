@@ -3,6 +3,7 @@ package com.azane.ogna.craft.oe;
 import com.azane.ogna.craft.QuantifiedIngredient;
 import com.azane.ogna.craft.catalyst.CatalystRequirement;
 import com.azane.ogna.craft.catalyst.CatalystScanner;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.azane.ogna.registry.ModRecipe;
 import com.google.gson.JsonObject;
 import lombok.Getter;
@@ -39,52 +40,26 @@ public class OEGRecipe implements Recipe<Container>, Comparable<OEGRecipe> {
     }
 
     @Override
-    public boolean matches(Container container, Level level) {
-        ItemStack input = container.getItem(0);
-        return !input.isEmpty() && ingredient.test(input) && input.getCount() >= ingredient.getCount();
-    }
-
+    public boolean matches(Container container, Level level) {return false;}
     @Override
-    public ItemStack assemble(Container container, RegistryAccess registryAccess) {
-        return ItemStack.EMPTY; // 能量生成配方不产出物品
-    }
-
+    public ItemStack assemble(Container container, RegistryAccess registryAccess) {return ItemStack.EMPTY;}
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return true;
-    }
-
+    public boolean canCraftInDimensions(int width, int height) {return true;}
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
-        return ItemStack.EMPTY;
-    }
-
+    public ItemStack getResultItem(RegistryAccess registryAccess) {return ItemStack.EMPTY;}
     @Override
-    public RecipeType<?> getType() {
-        return ModRecipe.OEG_TYPE.get();
-    }
-
+    public RecipeType<?> getType() {return ModRecipe.OEG_TYPE.get();}
     @Override
-    public RecipeSerializer<?> getSerializer() {
-        return ModRecipe.OEG_SERIALIZER.get();
-    }
+    public RecipeSerializer<?> getSerializer() {return ModRecipe.OEG_SERIALIZER.get();}
 
-    /**
-     * 检查是否可以处理（包括催化剂检查）
-     */
-    public boolean canProcess(ItemStack input, Level level, BlockPos pos) {
-        boolean inputMatches = ingredient.test(input) && input.getCount() >= ingredient.getCount();
-        boolean catalystValid = catalystRequirement.isEmpty() ||
-            CatalystScanner.checkRequirement(level, pos, catalystRequirement);
+    public record ProcessContext(ItemStack input, CatalystRequirement catalystProvide) { }
+
+    public boolean canProcess(ProcessContext context)
+    {
+        boolean inputMatches = ingredient.test(context.input) && context.input.getCount() >= ingredient.getCount();
+        boolean catalystValid = catalystRequirement.isEmpty() || catalystRequirement.isSatisfiedBy(context.catalystProvide);
 
         return inputMatches && catalystValid;
-    }
-
-    /**
-     * 兼容旧版本的canProcess方法
-     */
-    public boolean canProcess(ItemStack input) {
-        return ingredient.test(input) && input.getCount() >= ingredient.getCount();
     }
 
     /**

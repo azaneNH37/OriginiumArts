@@ -1,6 +1,7 @@
 package com.azane.ogna.craft.catalyst;
 
 import com.azane.ogna.block.CatalystBlock;
+import com.azane.ogna.debug.log.DebugLogger;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -47,6 +48,10 @@ public class CatalystRequirement
         return true;
     }
 
+    public boolean isSatisfiedBy(CatalystRequirement other) {
+        return other != null && isSatisfiedBy(other.requirements);
+    }
+
     /**
      * 检查是否需要催化剂
      */
@@ -73,7 +78,9 @@ public class CatalystRequirement
                     try {
                         CatalystBlock.Type type = CatalystBlock.Type.valueOf(typeStr.toUpperCase());
                         requirements.put(type, requirements.getOrDefault(type, 0) + count);
-                    } catch (IllegalArgumentException ignored) {}
+                    } catch (IllegalArgumentException e) {
+                        DebugLogger.log("{}",e);
+                    }
                 }
             }
         }
@@ -122,6 +129,10 @@ public class CatalystRequirement
 
     @Override
     public String toString() {
-        return "CatalystRequirement{" + requirements + "}";
+        var str = "CatalystRequirement{";
+        for (var entry : requirements.entrySet()) {
+            str += entry.getKey() + "=" + entry.getValue() + ", ";
+        }
+        return str + "}";
     }
 }

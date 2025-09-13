@@ -2,11 +2,9 @@ package com.azane.ogna.craft.oe;
 
 import com.azane.ogna.craft.QuantifiedIngredient;
 import com.azane.ogna.craft.catalyst.CatalystRequirement;
-import com.azane.ogna.craft.catalyst.CatalystScanner;
 import com.azane.ogna.registry.ModRecipe;
 import com.google.gson.JsonObject;
 import lombok.Getter;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -41,67 +39,29 @@ public class OECRecipe implements Recipe<Container>, Comparable<OECRecipe> {
     }
 
     @Override
-    public boolean matches(Container container, Level level) {
-        ItemStack input = container.getItem(0);
-        ItemStack output = container.getItem(1);
-
-        // 检查输入物品是否匹配
-        boolean inputMatches = !input.isEmpty() && ingredient.test(input) && input.getCount() >= ingredient.getCount();
-
-        // 检查输出槽是否可以放入结果物品
-        boolean outputValid = output.isEmpty() ||
-            (ItemStack.isSameItem(output, result) && output.getCount() + result.getCount() <= output.getMaxStackSize());
-
-        return inputMatches && outputValid;
-    }
-
+    public boolean matches(Container container, Level level) {return false;}
     @Override
-    public ItemStack assemble(Container container, RegistryAccess registryAccess) {
-        return result.copy();
-    }
-
+    public ItemStack assemble(Container container, RegistryAccess registryAccess) {return ItemStack.EMPTY;}
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return true;
-    }
-
+    public boolean canCraftInDimensions(int width, int height) {return true;}
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
-        return result;
-    }
-
+    public ItemStack getResultItem(RegistryAccess registryAccess) {return ItemStack.EMPTY;}
     @Override
-    public RecipeType<?> getType() {
-        return ModRecipe.OEC_TYPE.get();
-    }
-
+    public RecipeType<?> getType() {return ModRecipe.OEC_TYPE.get();}
     @Override
-    public RecipeSerializer<?> getSerializer() {
-        return ModRecipe.OEC_SERIALIZER.get();
-    }
+    public RecipeSerializer<?> getSerializer() {return ModRecipe.OEC_SERIALIZER.get();}
 
-    /**
-     * 检查是否可以处理（包括催化剂检查）
-     */
-    public boolean canProcess(ItemStack input, ItemStack output, double availableEnergy, Level level, BlockPos pos) {
-        boolean inputMatches = ingredient.test(input) && input.getCount() >= ingredient.getCount();
-        boolean energyEnough = availableEnergy >= energyCost;
-        boolean outputValid = output.isEmpty() ||
-            (ItemStack.isSameItem(output, result) && output.getCount() + result.getCount() <= output.getMaxStackSize());
-        boolean catalystValid = catalystRequirement.isEmpty() ||
-            CatalystScanner.checkRequirement(level, pos, catalystRequirement);
+    public record ProcessContext(ItemStack input, ItemStack output, double availableEnergy, CatalystRequirement catalystProvide) { }
+
+    public boolean canProcess(ProcessContext context)
+    {
+        boolean inputMatches = ingredient.test(context.input) && context.input.getCount() >= ingredient.getCount();
+        boolean energyEnough = context.availableEnergy >= energyCost;
+        boolean outputValid = context.output.isEmpty() ||
+            (ItemStack.isSameItem(context.output, result) && context.output.getCount() + result.getCount() <= context.output.getMaxStackSize());
+        boolean catalystValid = catalystRequirement.isEmpty() || (context.catalystProvide != null && catalystRequirement.isSatisfiedBy(context.catalystProvide));
 
         return inputMatches && energyEnough && outputValid && catalystValid;
-    }
-
-    /**
-     * 兼容旧版本的canProcess方法
-     */
-    public boolean canProcess(ItemStack input, ItemStack output, double availableEnergy) {
-        return ingredient.test(input) && input.getCount() >= ingredient.getCount() &&
-            availableEnergy >= energyCost &&
-            (output.isEmpty() || (ItemStack.isSameItem(output, result) &&
-                output.getCount() + result.getCount() <= output.getMaxStackSize()));
     }
 
     /**
